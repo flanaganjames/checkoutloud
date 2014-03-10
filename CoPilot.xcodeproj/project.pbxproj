@@ -31,6 +31,7 @@
 		17249D0E18CCC7E200A6C5EF /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249D0D18CCC7E200A6C5EF /* libsqlite3.dylib */; };
 		17249D1018CCD47700A6C5EF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249D0F18CCD47700A6C5EF /* AVFoundation.framework */; };
 		17249D1218CCD48D00A6C5EF /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249D1118CCD48D00A6C5EF /* AudioToolbox.framework */; };
+		17249D1518CE572000A6C5EF /* CPLSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17249D1418CE572000A6C5EF /* CPLSecondViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,8 @@
 		17249D0D18CCC7E200A6C5EF /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		17249D0F18CCD47700A6C5EF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = ../../../../../System/Library/Frameworks/AVFoundation.framework; sourceTree = "<group>"; };
 		17249D1118CCD48D00A6C5EF /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = ../../../../../System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<group>"; };
+		17249D1318CE572000A6C5EF /* CPLSecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLSecondViewController.h; sourceTree = "<group>"; };
+		17249D1418CE572000A6C5EF /* CPLSecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLSecondViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +154,8 @@
 				17249CD118CC30E600A6C5EF /* CPLAppDelegate.h */,
 				17249CD218CC30E600A6C5EF /* CPLAppDelegate.m */,
 				17249CD418CC30E600A6C5EF /* Main.storyboard */,
+				17249D1318CE572000A6C5EF /* CPLSecondViewController.h */,
+				17249D1418CE572000A6C5EF /* CPLSecondViewController.m */,
 				17249CDD18CC30E600A6C5EF /* Images.xcassets */,
 				17249CC918CC30E600A6C5EF /* Supporting Files */,
 				17249D0A18CCC29A00A6C5EF /* CheckListItem.h */,
@@ -300,6 +305,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				17249CD318CC30E600A6C5EF /* CPLAppDelegate.m in Sources */,
+				17249D1518CE572000A6C5EF /* CPLSecondViewController.m in Sources */,
 				17249CFC18CC346100A6C5EF /* CPLTableViewController.m in Sources */,
 				17249CCF18CC30E600A6C5EF /* main.m in Sources */,
 				17249D0C18CCC29A00A6C5EF /* CheckListItem.m in Sources */,

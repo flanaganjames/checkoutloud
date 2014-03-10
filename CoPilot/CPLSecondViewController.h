@@ -1,8 +1,8 @@
 //
-//  CPLTableViewController.h
+//  CPLSecondViewController.h
 //  CoPilot
 //
-//  Created by James Flanagan on 3/8/14.
+//  Created by James Flanagan on 3/10/14.
 //  Copyright (c) 2014 James Flanagan. All rights reserved.
 //
 
@@ -13,20 +13,12 @@
 #import <OpenEars/OpenEarsEventsObserver.h>
 #import <OpenEars/OpenEarsLogging.h>
 
-PocketsphinxController *pocketsphinxController;
-OpenEarsEventsObserver *openEarsEventsObserver;
-
-@interface CPLTableViewController : UITableViewController <OpenEarsEventsObserverDelegate>
-
-@property (weak, nonatomic) IBOutlet UITextField *listenerStatus;
-
+@interface CPLSecondViewController : UITableViewController <OpenEarsEventsObserverDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *listLabel;
 
 @property (strong, nonatomic) NSString *databasePath;
 @property (nonatomic) sqlite3 *checklistDB;
 @property NSString *listParent;
 @property NSString *listGrandParent;
-
-@property (strong, nonatomic) PocketsphinxController *pocketsphinxController;
 @property (strong, nonatomic) OpenEarsEventsObserver *openEarsEventsObserver;
 @end

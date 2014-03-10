@@ -9,10 +9,12 @@
 #import "CPLTableViewController.h"
 #import "CheckListItem.h"
 #import <OpenEars/LanguageModelGenerator.h>
+#import "CPLSecondViewController.h"
 
 
 @interface CPLTableViewController ()
  @property NSMutableArray *checkListItems;
+// @property UITableView *tableView;   // for loadView which cases failure
 @end
 
 @implementation CPLTableViewController
@@ -197,25 +199,42 @@
 }
 
 
-
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {  self.listenerStatus.text = @"selected";
-    
+//    
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    
-    NSIndexPath *myIndexPath = [self.tableView
-                                indexPathForSelectedRow];
-    long row = [myIndexPath row];
-    
-    CheckListItem *item  = self.checkListItems[row];
-    
-    self.listGrandParent = self.listParent;
-    self.listParent = item.itemName;
-    [self reloadArrayData];
-
+//    
+//    NSIndexPath *myIndexPath = [self.tableView
+//                                indexPathForSelectedRow];
+//    long row = [myIndexPath row];
+//    
+//    CheckListItem *item  = self.checkListItems[row];
+//    
+//    self.listGrandParent = self.listParent;
+//    self.listParent = item.itemName;
+//    [self reloadArrayData];
+//    [self.tableView reloadData];
+//
 }
 
+
+
+//- (void)loadView
+//{
+//    self.tableView = [[UITableView alloc]
+//                 initWithFrame:  [[UIScreen mainScreen] applicationFrame]
+//                 style:          UITableViewStylePlain
+//                 ];
+//    
+//    self.tableView.autoresizingMask =
+//    UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+//    
+//    self.tableView.delegate = self;
+//    self.tableView.dataSource = self;
+//    [self.tableView reloadData];
+//    self.view = self.tableView;
+////    [self.tableView release];
+//}
 
 
 
@@ -273,6 +292,7 @@
     }
     
     [self loadInitialData];
+    //[self loadView];
     
     //start openears stuff
     LanguageModelGenerator *lmGenerator = [[LanguageModelGenerator alloc] init];
@@ -392,18 +412,27 @@
 }
 */
 
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    
+    if ([[segue identifier] isEqualToString:@"showDetailList"])
+    {
+        CPLSecondViewController *secondViewController =
+        [segue destinationViewController];
+        
+        NSIndexPath *myIndexPath = [self.tableView
+                                    indexPathForSelectedRow];
+        long row = [myIndexPath row];
+        CheckListItem *item = self.checkListItems[row];
+        
+        secondViewController.listParent = item.itemName;
+        secondViewController.listGrandParent = self.listParent;
+
+        secondViewController.openEarsEventsObserver = self.openEarsEventsObserver;
+        
+    }
+
 }
 
- */
 
-- (IBAction)previousLevel:(id)sender {
-}
 @end
