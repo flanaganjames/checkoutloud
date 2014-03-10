@@ -213,7 +213,7 @@
     self.listGrandParent = self.listParent;
     self.listParent = item.itemName;
     [self reloadArrayData];
-    [self reloadData];
+
 }
 
 
