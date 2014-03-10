@@ -90,7 +90,7 @@
                     <navigationItem key="navigationItem" id="T51-yl-R9E">
                         <barButtonItem key="leftBarButtonItem" systemItem="done" id="2fU-mY-Mb0">
                             <connections>
-                                <action selector="goBack" destination="eLj-OB-QyB" id="smp-bA-ayH"/>
+                                <segue destination="PWz-Ui-reK" kind="unwind" unwindAction="unwindToList:" id="dP1-qj-4P4"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -99,6 +99,7 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eLj-OB-QyB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="PWz-Ui-reK" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1192" y="-8"/>
         </scene>
