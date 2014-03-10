@@ -14,14 +14,23 @@
 		17249CCF18CC30E600A6C5EF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 17249CCE18CC30E600A6C5EF /* main.m */; };
 		17249CD318CC30E600A6C5EF /* CPLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 17249CD218CC30E600A6C5EF /* CPLAppDelegate.m */; };
 		17249CD618CC30E600A6C5EF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 17249CD418CC30E600A6C5EF /* Main.storyboard */; };
-		17249CD918CC30E600A6C5EF /* CPLMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17249CD818CC30E600A6C5EF /* CPLMasterViewController.m */; };
-		17249CDC18CC30E600A6C5EF /* CPLDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17249CDB18CC30E600A6C5EF /* CPLDetailViewController.m */; };
 		17249CDE18CC30E600A6C5EF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 17249CDD18CC30E600A6C5EF /* Images.xcassets */; };
 		17249CE518CC30E600A6C5EF /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249CE418CC30E600A6C5EF /* XCTest.framework */; };
 		17249CE618CC30E600A6C5EF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249CC218CC30E600A6C5EF /* Foundation.framework */; };
 		17249CE718CC30E600A6C5EF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249CC618CC30E600A6C5EF /* UIKit.framework */; };
 		17249CEF18CC30E600A6C5EF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 17249CED18CC30E600A6C5EF /* InfoPlist.strings */; };
 		17249CF118CC30E600A6C5EF /* CoPilotTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 17249CF018CC30E600A6C5EF /* CoPilotTests.m */; };
+		17249CFC18CC346100A6C5EF /* CPLTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17249CFB18CC346100A6C5EF /* CPLTableViewController.m */; };
+		17249CFE18CCC16700A6C5EF /* OpenEars.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249CFD18CCC16700A6C5EF /* OpenEars.framework */; };
+		17249D0018CCC16E00A6C5EF /* Slt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249CFF18CCC16E00A6C5EF /* Slt.framework */; };
+		17249D0618CCC18F00A6C5EF /* AcousticModelEnglish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 17249D0218CCC18F00A6C5EF /* AcousticModelEnglish.bundle */; };
+		17249D0718CCC18F00A6C5EF /* AcousticModelSpanish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 17249D0318CCC18F00A6C5EF /* AcousticModelSpanish.bundle */; };
+		17249D0818CCC18F00A6C5EF /* OpenEars.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249D0418CCC18F00A6C5EF /* OpenEars.framework */; };
+		17249D0918CCC18F00A6C5EF /* Slt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249D0518CCC18F00A6C5EF /* Slt.framework */; };
+		17249D0C18CCC29A00A6C5EF /* CheckListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 17249D0B18CCC29A00A6C5EF /* CheckListItem.m */; };
+		17249D0E18CCC7E200A6C5EF /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249D0D18CCC7E200A6C5EF /* libsqlite3.dylib */; };
+		17249D1018CCD47700A6C5EF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249D0F18CCD47700A6C5EF /* AVFoundation.framework */; };
+		17249D1218CCD48D00A6C5EF /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249D1118CCD48D00A6C5EF /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,16 +55,25 @@
 		17249CD118CC30E600A6C5EF /* CPLAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CPLAppDelegate.h; sourceTree = "<group>"; };
 		17249CD218CC30E600A6C5EF /* CPLAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CPLAppDelegate.m; sourceTree = "<group>"; };
 		17249CD518CC30E600A6C5EF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		17249CD718CC30E600A6C5EF /* CPLMasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CPLMasterViewController.h; sourceTree = "<group>"; };
-		17249CD818CC30E600A6C5EF /* CPLMasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CPLMasterViewController.m; sourceTree = "<group>"; };
-		17249CDA18CC30E600A6C5EF /* CPLDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CPLDetailViewController.h; sourceTree = "<group>"; };
-		17249CDB18CC30E600A6C5EF /* CPLDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CPLDetailViewController.m; sourceTree = "<group>"; };
 		17249CDD18CC30E600A6C5EF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		17249CE318CC30E600A6C5EF /* CoPilotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoPilotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		17249CE418CC30E600A6C5EF /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		17249CEC18CC30E600A6C5EF /* CoPilotTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CoPilotTests-Info.plist"; sourceTree = "<group>"; };
 		17249CEE18CC30E600A6C5EF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		17249CF018CC30E600A6C5EF /* CoPilotTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoPilotTests.m; sourceTree = "<group>"; };
+		17249CFA18CC346100A6C5EF /* CPLTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CPLTableViewController.h; path = ../CPLTableViewController.h; sourceTree = "<group>"; };
+		17249CFB18CC346100A6C5EF /* CPLTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CPLTableViewController.m; path = ../CPLTableViewController.m; sourceTree = "<group>"; };
+		17249CFD18CCC16700A6C5EF /* OpenEars.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenEars.framework; path = Framework/OpenEars.framework; sourceTree = "<group>"; };
+		17249CFF18CCC16E00A6C5EF /* Slt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Slt.framework; path = Framework/Slt.framework; sourceTree = "<group>"; };
+		17249D0218CCC18F00A6C5EF /* AcousticModelEnglish.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AcousticModelEnglish.bundle; sourceTree = "<group>"; };
+		17249D0318CCC18F00A6C5EF /* AcousticModelSpanish.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AcousticModelSpanish.bundle; sourceTree = "<group>"; };
+		17249D0418CCC18F00A6C5EF /* OpenEars.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OpenEars.framework; sourceTree = "<group>"; };
+		17249D0518CCC18F00A6C5EF /* Slt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Slt.framework; sourceTree = "<group>"; };
+		17249D0A18CCC29A00A6C5EF /* CheckListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckListItem.h; sourceTree = "<group>"; };
+		17249D0B18CCC29A00A6C5EF /* CheckListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckListItem.m; sourceTree = "<group>"; };
+		17249D0D18CCC7E200A6C5EF /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		17249D0F18CCD47700A6C5EF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = ../../../../../System/Library/Frameworks/AVFoundation.framework; sourceTree = "<group>"; };
+		17249D1118CCD48D00A6C5EF /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = ../../../../../System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,9 +81,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17249D0E18CCC7E200A6C5EF /* libsqlite3.dylib in Frameworks */,
+				17249D0018CCC16E00A6C5EF /* Slt.framework in Frameworks */,
+				17249D1018CCD47700A6C5EF /* AVFoundation.framework in Frameworks */,
+				17249D0918CCC18F00A6C5EF /* Slt.framework in Frameworks */,
 				17249CC518CC30E600A6C5EF /* CoreGraphics.framework in Frameworks */,
 				17249CC718CC30E600A6C5EF /* UIKit.framework in Frameworks */,
 				17249CC318CC30E600A6C5EF /* Foundation.framework in Frameworks */,
+				17249D1218CCD48D00A6C5EF /* AudioToolbox.framework in Frameworks */,
+				17249CFE18CCC16700A6C5EF /* OpenEars.framework in Frameworks */,
+				17249D0818CCC18F00A6C5EF /* OpenEars.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,6 +129,12 @@
 		17249CC118CC30E600A6C5EF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				17249D1118CCD48D00A6C5EF /* AudioToolbox.framework */,
+				17249D0F18CCD47700A6C5EF /* AVFoundation.framework */,
+				17249D0D18CCC7E200A6C5EF /* libsqlite3.dylib */,
+				17249D0118CCC18F00A6C5EF /* Framework */,
+				17249CFF18CCC16E00A6C5EF /* Slt.framework */,
+				17249CFD18CCC16700A6C5EF /* OpenEars.framework */,
 				17249CC218CC30E600A6C5EF /* Foundation.framework */,
 				17249CC418CC30E600A6C5EF /* CoreGraphics.framework */,
 				17249CC618CC30E600A6C5EF /* UIKit.framework */,
@@ -115,15 +146,15 @@
 		17249CC818CC30E600A6C5EF /* CoPilot */ = {
 			isa = PBXGroup;
 			children = (
+				17249CFA18CC346100A6C5EF /* CPLTableViewController.h */,
+				17249CFB18CC346100A6C5EF /* CPLTableViewController.m */,
 				17249CD118CC30E600A6C5EF /* CPLAppDelegate.h */,
 				17249CD218CC30E600A6C5EF /* CPLAppDelegate.m */,
 				17249CD418CC30E600A6C5EF /* Main.storyboard */,
-				17249CD718CC30E600A6C5EF /* CPLMasterViewController.h */,
-				17249CD818CC30E600A6C5EF /* CPLMasterViewController.m */,
-				17249CDA18CC30E600A6C5EF /* CPLDetailViewController.h */,
-				17249CDB18CC30E600A6C5EF /* CPLDetailViewController.m */,
 				17249CDD18CC30E600A6C5EF /* Images.xcassets */,
 				17249CC918CC30E600A6C5EF /* Supporting Files */,
+				17249D0A18CCC29A00A6C5EF /* CheckListItem.h */,
+				17249D0B18CCC29A00A6C5EF /* CheckListItem.m */,
 			);
 			path = CoPilot;
 			sourceTree = "<group>";
@@ -155,6 +186,17 @@
 				17249CED18CC30E600A6C5EF /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		17249D0118CCC18F00A6C5EF /* Framework */ = {
+			isa = PBXGroup;
+			children = (
+				17249D0218CCC18F00A6C5EF /* AcousticModelEnglish.bundle */,
+				17249D0318CCC18F00A6C5EF /* AcousticModelSpanish.bundle */,
+				17249D0418CCC18F00A6C5EF /* OpenEars.framework */,
+				17249D0518CCC18F00A6C5EF /* Slt.framework */,
+			);
+			path = Framework;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,6 +277,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				17249CDE18CC30E600A6C5EF /* Images.xcassets in Resources */,
+				17249D0718CCC18F00A6C5EF /* AcousticModelSpanish.bundle in Resources */,
+				17249D0618CCC18F00A6C5EF /* AcousticModelEnglish.bundle in Resources */,
 				17249CCD18CC30E600A6C5EF /* InfoPlist.strings in Resources */,
 				17249CD618CC30E600A6C5EF /* Main.storyboard in Resources */,
 			);
@@ -256,9 +300,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				17249CD318CC30E600A6C5EF /* CPLAppDelegate.m in Sources */,
-				17249CDC18CC30E600A6C5EF /* CPLDetailViewController.m in Sources */,
+				17249CFC18CC346100A6C5EF /* CPLTableViewController.m in Sources */,
 				17249CCF18CC30E600A6C5EF /* main.m in Sources */,
-				17249CD918CC30E600A6C5EF /* CPLMasterViewController.m in Sources */,
+				17249D0C18CCC29A00A6C5EF /* CheckListItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -385,6 +429,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/jamesflanagan/Documents/Xworkspace/CoPilot/Framework,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CoPilot/CoPilot-Prefix.pch";
 				INFOPLIST_FILE = "CoPilot/CoPilot-Info.plist";
@@ -398,6 +446,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/jamesflanagan/Documents/Xworkspace/CoPilot/Framework,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CoPilot/CoPilot-Prefix.pch";
 				INFOPLIST_FILE = "CoPilot/CoPilot-Info.plist";

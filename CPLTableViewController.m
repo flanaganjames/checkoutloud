@@ -1,0 +1,409 @@
+//
+//  CPLTableViewController.m
+//  CoPilot
+//
+//  Created by James Flanagan on 3/8/14.
+//  Copyright (c) 2014 James Flanagan. All rights reserved.
+//
+
+#import "CPLTableViewController.h"
+#import "CheckListItem.h"
+#import <OpenEars/LanguageModelGenerator.h>
+
+
+@interface CPLTableViewController ()
+ @property NSMutableArray *checkListItems;
+@end
+
+@implementation CPLTableViewController
+
+@synthesize pocketsphinxController;
+
+@synthesize openEarsEventsObserver;
+
+- (OpenEarsEventsObserver *)openEarsEventsObserver {
+	if (openEarsEventsObserver == nil) {
+		openEarsEventsObserver = [[OpenEarsEventsObserver alloc] init];
+	}
+	return openEarsEventsObserver;
+}
+
+
+- (PocketsphinxController *)pocketsphinxController {
+	if (pocketsphinxController == nil) {
+		pocketsphinxController = [[PocketsphinxController alloc] init];
+	}
+	return pocketsphinxController;
+}
+
+
+- (void) pocketsphinxDidReceiveHypothesis:(NSString *)hypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID {
+	NSLog(@"The received hypothesis is %@ with a score of %@ and an ID of %@", hypothesis, recognitionScore, utteranceID);
+    
+//    _listenerStatus.text = hypothesis;
+    
+    if ([hypothesis  isEqual: @"NEW ITEM"])
+    {
+        [self performSegueWithIdentifier: @"Jim's To Do List" sender: self];
+    }
+    
+    if ([hypothesis  isEqual: @"ADD ITEM"])
+    {
+        [self performSegueWithIdentifier: @"Jim's To Do List" sender: self];
+    }
+    
+    NSArray *cells = [self.tableView visibleCells]; //how to get array of all rows?
+    NSArray *visible = [self.tableView indexPathsForVisibleRows];
+    
+    [cells enumerateObjectsUsingBlock:^(UITableViewCell *cell,
+                                        NSUInteger idx,
+                                        BOOL *stop)
+     {
+         if ([hypothesis  isEqual: cell.textLabel.text])
+         {
+//        _listenerStatus.text = @"found it !";
+             NSIndexPath* index = visible[idx];
+             
+             [self.tableView selectRowAtIndexPath:index animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
+             
+             [self performSegueWithIdentifier: @"DetailUpdate" sender: self];
+         }
+     }];
+    
+}
+
+- (void) pocketsphinxDidStartCalibration {
+	NSLog(@"Pocketsphinx calibration has started.");
+}
+
+- (void) pocketsphinxDidCompleteCalibration {
+	NSLog(@"Pocketsphinx calibration is complete.");
+}
+
+- (void) pocketsphinxDidStartListening {
+	NSLog(@"Pocketsphinx is now listening.");
+}
+
+- (void) pocketsphinxDidDetectSpeech {
+	NSLog(@"Pocketsphinx has detected speech.");
+}
+
+- (void) pocketsphinxDidDetectFinishedSpeech {
+	NSLog(@"Pocketsphinx has detected a period of silence, concluding an utterance.");
+}
+
+- (void) pocketsphinxDidStopListening {
+	NSLog(@"Pocketsphinx has stopped listening.");
+}
+
+- (void) pocketsphinxDidSuspendRecognition {
+	NSLog(@"Pocketsphinx has suspended recognition.");
+}
+
+- (void) pocketsphinxDidResumeRecognition {
+	NSLog(@"Pocketsphinx has resumed recognition.");
+}
+
+- (void) pocketsphinxDidChangeLanguageModelToFile:(NSString *)newLanguageModelPathAsString andDictionary:(NSString *)newDictionaryPathAsString {
+	NSLog(@"Pocketsphinx is now using the following language model: \n%@ and the following dictionary: %@",newLanguageModelPathAsString,newDictionaryPathAsString);
+}
+
+- (void) pocketSphinxContinuousSetupDidFail { // This can let you know that something went wrong with the recognition loop startup. Turn on OPENEARSLOGGING to learn why.
+	NSLog(@"Setting up the continuous recognition loop has failed for some reason, please turn on OpenEarsLogging to learn more.");
+}
+- (void) testRecognitionCompleted {
+	NSLog(@"A test file that was submitted for recognition is now complete.");
+}
+
+
+
+- (void)loadInitialData {
+
+    const char *dbpath = [_databasePath UTF8String];
+    sqlite3_stmt    *statement;
+    
+    if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTS WHERE PARENT=\'%@\'", self.listParent];
+        const char *query_stmt = [querySQL UTF8String];
+        
+        if (sqlite3_prepare_v2(_checklistDB,
+                               query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {  while (sqlite3_step(statement) == SQLITE_ROW)
+        {
+            NSString *taskname =
+            [[NSString alloc] initWithUTF8String:
+             (const char *) sqlite3_column_text(statement, 1)];
+            int taskpriority = sqlite3_column_int(statement, 2);
+            NSString *taskparent =
+            [[NSString alloc] initWithUTF8String:
+             (const char *) sqlite3_column_text(statement, 3)];
+            long taskkey = sqlite3_column_int(statement, 0);
+            CheckListItem *item = [[CheckListItem alloc] init];
+            item.itemName = taskname;
+            item.itemKey = *(&(taskkey));
+            item.itemPriority = *(&(taskpriority));
+            item.itemParent = taskparent;
+            [self.checkListItems addObject:item];
+            
+        }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(_checklistDB);
+    }
+}
+
+
+- (void)reloadArrayData {
+    
+    for (CheckListItem *item in self.checkListItems) {
+        [self.checkListItems removeObject:item];
+    }
+    
+    const char *dbpath = [_databasePath UTF8String];
+    sqlite3_stmt    *statement;
+    
+    if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTS WHERE PARENT=\'%@\'", self.listParent];
+        const char *query_stmt = [querySQL UTF8String];
+        
+        if (sqlite3_prepare_v2(_checklistDB,
+                               query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {  while (sqlite3_step(statement) == SQLITE_ROW)
+        {
+            NSString *taskname =
+            [[NSString alloc] initWithUTF8String:
+             (const char *) sqlite3_column_text(statement, 1)];
+            int taskpriority = sqlite3_column_int(statement, 2);
+            NSString *taskparent =
+            [[NSString alloc] initWithUTF8String:
+             (const char *) sqlite3_column_text(statement, 3)];
+            long taskkey = sqlite3_column_int(statement, 0);
+            CheckListItem *item = [[CheckListItem alloc] init];
+            item.itemName = taskname;
+            item.itemKey = *(&(taskkey));
+            item.itemPriority = *(&(taskpriority));
+            item.itemParent = taskparent;
+            [self.checkListItems addObject:item];
+            
+        }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(_checklistDB);
+    }
+    
+    
+}
+
+
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{  self.listenerStatus.text = @"selected";
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
+    NSIndexPath *myIndexPath = [self.tableView
+                                indexPathForSelectedRow];
+    long row = [myIndexPath row];
+    
+    CheckListItem *item  = self.checkListItems[row];
+    
+    self.listGrandParent = self.listParent;
+    self.listParent = item.itemName;
+    [self reloadArrayData];
+    [self reloadData];
+}
+
+
+
+
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    self.checkListItems = [[NSMutableArray alloc] init];
+    
+    NSString *docsDir;
+    
+    NSArray *dirPaths;
+    
+    self.listParent = @"ROOT";
+    self.listGrandParent = @"ROOT";
+    
+    // Get the documents directory
+    
+    dirPaths = NSSearchPathForDirectoriesInDomains(
+                    NSDocumentDirectory, NSUserDomainMask, YES);
+    docsDir = dirPaths[0];
+    
+    // Build the path to the database file
+    
+    _databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"checklist.db"]];
+    
+    NSFileManager *filemgr = [NSFileManager defaultManager];
+    if ([filemgr fileExistsAtPath: _databasePath ] == NO)
+    {
+        const char *dbpath = [_databasePath UTF8String];
+        if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
+        {
+            char *errMsg;
+            const char *sql_stmt =
+            "CREATE TABLE IF NOT EXISTS CHECKLISTS (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME, PRIORITY, PARENT)";
+            if (sqlite3_exec(_checklistDB, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK)
+            {
+                //_status.text = @"Failed to create table";
+            }
+            sqlite3_close(_checklistDB);
+        }
+        else
+        {
+            //    _status.text = @"Failed to open/create database";
+        }
+    }
+    
+    [self loadInitialData];
+    
+    //start openears stuff
+    LanguageModelGenerator *lmGenerator = [[LanguageModelGenerator alloc] init];
+    
+    
+    NSArray *words = [NSArray arrayWithObjects:@"ADD ITEM", @"TEST", @"TRIAL", @"NEW ITEM", @"UPDATE ITEM", @"UPDATE", @"NOT DONE", @"CHANGE NAME", @"DONE", @"DELETE", @"KEEP", @"SAVE", nil];
+    NSString *name = @"CheckListWords";
+    NSError *err = [lmGenerator generateLanguageModelFromArray:words withFilesNamed:name forAcousticModelAtPath:[AcousticModel pathToModel:@"AcousticModelEnglish"]]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to create a Spanish language model instead of an English one.
+    
+    
+    NSDictionary *languageGeneratorResults = nil;
+    
+    NSString *lmPath = nil;
+    NSString *dicPath = nil;
+	
+    if([err code] == noErr) {
+        
+        languageGeneratorResults = [err userInfo];
+		
+        lmPath = [languageGeneratorResults objectForKey:@"LMPath"];
+        dicPath = [languageGeneratorResults objectForKey:@"DictionaryPath"];
+		
+    } else {
+        NSLog(@"Error: %@",[err localizedDescription]);
+    }
+    
+    [OpenEarsLogging startOpenEarsLogging];
+    
+    [self.openEarsEventsObserver setDelegate:self];
+// remember to add <OpenEarsEventsObserverDelegate> to the interface definition line in the .h file
+    
+    [self.pocketsphinxController startListeningWithLanguageModelAtPath:lmPath dictionaryAtPath:dicPath acousticModelAtPath:[AcousticModel pathToModel:@"AcousticModelEnglish"] languageModelIsJSGF:NO]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to perform Spanish recognition instead of English.
+    
+    self.listenerStatus.text = @"Listening";
+    
+//end of openears stuff
+// Uncomment the following line to preserve selection between presentations.
+// self.clearsSelectionOnViewWillAppear = NO;
+
+// Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+// self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Table view data source
+
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // Return the number of rows in the section.
+    return [self.checkListItems count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"CheckListCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    // Configure the cell...
+    
+    CheckListItem *checkItem = [self.checkListItems objectAtIndex:indexPath.row];
+	
+	cell.textLabel.text = checkItem.itemName;
+    
+    return cell;
+    
+}
+
+/*
+// Override to support conditional editing of the table view.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the specified item to be editable.
+    return YES;
+}
+*/
+
+/*
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }   
+    else if (editingStyle == UITableViewCellEditingStyleInsert) {
+        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    }   
+}
+*/
+
+/*
+// Override to support rearranging the table view.
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+{
+}
+*/
+
+/*
+// Override to support conditional rearranging of the table view.
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the item to be re-orderable.
+    return YES;
+}
+*/
+
+/*
+#pragma mark - Navigation
+
+// In a story board-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+
+ */
+
+- (IBAction)previousLevel:(id)sender {
+}
+@end

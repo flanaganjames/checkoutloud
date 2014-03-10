@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CPLDetailViewController : UIViewController
+@interface CPLDetailViewController : UITableViewController
 
 @property (strong, nonatomic) id detailItem;
 
