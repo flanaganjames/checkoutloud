@@ -11,7 +11,6 @@
 
 @interface CPLSecondViewController ()
     @property NSMutableArray *checkListItems;
-	@property NSArray *visibleCells;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *doneButton;
 @end
 
@@ -25,24 +24,20 @@
     
     if ([hypothesis  isEqual: @"READ LIST"])
     {
-        self.currentrow = 1;
+        self.currentrow = 0;
         [self readCurrent];
     }
     
     if ([hypothesis  isEqual: @"CHECK"])
     {
-//        if (self.currentrow >= [self.checkListItems size])  //? size of array ??
-//        {// do nothing
-//        }
-//        else
-//        {// set checkmark on currentrow
-//        // then increment currentrow pointer
-//        // then read new current
-//            //set checkmark ??
+        if (self.currentrow < [self.checkListItems count] - 1)
+        {// set checkmark on currentrow
+            // then increment currentrow pointer
+            // then read new current
+            
             self.currentrow += 1;
             [self readCurrent];
-//        }
-        
+        }
     }
     
     if ([hypothesis  isEqual: @"DONE"])
@@ -65,9 +60,9 @@
 
 - (void) readCurrent {
     //read current row of checkListItems
-    UITableViewCell *cell = self.visibleCells[self.currentrow];
+    CheckListItem *item = self.checkListItems[self.currentrow];
     
-    NSString *text = cell.textLabel.text;
+    NSString *text = item.itemName;
     
     [self.fliteController say: text withVoice:self.slt];
 
@@ -132,7 +127,7 @@
     
     [self loadInitialData];
     
-    self.visibleCells = [self.tableView visibleCells];
+
     
     //start openears stuff
     [self.openEarsEventsObserver setDelegate:self];
