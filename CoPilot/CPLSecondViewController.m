@@ -22,11 +22,23 @@
     
     if ([hypothesis  isEqual: @"READ"])
     {
-        
+        self.currentrow = 0;
+        [self readCurrent];
     }
     
     if ([hypothesis  isEqual: @"CHECK"])
     {
+        if (self.currentrow >= self.checkListItems.size)
+        {// do nothing
+        }
+        else
+        {// set checkmark on currentrow
+        // then increment currentrow pointer
+        // then read new current
+            //set checkmark ??
+            self.currentrow += 1;
+            [self readCurrent];
+        }
         
     }
     
@@ -46,6 +58,11 @@
         // Custom initialization
     }
     return self;
+}
+
+- (void) readCurrent {
+    //read current row of checkListItems
+
 }
 
 - (void)loadInitialData {

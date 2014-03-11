@@ -13,6 +13,11 @@
 #import <OpenEars/OpenEarsEventsObserver.h>
 #import <OpenEars/OpenEarsLogging.h>
 #import "CPLTableViewController.h"
+#import <Slt/Slt.h> 
+#import <OpenEars/FliteController.h>
+
+FliteController *fliteController;
+Slt *slt;
 
 @interface CPLSecondViewController : UITableViewController <OpenEarsEventsObserverDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *listLabel;
@@ -22,5 +27,6 @@
 @property (nonatomic) sqlite3 *checklistDB;
 @property NSString *listParent;
 @property NSString *listGrandParent;
+@property long currentrow;
 @property (strong, nonatomic) OpenEarsEventsObserver *openEarsEventsObserver;
 @end

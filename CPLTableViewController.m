@@ -426,7 +426,7 @@
         secondViewController.listGrandParent = self.listParent;
 
         secondViewController.openEarsEventsObserver = self.openEarsEventsObserver;
-        
+        secondViewController.currentrow = 0;
     }
 
 }
