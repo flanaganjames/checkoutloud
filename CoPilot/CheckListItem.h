@@ -13,4 +13,5 @@
 @property long itemPriority;
 @property NSString *itemParent;
 @property long itemKey;
+@property BOOL completed;
 @end

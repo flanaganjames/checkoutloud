@@ -29,4 +29,6 @@ Slt *slt;
 @property NSString *listGrandParent;
 @property long currentrow;
 @property (strong, nonatomic) OpenEarsEventsObserver *openEarsEventsObserver;
+@property (strong, nonatomic) FliteController *fliteController;
+@property (strong, nonatomic) Slt *slt;
 @end

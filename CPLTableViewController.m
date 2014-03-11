@@ -23,6 +23,13 @@
 
 @synthesize openEarsEventsObserver;
 
+@synthesize fliteController;
+
+@synthesize slt;
+
+
+- (FliteController *)fliteController { if (fliteController == nil) { fliteController = [[FliteController alloc] init]; } return fliteController; } - (Slt *)slt { if (slt == nil) { slt = [[Slt alloc] init]; } return slt; }
+
 - (OpenEarsEventsObserver *)openEarsEventsObserver {
 	if (openEarsEventsObserver == nil) {
 		openEarsEventsObserver = [[OpenEarsEventsObserver alloc] init];
@@ -289,7 +296,7 @@
     LanguageModelGenerator *lmGenerator = [[LanguageModelGenerator alloc] init];
     
     
-    NSArray *words = [NSArray arrayWithObjects:@"ROUGH ENGINE", @"MANUAL GEAR", @"ENGINE FIRE", @"ELECTRICAL FIRE", @"MANUAL GEAR", @"PREFLIGHT EXTERIOR", @"BEFORE START", @"GO BACK", @"DONE", @"CHECK", nil];
+    NSArray *words = [NSArray arrayWithObjects:@"ROUGH ENGINE", @"MANUAL GEAR", @"ENGINE FIRE", @"ELECTRICAL FIRE", @"MANUAL GEAR", @"PREFLIGHT EXTERIOR", @"BEFORE START", @"GO BACK", @"DONE", @"CHECK", @"READ LIST", nil];
     NSString *name = @"CheckListWords";
     NSError *err = [lmGenerator generateLanguageModelFromArray:words withFilesNamed:name forAcousticModelAtPath:[AcousticModel pathToModel:@"AcousticModelEnglish"]]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to create a Spanish language model instead of an English one.
     
@@ -313,6 +320,10 @@
     [OpenEarsLogging startOpenEarsLogging];
     
     [self.openEarsEventsObserver setDelegate:self];
+    
+    
+    [self.fliteController say:@"Hey Boss.  Another day, another dollar." withVoice:self.slt];
+    
 // remember to add <OpenEarsEventsObserverDelegate> to the interface definition line in the .h file
     
     [self.pocketsphinxController startListeningWithLanguageModelAtPath:lmPath dictionaryAtPath:dicPath acousticModelAtPath:[AcousticModel pathToModel:@"AcousticModelEnglish"] languageModelIsJSGF:NO]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to perform Spanish recognition instead of English.
@@ -427,6 +438,8 @@
 
         secondViewController.openEarsEventsObserver = self.openEarsEventsObserver;
         secondViewController.currentrow = 0;
+        secondViewController.fliteController = self.fliteController;
+        secondViewController.slt = self.slt;
     }
 
 }

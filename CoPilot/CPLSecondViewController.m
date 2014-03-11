@@ -11,34 +11,37 @@
 
 @interface CPLSecondViewController ()
     @property NSMutableArray *checkListItems;
+	@property NSArray *visibleCells;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *doneButton;
 @end
 
 @implementation CPLSecondViewController
 
 //start openears stuff
+
+
 - (void) pocketsphinxDidReceiveHypothesis:(NSString *)hypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID {
 	NSLog(@"The received hypothesis is %@ with a score of %@ and an ID of %@", hypothesis, recognitionScore, utteranceID);
     
-    if ([hypothesis  isEqual: @"READ"])
+    if ([hypothesis  isEqual: @"READ LIST"])
     {
-        self.currentrow = 0;
+        self.currentrow = 1;
         [self readCurrent];
     }
     
     if ([hypothesis  isEqual: @"CHECK"])
     {
-        if (self.currentrow >= self.checkListItems.size)
-        {// do nothing
-        }
-        else
-        {// set checkmark on currentrow
-        // then increment currentrow pointer
-        // then read new current
-            //set checkmark ??
+//        if (self.currentrow >= [self.checkListItems size])  //? size of array ??
+//        {// do nothing
+//        }
+//        else
+//        {// set checkmark on currentrow
+//        // then increment currentrow pointer
+//        // then read new current
+//            //set checkmark ??
             self.currentrow += 1;
             [self readCurrent];
-        }
+//        }
         
     }
     
@@ -62,6 +65,11 @@
 
 - (void) readCurrent {
     //read current row of checkListItems
+    UITableViewCell *cell = self.visibleCells[self.currentrow];
+    
+    NSString *text = cell.textLabel.text;
+    
+    [self.fliteController say: text withVoice:self.slt];
 
 }
 
@@ -104,6 +112,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
     
     self.checkListItems = [[NSMutableArray alloc] init];
     
@@ -122,6 +131,8 @@
     _databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"checklist.db"]];
     
     [self loadInitialData];
+    
+    self.visibleCells = [self.tableView visibleCells];
     
     //start openears stuff
     [self.openEarsEventsObserver setDelegate:self];
@@ -212,7 +223,18 @@
     // Pass the selected object to the new view controller.
 }
 
-
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+        [tableView deselectRowAtIndexPath: indexPath animated:NO];
+        
+        CheckListItem *tappedItem = [self.checkListItems objectAtIndex:indexPath.row];
+        tappedItem.completed = !tappedItem.completed;
+    
+        NSString *text = tappedItem.itemName;
+    
+        [self.fliteController say: text withVoice:self.slt];
+    
+}
 
 
 - (IBAction)unwindToList:(id)sender {
