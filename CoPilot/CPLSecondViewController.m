@@ -11,6 +11,7 @@
 
 @interface CPLSecondViewController ()
     @property NSMutableArray *checkListItems;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *doneButton;
 @end
 
 @implementation CPLSecondViewController
@@ -19,9 +20,19 @@
 - (void) pocketsphinxDidReceiveHypothesis:(NSString *)hypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID {
 	NSLog(@"The received hypothesis is %@ with a score of %@ and an ID of %@", hypothesis, recognitionScore, utteranceID);
     
-    if ([hypothesis  isEqual: @""])
+    if ([hypothesis  isEqual: @"READ"])
     {
         
+    }
+    
+    if ([hypothesis  isEqual: @"CHECK"])
+    {
+        
+    }
+    
+    if ([hypothesis  isEqual: @"DONE"])
+    {
+        [self performSegueWithIdentifier: @"unwindToList" sender: self];
     }
     
 }
@@ -94,6 +105,10 @@
     _databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"checklist.db"]];
     
     [self loadInitialData];
+    
+    //start openears stuff
+    [self.openEarsEventsObserver setDelegate:self];
+    //end of openears stuff
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -172,8 +187,6 @@
 }
 */
 
-/*
-#pragma mark - Navigation
 
 // In a story board-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -182,8 +195,9 @@
     // Pass the selected object to the new view controller.
 }
 
- */
 
-- (IBAction)unwindToRoot:(id)sender {
+
+
+- (IBAction)unwindToList:(id)sender {
 }
 @end

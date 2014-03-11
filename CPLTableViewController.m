@@ -42,17 +42,8 @@
 - (void) pocketsphinxDidReceiveHypothesis:(NSString *)hypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID {
 	NSLog(@"The received hypothesis is %@ with a score of %@ and an ID of %@", hypothesis, recognitionScore, utteranceID);
     
-//    _listenerStatus.text = hypothesis;
-    
-    if ([hypothesis  isEqual: @"NEW ITEM"])
-    {
-        [self performSegueWithIdentifier: @"Jim's To Do List" sender: self];
-    }
-    
-    if ([hypothesis  isEqual: @"ADD ITEM"])
-    {
-        [self performSegueWithIdentifier: @"Jim's To Do List" sender: self];
-    }
+    _listenerStatus.text = hypothesis;
+
     
     NSArray *cells = [self.tableView visibleCells]; //how to get array of all rows?
     NSArray *visible = [self.tableView indexPathsForVisibleRows];
@@ -63,12 +54,12 @@
      {
          if ([hypothesis  isEqual: cell.textLabel.text])
          {
-//        _listenerStatus.text = @"found it !";
+        _listenerStatus.text = @"found it !";
              NSIndexPath* index = visible[idx];
              
              [self.tableView selectRowAtIndexPath:index animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
              
-             [self performSegueWithIdentifier: @"DetailUpdate" sender: self];
+             [self performSegueWithIdentifier: @"showDetailList" sender: self];
          }
      }];
     
@@ -298,7 +289,7 @@
     LanguageModelGenerator *lmGenerator = [[LanguageModelGenerator alloc] init];
     
     
-    NSArray *words = [NSArray arrayWithObjects:@"ADD ITEM", @"TEST", @"TRIAL", @"NEW ITEM", @"UPDATE ITEM", @"UPDATE", @"NOT DONE", @"CHANGE NAME", @"DONE", @"DELETE", @"KEEP", @"SAVE", nil];
+    NSArray *words = [NSArray arrayWithObjects:@"ROUGH ENGINE", @"MANUAL GEAR", @"ENGINE FIRE", @"ELECTRICAL FIRE", @"MANUAL GEAR", @"PREFLIGHT EXTERIOR", @"BEFORE START", @"GO BACK", @"DONE", @"CHECK", nil];
     NSString *name = @"CheckListWords";
     NSError *err = [lmGenerator generateLanguageModelFromArray:words withFilesNamed:name forAcousticModelAtPath:[AcousticModel pathToModel:@"AcousticModelEnglish"]]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to create a Spanish language model instead of an English one.
     
@@ -336,6 +327,12 @@
 // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self.openEarsEventsObserver setDelegate:self];
+    
+}
 
 
 - (void)didReceiveMemoryWarning

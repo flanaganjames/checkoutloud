@@ -12,9 +12,11 @@
 #import <OpenEars/AcousticModel.h>
 #import <OpenEars/OpenEarsEventsObserver.h>
 #import <OpenEars/OpenEarsLogging.h>
+#import "CPLTableViewController.h"
 
 @interface CPLSecondViewController : UITableViewController <OpenEarsEventsObserverDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *listLabel;
+- (IBAction)unwindToList:(id)sender;
 
 @property (strong, nonatomic) NSString *databasePath;
 @property (nonatomic) sqlite3 *checklistDB;

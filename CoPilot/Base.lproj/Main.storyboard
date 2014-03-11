@@ -90,11 +90,12 @@
                     <navigationItem key="navigationItem" id="T51-yl-R9E">
                         <barButtonItem key="leftBarButtonItem" systemItem="done" id="2fU-mY-Mb0">
                             <connections>
-                                <segue destination="PWz-Ui-reK" kind="unwind" unwindAction="unwindToList:" id="dP1-qj-4P4"/>
+                                <segue destination="PWz-Ui-reK" kind="unwind" unwindAction="unwindToList:" id="iFq-em-bS2"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="doneButton" destination="2fU-mY-Mb0" id="2ey-Ha-BMS"/>
                         <outlet property="listLabel" destination="hnA-JO-iOj" id="DMV-iv-KJ9"/>
                     </connections>
                 </tableViewController>
