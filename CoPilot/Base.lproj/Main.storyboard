@@ -20,12 +20,21 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CheckListCell" id="MKG-2R-Ia5">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CheckListCell" textLabel="lHC-Ev-6h5" style="IBUITableViewCellStyleDefault" id="MKG-2R-Ia5">
                                 <rect key="frame" x="0.0" y="130" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MKG-2R-Ia5" id="L2X-Hc-U7q">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lHC-Ev-6h5">
+                                            <rect key="frame" x="15" y="0.0" width="270" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
                                 <connections>
                                     <segue destination="9G9-Ml-aoE" kind="push" identifier="showDetailList" id="Jqz-4i-RIX"/>
@@ -39,18 +48,9 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="caR-z7-ZvS">
                         <nil key="title"/>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="BIC-RJ-QEW">
-                            <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" minimumFontSize="12" id="6uq-WX-kLJ">
-                                <rect key="frame" x="176" y="7" width="128" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="listLabel" destination="YK1-wk-4K2" id="ef1-Nc-v9g"/>
-                        <outlet property="listenerStatus" destination="6uq-WX-kLJ" id="UIL-2e-OUh"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7RQ-wb-c29" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -88,14 +88,20 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="T51-yl-R9E">
-                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="2fU-mY-Mb0">
+                        <nil key="title"/>
+                        <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="yGY-Ea-zhn">
+                            <rect key="frame" x="96" y="6" width="128" height="33"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <state key="normal" title="Done">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
                             <connections>
-                                <segue destination="PWz-Ui-reK" kind="unwind" unwindAction="unwindToList:" id="iFq-em-bS2"/>
+                                <segue destination="PWz-Ui-reK" kind="unwind" unwindAction="unwindToList:" id="ZmE-ix-neX"/>
                             </connections>
-                        </barButtonItem>
+                        </button>
                     </navigationItem>
                     <connections>
-                        <outlet property="doneButton" destination="2fU-mY-Mb0" id="2ey-Ha-BMS"/>
                         <outlet property="listLabel" destination="hnA-JO-iOj" id="DMV-iv-KJ9"/>
                     </connections>
                 </tableViewController>

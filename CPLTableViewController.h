@@ -13,12 +13,14 @@
 #import <OpenEars/OpenEarsEventsObserver.h>
 #import <OpenEars/OpenEarsLogging.h>
 #import <Slt/Slt.h>
+#import <Kal/Kal.h>
 #import <OpenEars/FliteController.h>
 
 PocketsphinxController *pocketsphinxController;
 OpenEarsEventsObserver *openEarsEventsObserver;
 FliteController *fliteController;
 Slt *slt;
+Kal *kal;
 
 @interface CPLTableViewController : UITableViewController <OpenEarsEventsObserverDelegate>
 
@@ -35,4 +37,5 @@ Slt *slt;
 @property (strong, nonatomic) OpenEarsEventsObserver *openEarsEventsObserver;
 @property (strong, nonatomic) FliteController *fliteController;
 @property (strong, nonatomic) Slt *slt;
+@property (strong, nonatomic) Kal *kal;
 @end

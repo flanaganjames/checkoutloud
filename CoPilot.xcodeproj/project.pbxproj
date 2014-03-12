@@ -32,6 +32,7 @@
 		17249D1018CCD47700A6C5EF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249D0F18CCD47700A6C5EF /* AVFoundation.framework */; };
 		17249D1218CCD48D00A6C5EF /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249D1118CCD48D00A6C5EF /* AudioToolbox.framework */; };
 		17249D1518CE572000A6C5EF /* CPLSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17249D1418CE572000A6C5EF /* CPLSecondViewController.m */; };
+		172CD32E18CFDD8800427D63 /* Kal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 172CD32D18CFDD8800427D63 /* Kal.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		17249D1118CCD48D00A6C5EF /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = ../../../../../System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<group>"; };
 		17249D1318CE572000A6C5EF /* CPLSecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLSecondViewController.h; sourceTree = "<group>"; };
 		17249D1418CE572000A6C5EF /* CPLSecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLSecondViewController.m; sourceTree = "<group>"; };
+		172CD32D18CFDD8800427D63 /* Kal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kal.framework; path = ../OpenEarsDistribution/OpenEarsExtras/openearsextras/FliteVoices/Kal.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +95,7 @@
 				17249CC318CC30E600A6C5EF /* Foundation.framework in Frameworks */,
 				17249D1218CCD48D00A6C5EF /* AudioToolbox.framework in Frameworks */,
 				17249CFE18CCC16700A6C5EF /* OpenEars.framework in Frameworks */,
+				172CD32E18CFDD8800427D63 /* Kal.framework in Frameworks */,
 				17249D0818CCC18F00A6C5EF /* OpenEars.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -135,6 +138,7 @@
 				17249D1118CCD48D00A6C5EF /* AudioToolbox.framework */,
 				17249D0F18CCD47700A6C5EF /* AVFoundation.framework */,
 				17249D0D18CCC7E200A6C5EF /* libsqlite3.dylib */,
+				172CD32D18CFDD8800427D63 /* Kal.framework */,
 				17249D0118CCC18F00A6C5EF /* Framework */,
 				17249CFF18CCC16E00A6C5EF /* Slt.framework */,
 				17249CFD18CCC16700A6C5EF /* OpenEars.framework */,
@@ -438,6 +442,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/jamesflanagan/Documents/Xworkspace/CoPilot/Framework,
+					/Users/jamesflanagan/Documents/Xworkspace/OpenEarsDistribution/OpenEarsExtras/openearsextras/FliteVoices,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CoPilot/CoPilot-Prefix.pch";
@@ -455,6 +460,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/jamesflanagan/Documents/Xworkspace/CoPilot/Framework,
+					/Users/jamesflanagan/Documents/Xworkspace/OpenEarsDistribution/OpenEarsExtras/openearsextras/FliteVoices,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CoPilot/CoPilot-Prefix.pch";
@@ -525,6 +531,7 @@
 				17249CF618CC30E600A6C5EF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		17249CF718CC30E600A6C5EF /* Build configuration list for PBXNativeTarget "CoPilotTests" */ = {
 			isa = XCConfigurationList;
@@ -533,6 +540,7 @@
 				17249CF918CC30E600A6C5EF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

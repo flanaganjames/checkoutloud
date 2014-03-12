@@ -11,7 +11,7 @@
 
 @interface CPLSecondViewController ()
     @property NSMutableArray *checkListItems;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *doneButton;
+
 @end
 
 @implementation CPLSecondViewController
@@ -42,7 +42,8 @@
     
     if ([hypothesis  isEqual: @"DONE"])
     {
-        [self performSegueWithIdentifier: @"unwindToList" sender: self];
+        [self.originView performSegueWithIdentifier: @"unwindToList" sender: self];
+//        [self performSegueWithIdentifier: @"unwindToList" sender: self];
     }
     
 }
@@ -65,7 +66,7 @@
     NSString *text = item.itemName;
     
     [self.fliteController say: text withVoice:self.slt];
-
+//    [self.fliteController say: text withVoice:self.kal];
 }
 
 - (void)loadInitialData {
@@ -228,7 +229,7 @@
         NSString *text = tappedItem.itemName;
     
         [self.fliteController say: text withVoice:self.slt];
-    
+//        [self.fliteController say: text withVoice:self.kal];
 }
 
 

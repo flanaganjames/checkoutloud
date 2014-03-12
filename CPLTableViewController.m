@@ -26,9 +26,11 @@
 @synthesize fliteController;
 
 @synthesize slt;
+@synthesize kal;
 
 
 - (FliteController *)fliteController { if (fliteController == nil) { fliteController = [[FliteController alloc] init]; } return fliteController; } - (Slt *)slt { if (slt == nil) { slt = [[Slt alloc] init]; } return slt; }
+//- (FliteController *)fliteController { if (fliteController == nil) { fliteController = [[FliteController alloc] init]; } return fliteController; } - (Kal *)kal { if (kal == nil) { kal = [[Kal alloc] init]; } return kal; }
 
 - (OpenEarsEventsObserver *)openEarsEventsObserver {
 	if (openEarsEventsObserver == nil) {
@@ -323,6 +325,7 @@
     
     
     [self.fliteController say:@"Hey Boss.  Another day, another dollar." withVoice:self.slt];
+//    [self.fliteController say:@"Hey Boss.  Another day, another dollar." withVoice:self.kal];
     
 // remember to add <OpenEarsEventsObserverDelegate> to the interface definition line in the .h file
     
@@ -434,12 +437,15 @@
         CheckListItem *item = self.checkListItems[row];
         
         secondViewController.listParent = item.itemName;
+        secondViewController.listLabel.text = item.itemName;
         secondViewController.listGrandParent = self.listParent;
 
         secondViewController.openEarsEventsObserver = self.openEarsEventsObserver;
         secondViewController.currentrow = 0;
         secondViewController.fliteController = self.fliteController;
         secondViewController.slt = self.slt;
+        secondViewController.kal = self.kal;
+        secondViewController.originView = self;
     }
 
 }
@@ -447,7 +453,6 @@
 
 - (IBAction)unwindToList:(UIStoryboardSegue *)segue
 {
-//CPLSecondViewController *source = [segue sourceViewController];
 
 
 }

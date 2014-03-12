@@ -14,14 +14,15 @@
 #import <OpenEars/OpenEarsLogging.h>
 #import "CPLTableViewController.h"
 #import <Slt/Slt.h> 
+#import <Kal/Kal.h>
 #import <OpenEars/FliteController.h>
 
 FliteController *fliteController;
 Slt *slt;
+Kal *kal;
 
 @interface CPLSecondViewController : UITableViewController <OpenEarsEventsObserverDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *listLabel;
-- (IBAction)unwindToList:(id)sender;
 
 @property (strong, nonatomic) NSString *databasePath;
 @property (nonatomic) sqlite3 *checklistDB;
@@ -31,4 +32,6 @@ Slt *slt;
 @property (strong, nonatomic) OpenEarsEventsObserver *openEarsEventsObserver;
 @property (strong, nonatomic) FliteController *fliteController;
 @property (strong, nonatomic) Slt *slt;
+@property (strong, nonatomic) Kal *kal;
+@property (strong, nonatomic) CPLTableViewController *originView;
 @end
