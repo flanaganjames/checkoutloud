@@ -42,8 +42,8 @@
     
     if ([hypothesis  isEqual: @"DONE"])
     {
-        [self.originView performSegueWithIdentifier: @"unwindToList" sender: self];
-//        [self performSegueWithIdentifier: @"unwindToList" sender: self];
+//        [self.originView performSegueWithIdentifier: @"unwindToList" sender: self];
+        [self performSegueWithIdentifier: @"unwindToList" sender: self];
     }
     
 }

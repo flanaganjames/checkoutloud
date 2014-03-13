@@ -34,6 +34,7 @@
 		17249D1518CE572000A6C5EF /* CPLSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17249D1418CE572000A6C5EF /* CPLSecondViewController.m */; };
 		172CD32E18CFDD8800427D63 /* Kal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 172CD32D18CFDD8800427D63 /* Kal.framework */; };
 		172CD39218D1E1C600427D63 /* checklist.db in Resources */ = {isa = PBXBuildFile; fileRef = 172CD39118D1E1C600427D63 /* checklist.db */; };
+		172CD39518D228B900427D63 /* CPLAddListItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 172CD39418D228B900427D63 /* CPLAddListItemViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,8 @@
 		17249D1418CE572000A6C5EF /* CPLSecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLSecondViewController.m; sourceTree = "<group>"; };
 		172CD32D18CFDD8800427D63 /* Kal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kal.framework; path = ../OpenEarsDistribution/OpenEarsExtras/openearsextras/FliteVoices/Kal.framework; sourceTree = "<group>"; };
 		172CD39118D1E1C600427D63 /* checklist.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = checklist.db; sourceTree = SOURCE_ROOT; };
+		172CD39318D228B900427D63 /* CPLAddListItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLAddListItemViewController.h; sourceTree = "<group>"; };
+		172CD39418D228B900427D63 /* CPLAddListItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLAddListItemViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +166,8 @@
 				17249CD418CC30E600A6C5EF /* Main.storyboard */,
 				17249D1318CE572000A6C5EF /* CPLSecondViewController.h */,
 				17249D1418CE572000A6C5EF /* CPLSecondViewController.m */,
+				172CD39318D228B900427D63 /* CPLAddListItemViewController.h */,
+				172CD39418D228B900427D63 /* CPLAddListItemViewController.m */,
 				17249CDD18CC30E600A6C5EF /* Images.xcassets */,
 				17249CC918CC30E600A6C5EF /* Supporting Files */,
 				17249D0A18CCC29A00A6C5EF /* CheckListItem.h */,
@@ -317,6 +322,7 @@
 				17249CFC18CC346100A6C5EF /* CPLTableViewController.m in Sources */,
 				17249CCF18CC30E600A6C5EF /* main.m in Sources */,
 				17249D0C18CCC29A00A6C5EF /* CheckListItem.m in Sources */,
+				172CD39518D228B900427D63 /* CPLAddListItemViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

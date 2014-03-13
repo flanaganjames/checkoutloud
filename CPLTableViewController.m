@@ -449,13 +449,24 @@
         secondViewController.kal = self.kal;
         secondViewController.originView = self;
     }
+    
+    if ([[segue identifier] isEqualToString:@"AddToRoot"])
+    {
+
+    }
 
 }
 
-
-- (IBAction)unwindToList:(UIStoryboardSegue *)segue
+- (IBAction)unwindAddToList:(UIStoryboardSegue *)segue  sender:(id)sender
 {
+   
+    
+}
 
+
+- (IBAction)unwindToList:(UIStoryboardSegue *)segue  sender:(id)sender
+{
+[self.tableView reloadData];
 
 }
 
