@@ -33,6 +33,7 @@
 		17249D1218CCD48D00A6C5EF /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249D1118CCD48D00A6C5EF /* AudioToolbox.framework */; };
 		17249D1518CE572000A6C5EF /* CPLSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17249D1418CE572000A6C5EF /* CPLSecondViewController.m */; };
 		172CD32E18CFDD8800427D63 /* Kal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 172CD32D18CFDD8800427D63 /* Kal.framework */; };
+		172CD39218D1E1C600427D63 /* checklist.db in Resources */ = {isa = PBXBuildFile; fileRef = 172CD39118D1E1C600427D63 /* checklist.db */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		17249D1318CE572000A6C5EF /* CPLSecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLSecondViewController.h; sourceTree = "<group>"; };
 		17249D1418CE572000A6C5EF /* CPLSecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLSecondViewController.m; sourceTree = "<group>"; };
 		172CD32D18CFDD8800427D63 /* Kal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kal.framework; path = ../OpenEarsDistribution/OpenEarsExtras/openearsextras/FliteVoices/Kal.framework; sourceTree = "<group>"; };
+		172CD39118D1E1C600427D63 /* checklist.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = checklist.db; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,6 +155,7 @@
 		17249CC818CC30E600A6C5EF /* CoPilot */ = {
 			isa = PBXGroup;
 			children = (
+				172CD39118D1E1C600427D63 /* checklist.db */,
 				17249CFA18CC346100A6C5EF /* CPLTableViewController.h */,
 				17249CFB18CC346100A6C5EF /* CPLTableViewController.m */,
 				17249CD118CC30E600A6C5EF /* CPLAppDelegate.h */,
@@ -289,6 +292,7 @@
 				17249D0718CCC18F00A6C5EF /* AcousticModelSpanish.bundle in Resources */,
 				17249D0618CCC18F00A6C5EF /* AcousticModelEnglish.bundle in Resources */,
 				17249CCD18CC30E600A6C5EF /* InfoPlist.strings in Resources */,
+				172CD39218D1E1C600427D63 /* checklist.db in Resources */,
 				17249CD618CC30E600A6C5EF /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
