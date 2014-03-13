@@ -50,7 +50,7 @@
                         <nil key="title"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="ydI-Ws-qYW">
                             <connections>
-                                <segue destination="nGE-oO-E3Q" kind="modal" identifier="AddToRoot" id="TFo-wH-kC4"/>
+                                <segue destination="7sk-Ue-3eO" kind="modal" identifier="AddToRoot" id="TFo-wH-kC4"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -113,7 +113,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eLj-OB-QyB" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="PWz-Ui-reK" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1192" y="-8"/>
+            <point key="canvasLocation" x="1718" y="-8"/>
         </scene>
         <!--Add List Item View Controller-->
         <scene sceneID="iU8-qi-I0A">
@@ -136,11 +136,18 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="WZu-gd-v4q">
+                        <barButtonItem key="leftBarButtonItem" title="Save" id="Zel-NE-lCV">
+                            <connections>
+                                <segue destination="Fof-XJ-bdC" kind="unwind" unwindAction="unwindAddToList:sender:" id="Knl-OW-2md"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="guS-r1-bHw" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Fof-XJ-bdC" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1146" y="416"/>
+            <point key="canvasLocation" x="1672" y="416"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="o6D-eY-fcw">
@@ -159,6 +166,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="muH-Z3-fzY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="136" y="-8"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="PX2-Ik-NLc">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7sk-Ue-3eO" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ufv-Tu-dj1">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="nGE-oO-E3Q" kind="relationship" relationship="rootViewController" id="n0z-Ko-trw"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wuk-4F-saP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1146" y="416"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
