@@ -259,6 +259,8 @@
     
     self.listParent = @"ROOT";
     self.listGrandParent = @"ROOT";
+    self.listLabel.text = self.listParent;
+
     
     // Get the documents directory
     
@@ -324,7 +326,7 @@
     [self.openEarsEventsObserver setDelegate:self];
     
     
-    [self.fliteController say:@"Hey Boss.  Another day, another dollar." withVoice:self.slt];
+    [self.fliteController say:@"Hey Boss" withVoice:self.slt];
 //    [self.fliteController say:@"Hey Boss.  Another day, another dollar." withVoice:self.kal];
     
 // remember to add <OpenEarsEventsObserverDelegate> to the interface definition line in the .h file
@@ -438,7 +440,7 @@
         
         secondViewController.listParent = item.itemName;
         secondViewController.listLabel.text = item.itemName;
-        secondViewController.listGrandParent = self.listParent;
+
 
         secondViewController.openEarsEventsObserver = self.openEarsEventsObserver;
         secondViewController.currentrow = 0;

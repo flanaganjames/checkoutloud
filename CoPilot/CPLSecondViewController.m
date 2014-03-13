@@ -108,6 +108,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.listLabel.text = self.listParent;
 
     
     self.checkListItems = [[NSMutableArray alloc] init];
