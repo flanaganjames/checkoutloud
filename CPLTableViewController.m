@@ -10,6 +10,7 @@
 #import "CheckListItem.h"
 #import <OpenEars/LanguageModelGenerator.h>
 #import "CPLSecondViewController.h"
+#import "CPLAddListItemViewController.h"
 
 
 @interface CPLTableViewController ()
@@ -153,6 +154,11 @@
         }
         sqlite3_close(_checklistDB);
     }
+
+    NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
+    
+    [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
+    
 }
 
 
@@ -326,7 +332,7 @@
     [self.openEarsEventsObserver setDelegate:self];
     
     
-    [self.fliteController say:@"Hey Boss" withVoice:self.slt];
+    [self.fliteController say:@"Hi Boss" withVoice:self.slt];
 //    [self.fliteController say:@"Hey Boss.  Another day, another dollar." withVoice:self.kal];
     
 // remember to add <OpenEarsEventsObserverDelegate> to the interface definition line in the .h file
@@ -457,9 +463,47 @@
 
 }
 
+
+
 - (IBAction)unwindAddToList:(UIStoryboardSegue *)segue  sender:(id)sender
 {
-   
+    CPLAddListItemViewController *source = [segue sourceViewController];
+    CheckListItem *item = source.checkListItem;
+    if (item != nil)
+    {
+        [self.checkListItems addObject:item];
+        // want to sort this list by itemPriority
+    NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
+        
+    [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
+    [self.tableView reloadData];
+        // save the task in the database
+        sqlite3_stmt    *statement;
+        const char *dbpath = [_databasePath UTF8String];
+        if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
+        {
+            NSString *insertSQL = [NSString stringWithFormat:
+                                   @"INSERT INTO CHECKLISTS (name, priority, parent, haschild) VALUES (\'%@\', %ld,\'%@\',\'%@\')",
+                                   item.itemName, item.itemPriority, self.listParent, @"NO"];
+            const char *insert_stmt = [insertSQL UTF8String];
+            //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"SQL in Unwind"
+            //    message:  [NSString stringWithFormat: @"%s", insert_stmt ]
+            //    delegate:self
+            //    cancelButtonTitle:@"OK"
+            //    otherButtonTitles:nil];
+            //    [alert show];
+            sqlite3_prepare_v2(_checklistDB, insert_stmt,
+                               -1, &statement, NULL);
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+            }
+            else
+            {
+            }
+            sqlite3_finalize(statement);
+            sqlite3_close(_checklistDB);
+        }
+    }
     
 }
 

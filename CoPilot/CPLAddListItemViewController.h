@@ -7,7 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <OpenEars/OpenEarsEventsObserver.h>
+#import "CheckListItem.h"
+#import "CPLTableViewController.h"
 
-@interface CPLAddListItemViewController : UIViewController
+@interface CPLAddListItemViewController : UIViewController <OpenEarsEventsObserverDelegate>
+@property CheckListItem *checkListItem;
+@property (weak, nonatomic) IBOutlet UILabel *listLabel;
+@property (weak, nonatomic) IBOutlet UITextField *itemName;
 
+@property (weak, nonatomic) IBOutlet UITextField *itemPriority;
+@property (strong, nonatomic) OpenEarsEventsObserver *openEarsEventsObserver;
 @end

@@ -14,6 +14,31 @@
 
 @implementation CPLAddListItemViewController
 
+//start openears stuff
+- (void) pocketsphinxDidReceiveHypothesis:(NSString *)hypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID {
+	NSLog(@"The received hypothesis is %@ with a score of %@ and an ID of %@", hypothesis, recognitionScore, utteranceID);
+    
+    if ([hypothesis  isEqual: @"SAVE"])
+    {
+        [self performSegueWithIdentifier: @"unwindAddToList" sender: self];
+    }
+    
+}
+//end openears stuff
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if (self.itemName.text.length > 0) {
+       	self.checkListItem = [[CheckListItem alloc] init];
+        
+        self.checkListItem.itemName = self.itemName.text;
+        self.checkListItem.itemPriority = [self.itemPriority.text longLongValue];
+    }
+        //
+}
+        
+
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -27,6 +52,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    //start openears stuff
+    [self.openEarsEventsObserver setDelegate:self];
+    //end of openears stuff
 }
 
 - (void)didReceiveMemoryWarning
