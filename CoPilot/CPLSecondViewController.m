@@ -8,6 +8,7 @@
 
 #import "CPLSecondViewController.h"
 #import "CheckListItem.h"
+#import "CPLAddSecondViewController.h"
 
 @interface CPLSecondViewController ()
     @property NSMutableArray *checkListItems;
@@ -216,8 +217,14 @@
 // In a story board-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if ([[segue identifier] isEqualToString:@"AddToChild"])
+    {  CPLAddSecondViewController *addViewController =
+        [segue destinationViewController];
+        
+//        addViewController.listLabel.text = self.listParent;
+//        addViewController.openEarsEventsObserver = self.openEarsEventsObserver;
+        
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -234,6 +241,47 @@
 }
 
 
-- (IBAction)unwindToList:(id)sender {
+- (IBAction)unwindAddToSecondList:(UIStoryboardSegue *)segue  sender:(id)sender
+{
+    CPLAddSecondViewController *source = [segue sourceViewController];
+    CheckListItem *item = source.checkListItem;
+    if (item != nil)
+    {
+        [self.checkListItems addObject:item];
+        // want to sort this list by itemPriority
+        NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
+        
+        [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
+        [self.tableView reloadData];
+        // save the task in the database
+        sqlite3_stmt    *statement;
+        const char *dbpath = [_databasePath UTF8String];
+        if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
+        {
+            NSString *insertSQL = [NSString stringWithFormat:
+                                   @"INSERT INTO CHECKLISTS (name, priority, parent, haschild) VALUES (\'%@\', %ld,\'%@\',\'%@\')",
+                                   item.itemName, item.itemPriority, self.listParent, @"NO"];
+            const char *insert_stmt = [insertSQL UTF8String];
+            //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"SQL in Unwind"
+            //    message:  [NSString stringWithFormat: @"%s", insert_stmt ]
+            //    delegate:self
+            //    cancelButtonTitle:@"OK"
+            //    otherButtonTitles:nil];
+            //    [alert show];
+            sqlite3_prepare_v2(_checklistDB, insert_stmt,
+                               -1, &statement, NULL);
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+            }
+            else
+            {
+            }
+            sqlite3_finalize(statement);
+            sqlite3_close(_checklistDB);
+        }
+    }
+    
 }
+
 @end
+

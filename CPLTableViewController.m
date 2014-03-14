@@ -457,7 +457,11 @@
     }
     
     if ([[segue identifier] isEqualToString:@"AddToRoot"])
-    {
+    {  CPLAddListItemViewController *addViewController =
+        [segue destinationViewController];
+        
+//        addViewController.listLabel.text = self.listParent;
+//        addViewController.openEarsEventsObserver = self.openEarsEventsObserver;
 
     }
 

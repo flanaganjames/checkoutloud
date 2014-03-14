@@ -35,6 +35,7 @@
 		172CD32E18CFDD8800427D63 /* Kal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 172CD32D18CFDD8800427D63 /* Kal.framework */; };
 		172CD39218D1E1C600427D63 /* checklist.db in Resources */ = {isa = PBXBuildFile; fileRef = 172CD39118D1E1C600427D63 /* checklist.db */; };
 		172CD39518D228B900427D63 /* CPLAddListItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 172CD39418D228B900427D63 /* CPLAddListItemViewController.m */; };
+		172CD39818D299F700427D63 /* CPLAddSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 172CD39718D299F700427D63 /* CPLAddSecondViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +85,8 @@
 		172CD39118D1E1C600427D63 /* checklist.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = checklist.db; sourceTree = SOURCE_ROOT; };
 		172CD39318D228B900427D63 /* CPLAddListItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLAddListItemViewController.h; sourceTree = "<group>"; };
 		172CD39418D228B900427D63 /* CPLAddListItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLAddListItemViewController.m; sourceTree = "<group>"; };
+		172CD39618D299F700427D63 /* CPLAddSecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLAddSecondViewController.h; sourceTree = "<group>"; };
+		172CD39718D299F700427D63 /* CPLAddSecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLAddSecondViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +164,8 @@
 				172CD39118D1E1C600427D63 /* checklist.db */,
 				17249CFA18CC346100A6C5EF /* CPLTableViewController.h */,
 				17249CFB18CC346100A6C5EF /* CPLTableViewController.m */,
+				172CD39618D299F700427D63 /* CPLAddSecondViewController.h */,
+				172CD39718D299F700427D63 /* CPLAddSecondViewController.m */,
 				17249CD118CC30E600A6C5EF /* CPLAppDelegate.h */,
 				17249CD218CC30E600A6C5EF /* CPLAppDelegate.m */,
 				17249CD418CC30E600A6C5EF /* Main.storyboard */,
@@ -323,6 +328,7 @@
 				17249CCF18CC30E600A6C5EF /* main.m in Sources */,
 				17249D0C18CCC29A00A6C5EF /* CheckListItem.m in Sources */,
 				172CD39518D228B900427D63 /* CPLAddListItemViewController.m in Sources */,
+				172CD39818D299F700427D63 /* CPLAddSecondViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
