@@ -63,10 +63,10 @@
             </objects>
             <point key="canvasLocation" x="662" y="-8"/>
         </scene>
-        <!--View Controller-->
+        <!--Update Main View Controller-->
         <scene sceneID="55O-b2-jMx">
             <objects>
-                <viewController id="ieh-0W-wN5" sceneMemberID="viewController">
+                <viewController id="ieh-0W-wN5" customClass="CPLUpdateMainViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="YQL-m4-5dB">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
