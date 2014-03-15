@@ -518,4 +518,10 @@
 
 }
 
+- (IBAction)unwindUpdateMainList:(UIStoryboardSegue *)segue  sender:(id)sender
+{
+    [self.tableView reloadData];
+    
+}
+
 @end
