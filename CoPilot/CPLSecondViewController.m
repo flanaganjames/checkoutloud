@@ -41,7 +41,10 @@
         }
     }
     
-    
+    if ([hypothesis  isEqual: @"BACK"])
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 //end openears stuff
 

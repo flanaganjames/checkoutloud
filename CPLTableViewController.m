@@ -306,7 +306,7 @@
     LanguageModelGenerator *lmGenerator = [[LanguageModelGenerator alloc] init];
     
     
-    NSArray *words = [NSArray arrayWithObjects:@"ROUGH ENGINE", @"MANUAL GEAR", @"ENGINE FIRE", @"ELECTRICAL FIRE", @"MANUAL GEAR", @"PREFLIGHT EXTERIOR", @"BEFORE START", @"GO BACK", @"DONE", @"CHECK", @"READ LIST", nil];
+    NSArray *words = [NSArray arrayWithObjects:@"ROUGH ENGINE", @"BACK", @"MANUAL GEAR", @"ENGINE FIRE", @"ELECTRICAL FIRE", @"MANUAL GEAR", @"PREFLIGHT EXTERIOR", @"BEFORE START", @"GO BACK", @"DONE", @"CHECK", @"READ LIST", nil];
     NSString *name = @"CheckListWords";
     NSError *err = [lmGenerator generateLanguageModelFromArray:words withFilesNamed:name forAcousticModelAtPath:[AcousticModel pathToModel:@"AcousticModelEnglish"]]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to create a Spanish language model instead of an English one.
     
