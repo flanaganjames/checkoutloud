@@ -281,5 +281,16 @@
     
 }
 
+- (IBAction)readList:(id)sender {
+    self.currentrow = 0;
+    [self readCurrent];
+}
+- (IBAction)checkItem:(id)sender {
+    if (self.currentrow < self.checkListItems.count - 1)
+    {
+    self.currentrow += 1;
+    [self readCurrent];
+    }
+}
 @end
 

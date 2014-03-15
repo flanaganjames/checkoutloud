@@ -22,7 +22,9 @@ Slt *slt;
 Kal *kal;
 
 @interface CPLSecondViewController : UITableViewController <OpenEarsEventsObserverDelegate>
+- (IBAction)readList:(id)sender;
 @property (weak, nonatomic) IBOutlet UILabel *listLabel;
+- (IBAction)checkItem:(id)sender;
 
 @property (strong, nonatomic) NSString *databasePath;
 @property (nonatomic) sqlite3 *checklistDB;
