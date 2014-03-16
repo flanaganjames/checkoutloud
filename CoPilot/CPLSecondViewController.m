@@ -225,7 +225,7 @@
         
     }
     
-    if ([[segue identifier] isEqualToString:@"UpdateSecondMainList"])
+    if ([[segue identifier] isEqualToString:@"UpdateSecondList"])
     {
         CPLSUDViewController *updateViewController =
         [segue destinationViewController];

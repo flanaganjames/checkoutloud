@@ -97,7 +97,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="9ce-nk-KP1" kind="modal" trigger="accessoryAction" id="VjC-8O-xh9"/>
+                                    <segue destination="9ce-nk-KP1" kind="modal" identifier="UpdateSecondList" trigger="accessoryAction" id="VjC-8O-xh9"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -451,6 +451,11 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="deleteSwitch" destination="SjT-HJ-YU1" id="yHm-nx-2fR"/>
+                        <outlet property="itemName" destination="I4V-HW-TWM" id="ZYA-8S-IIk"/>
+                        <outlet property="itemPriority" destination="Bbf-Ta-IJm" id="zK7-Ny-1J8"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="neD-XT-8af" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="iE2-IY-tQH" userLabel="Exit" sceneMemberID="exit"/>
