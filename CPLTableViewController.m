@@ -468,8 +468,8 @@
     
     if ([[segue identifier] isEqualToString:@"UpdateMainList"])
     {
-//        CPLMUDViewController *updateViewController =
-//        [segue destinationViewController];
+        CPLMUDViewController *updateViewController =
+        [segue destinationViewController];
 //        
 //        NSIndexPath *myIndexPath = [self.tableView
 //                                    indexPathForSelectedRow];
