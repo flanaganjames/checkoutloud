@@ -11,6 +11,7 @@
 #import <OpenEars/LanguageModelGenerator.h>
 #import "CPLSecondViewController.h"
 #import "CPLAddListItemViewController.h"
+#import "CPLMUDViewController.h"
 
 
 @interface CPLTableViewController ()
@@ -463,6 +464,23 @@
 //        addViewController.listLabel.text = self.listParent;
 //        addViewController.openEarsEventsObserver = self.openEarsEventsObserver;
 
+    }
+    
+    if ([[segue identifier] isEqualToString:@"UpdateMainList"])
+    {
+//        CPLMUDViewController *updateViewController =
+//        [segue destinationViewController];
+//        
+//        NSIndexPath *myIndexPath = [self.tableView
+//                                    indexPathForSelectedRow];
+//        long row = [myIndexPath row];
+//        CheckListItem *item = self.checkListItems[row];
+//
+//        
+//        updateViewController.itemName.text = item.itemName;
+//        updateViewController.itemPriority.text = [NSString stringWithFormat: @"%ld", item.itemPriority];
+//        updateViewController.deleteSwitch.on = NO;
+        
     }
 
 }
