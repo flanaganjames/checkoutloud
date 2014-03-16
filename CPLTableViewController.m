@@ -471,9 +471,11 @@
         CPLMUDViewController *updateViewController =
         [segue destinationViewController];
         
-        NSIndexPath *myIndexPath = [self.tableView
-                                    indexPathForSelectedRow];
-        long row = [myIndexPath row];
+//        NSIndexPath *myIndexPath = [self.tableView indexPathForSelectedRow];
+//        long row = [myIndexPath row];
+        
+        long row = [self.tableView indexPathForCell:sender].row;
+        
         CheckListItem *item = self.checkListItems[row];
 
         updateViewController.checkListItem = item;
