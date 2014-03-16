@@ -53,7 +53,7 @@
 - (void) pocketsphinxDidReceiveHypothesis:(NSString *)hypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID {
 	NSLog(@"The received hypothesis is %@ with a score of %@ and an ID of %@", hypothesis, recognitionScore, utteranceID);
     
-    _listenerStatus.text = hypothesis;
+//    _listenerStatus.text = hypothesis;
 
     
     NSArray *cells = [self.tableView visibleCells]; //how to get array of all rows?
@@ -65,7 +65,7 @@
      {
          if ([hypothesis  isEqual: cell.textLabel.text])
          {
-        _listenerStatus.text = @"found it !";
+//        _listenerStatus.text = @"found it !";
              NSIndexPath* index = visible[idx];
              
              [self.tableView selectRowAtIndexPath:index animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
@@ -214,7 +214,8 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{  self.listenerStatus.text = @"selected";
+{
+//  self.listenerStatus.text = @"selected";
 //    
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 //    
@@ -347,7 +348,7 @@
     
     [self.pocketsphinxController startListeningWithLanguageModelAtPath:lmPath dictionaryAtPath:dicPath acousticModelAtPath:[AcousticModel pathToModel:@"AcousticModelEnglish"] languageModelIsJSGF:NO]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to perform Spanish recognition instead of English.
     
-    self.listenerStatus.text = @"Listening";
+//    self.listenerStatus.text = @"Listening";
     
 //end of openears stuff
 // Uncomment the following line to preserve selection between presentations.
@@ -623,6 +624,16 @@
     // this crashes with message "NSArray mutated while enumerated"
 }
 
-- (IBAction)speechCommandToggle:(id)sender {
+- (IBAction)speechCommandToggle:(id)sender
+{
+    if ([self.speechCommandButton.currentTitle  isEqual: @"Suspend Speech Commands"])
+        {  self.suspendSpeechCommands = YES;
+            [self.speechCommandButton setTitle: @"Activate Speech Commands" forState: UIControlStateNormal];
+        }
+    else
+        { self.suspendSpeechCommands = NO;
+            [self.speechCommandButton setTitle: @"Suspend Speech Commands" forState: UIControlStateNormal];
+        }
 }
+    
 @end
