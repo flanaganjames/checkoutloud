@@ -468,7 +468,10 @@ if (self.suspendSpeechCommands == NO)
     }
     
     if ([[segue identifier] isEqualToString:@"AddToRoot"])
-    {  CPLAddListItemViewController *addViewController =
+    {
+        self.saveStateSpeechCommand = self.suspendSpeechCommands;
+        self.suspendSpeechCommands = YES;
+        CPLAddListItemViewController *addViewController =
         [segue destinationViewController];
         
 //        addViewController.listLabel.text = self.listParent;
@@ -478,6 +481,8 @@ if (self.suspendSpeechCommands == NO)
     
     if ([[segue identifier] isEqualToString:@"UpdateMainList"])
     {
+        self.saveStateSpeechCommand = self.suspendSpeechCommands;
+        self.suspendSpeechCommands = YES;
         CPLMUDViewController *updateViewController =
         [segue destinationViewController];
         
@@ -498,6 +503,7 @@ if (self.suspendSpeechCommands == NO)
 
 - (IBAction)unwindAddToList:(UIStoryboardSegue *)segue  sender:(id)sender
 {
+    self.suspendSpeechCommands = self.saveStateSpeechCommand;
     CPLAddListItemViewController *source = [segue sourceViewController];
     CheckListItem *item = source.checkListItem;
     if (item != nil)
@@ -546,6 +552,7 @@ if (self.suspendSpeechCommands == NO)
 
 - (IBAction)unwindUpdateMainList:(UIStoryboardSegue *)segue  sender:(id)sender
 {
+    self.suspendSpeechCommands = self.saveStateSpeechCommand;
     CPLMUDViewController *source = [segue sourceViewController];
     CheckListItem *item = source.checkListItem;
     

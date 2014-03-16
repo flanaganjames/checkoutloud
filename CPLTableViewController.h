@@ -28,6 +28,7 @@ Kal *kal;
 - (IBAction)speechCommandToggle:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *speechCommandButton;
 @property BOOL suspendSpeechCommands;
+@property BOOL saveStateSpeechCommand;
 
 @property (strong, nonatomic) NSString *databasePath;
 @property (nonatomic) sqlite3 *checklistDB;

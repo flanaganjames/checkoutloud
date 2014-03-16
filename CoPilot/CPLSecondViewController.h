@@ -37,4 +37,5 @@ Kal *kal;
 @property (strong, nonatomic) Kal *kal;
 @property (strong, nonatomic) CPLTableViewController *originView;
 @property BOOL suspendSpeechCommands;
+@property BOOL saveStateSpeechCommand;
 @end

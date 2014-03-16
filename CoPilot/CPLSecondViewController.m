@@ -226,6 +226,9 @@ if (self.suspendSpeechCommands == NO)
     {  CPLAddSecondViewController *addViewController =
         [segue destinationViewController];
         
+        self.saveStateSpeechCommand = self.suspendSpeechCommands;
+        self.suspendSpeechCommands = YES;
+        
 //        addViewController.listLabel.text = self.listParent;
 //        addViewController.openEarsEventsObserver = self.openEarsEventsObserver;
         
@@ -245,6 +248,8 @@ if (self.suspendSpeechCommands == NO)
         
         updateViewController.checkListItem = item;
         
+        self.saveStateSpeechCommand = self.suspendSpeechCommands;
+        self.suspendSpeechCommands = YES;
     }
 }
 
@@ -263,7 +268,7 @@ if (self.suspendSpeechCommands == NO)
 
 
 - (IBAction)unwindAddToSecondList:(UIStoryboardSegue *)segue  sender:(id)sender
-{
+{   self.suspendSpeechCommands = self.saveStateSpeechCommand;
     CPLAddSecondViewController *source = [segue sourceViewController];
     CheckListItem *item = source.checkListItem;
     if (item != nil)
@@ -305,7 +310,7 @@ if (self.suspendSpeechCommands == NO)
 }
 
 - (IBAction)unwindUpdateMainList:(UIStoryboardSegue *)segue  sender:(id)sender
-{
+{   self.suspendSpeechCommands = self.saveStateSpeechCommand;
     CPLSUDViewController *source = [segue sourceViewController];
     CheckListItem *item = source.checkListItem;
     
