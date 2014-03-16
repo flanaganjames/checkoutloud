@@ -169,6 +169,8 @@
         [self.checkListItems removeObject:item];
     }
     
+    [self.tableView reloadData];
+    
     const char *dbpath = [_databasePath UTF8String];
     sqlite3_stmt    *statement;
     
@@ -205,6 +207,8 @@
     NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
     
     [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
+    
+    [self.tableView reloadData];
     
 }
 
@@ -613,7 +617,7 @@
     } // close else update
     
 //    [self reloadArrayData];
-    
+    // this crashes with message "NSArray mutated while enumerated"
 }
 
 @end
