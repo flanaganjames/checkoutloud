@@ -310,7 +310,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="2q3-9p-9Ys">
-                                <rect key="frame" x="8" y="111" width="299" height="30"/>
+                                <rect key="frame" x="11" y="111" width="299" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -347,7 +347,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="deleteSwitch" destination="BDN-Z6-4Ff" id="9lq-Tc-McP"/>
-                        <outlet property="itemName" destination="buy-bB-Q7x" id="RL2-mC-ObM"/>
+                        <outlet property="itemName" destination="2q3-9p-9Ys" id="JgN-fx-Joa"/>
                         <outlet property="itemPriority" destination="buy-bB-Q7x" id="2P4-TU-2fY"/>
                     </connections>
                 </viewController>

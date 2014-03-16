@@ -31,7 +31,7 @@
     
     _itemName.text = self.checkListItem.itemName;
     _itemPriority.text = [NSString stringWithFormat: @"%ld", self.checkListItem.itemPriority];
-    self.deleteSwitch.on = NO;
+    self.deleteSwitch.on = YES;
 }
 
 - (void)didReceiveMemoryWarning
