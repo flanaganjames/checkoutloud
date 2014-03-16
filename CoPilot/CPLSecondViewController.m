@@ -9,6 +9,7 @@
 #import "CPLSecondViewController.h"
 #import "CheckListItem.h"
 #import "CPLAddSecondViewController.h"
+#import "CPLSUDViewController.h"
 
 @interface CPLSecondViewController ()
     @property NSMutableArray *checkListItems;
@@ -223,6 +224,22 @@
 //        addViewController.openEarsEventsObserver = self.openEarsEventsObserver;
         
     }
+    
+    if ([[segue identifier] isEqualToString:@"UpdateSecondMainList"])
+    {
+        CPLSUDViewController *updateViewController =
+        [segue destinationViewController];
+        
+        //        NSIndexPath *myIndexPath = [self.tableView indexPathForSelectedRow];
+        //        long row = [myIndexPath row];
+        
+        long row = [self.tableView indexPathForCell:sender].row;
+        
+        CheckListItem *item = self.checkListItems[row];
+        
+        updateViewController.checkListItem = item;
+        
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -280,6 +297,86 @@
     }
     
 }
+
+- (IBAction)unwindUpdateMainList:(UIStoryboardSegue *)segue  sender:(id)sender
+{
+    CPLSUDViewController *source = [segue sourceViewController];
+    CheckListItem *item = source.checkListItem;
+    
+    if (source.setDelete)
+    {// delete task from database
+        [self.checkListItems removeObject:item];
+        
+        sqlite3_stmt    *statement;
+        const char *dbpath = [_databasePath UTF8String];
+        if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
+        {
+            NSString *updateSQL = [NSString stringWithFormat:
+                                   @"DELETE FROM CHECKLISTS WHERE ID=%ld",item.itemKey];
+            const char *update_stmt = [updateSQL UTF8String];
+            
+            sqlite3_prepare_v2(_checklistDB, update_stmt,
+                               -1, &statement, NULL);
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+            }
+            else
+            {
+            }
+            sqlite3_finalize(statement);
+            sqlite3_close(_checklistDB);
+        } // SQLITE_OK
+        
+    } //close if delete
+    else
+    { // update the task in the database
+        sqlite3_stmt    *statement;
+        const char *dbpath = [_databasePath UTF8String];
+        if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
+        {
+            NSString *updateSQL = [NSString stringWithFormat:
+                                   @"UPDATE CHECKLISTS SET PRIORITY=%ld WHERE ID=%ld",
+                                   item.itemPriority, item.itemKey];
+            const char *update_stmt = [updateSQL UTF8String];
+            
+            sqlite3_prepare_v2(_checklistDB, update_stmt,
+                               -1, &statement, NULL);
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+            }
+            else
+            {
+            }
+            sqlite3_finalize(statement);
+            sqlite3_close(_checklistDB);
+        } // SQLITE_OK
+        
+        if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
+        {
+            NSString *updateSQL = [NSString stringWithFormat:
+                                   @"UPDATE CHECKLISTS SET NAME=\"%@\" WHERE ID=%ld",
+                                   item.itemName, item.itemKey];
+            
+            const char *update_stmt = [updateSQL UTF8String];
+            sqlite3_prepare_v2(_checklistDB, update_stmt,
+                               -1, &statement, NULL);
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+            }
+            else
+            {
+            }
+            sqlite3_finalize(statement);
+            sqlite3_close(_checklistDB);
+        } // SQLITE_OK
+        
+    } // close else update
+    
+    //    [self reloadArrayData];
+    // this crashes with message "NSArray mutated while enumerated"
+}
+
+
 
 - (IBAction)readList:(id)sender {
     self.currentrow = 0;
