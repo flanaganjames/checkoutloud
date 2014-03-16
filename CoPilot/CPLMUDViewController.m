@@ -1,18 +1,18 @@
 //
-//  CPLUpdateMainViewController.m
+//  CPLMUDViewController.m
 //  CoPilot
 //
 //  Created by James Flanagan on 3/15/14.
 //  Copyright (c) 2014 James Flanagan. All rights reserved.
 //
 
-#import "CPLUpdateMainViewController.h"
+#import "CPLMUDViewController.h"
 
-@interface CPLUpdateMainViewController ()
+@interface CPLMUDViewController ()
 
 @end
 
-@implementation CPLUpdateMainViewController
+@implementation CPLMUDViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
