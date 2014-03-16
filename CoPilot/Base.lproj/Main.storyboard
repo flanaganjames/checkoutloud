@@ -38,7 +38,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <segue destination="9G9-Ml-aoE" kind="push" identifier="showDetailList" id="Jqz-4i-RIX"/>
-                                    <segue destination="AqJ-QK-OxC" kind="modal" trigger="accessoryAction" id="oHC-jV-Xsa"/>
+                                    <segue destination="AqJ-QK-OxC" kind="modal" identifier="UpdateMainList" trigger="accessoryAction" id="oHC-jV-Xsa"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

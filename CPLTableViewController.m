@@ -476,9 +476,7 @@
         long row = [myIndexPath row];
         CheckListItem *item = self.checkListItems[row];
 
-        updateViewController.itemName.text = item.itemName;
-//        updateViewController.itemPriority.text = [NSString stringWithFormat: @"%ld", item.itemPriority];
-//        updateViewController.deleteSwitch.on = NO;
+        updateViewController.checkListItem = item;
         
     }
 
