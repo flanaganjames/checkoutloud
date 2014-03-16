@@ -27,6 +27,8 @@ Kal *kal;
 @property (weak, nonatomic) IBOutlet UITextField *listenerStatus;
 
 @property (weak, nonatomic) IBOutlet UILabel *listLabel;
+- (IBAction)speechCommandToggle:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *speechCommandButton;
 
 @property (strong, nonatomic) NSString *databasePath;
 @property (nonatomic) sqlite3 *checklistDB;

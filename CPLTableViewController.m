@@ -623,4 +623,6 @@
     // this crashes with message "NSArray mutated while enumerated"
 }
 
+- (IBAction)speechCommandToggle:(id)sender {
+}
 @end
