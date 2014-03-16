@@ -15,4 +15,5 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *itemPriority;
 @property (weak, nonatomic) IBOutlet UISwitch *deleteSwitch;
+@property BOOL *setDelete;
 @end

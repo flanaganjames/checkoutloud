@@ -32,6 +32,7 @@
     _itemName.text = self.checkListItem.itemName;
     _itemPriority.text = [NSString stringWithFormat: @"%ld", self.checkListItem.itemPriority];
     self.deleteSwitch.on = NO;
+    self.setDelete = NO;
 }
 
 - (void)didReceiveMemoryWarning
@@ -40,15 +41,18 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if (self.itemName.text.length > 0) {
+        self.checkListItem.itemName = self.itemName.text;}
+    
+    if (self.itemPriority.text.length > 0) {
+        self.checkListItem.itemPriority = [self.itemPriority.text longLongValue];}
+    
+    if (self.deleteSwitch.on)
+    {self.setDelete = YES;};
 }
-*/
 
 @end

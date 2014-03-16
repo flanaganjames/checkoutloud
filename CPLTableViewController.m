@@ -537,6 +537,77 @@
 
 - (IBAction)unwindUpdateMainList:(UIStoryboardSegue *)segue  sender:(id)sender
 {
+    CPLMUDViewController *source = [segue sourceViewController];
+    CheckListItem *item = source.checkListItem;
+    
+    if (source.setDelete)
+    {// delete task from database
+        [self.checkListItems removeObject:item];
+        
+        sqlite3_stmt    *statement;
+        const char *dbpath = [_databasePath UTF8String];
+        if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
+        {
+            NSString *updateSQL = [NSString stringWithFormat:
+                                   @"DELETE FROM CHECKLISTS WHERE ID=%ld",item.itemKey];
+            const char *update_stmt = [updateSQL UTF8String];
+            
+            sqlite3_prepare_v2(_checklistDB, update_stmt,
+                               -1, &statement, NULL);
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+            }
+            else
+            {
+            }
+            sqlite3_finalize(statement);
+            sqlite3_close(_checklistDB);
+        } // SQLITE_OK
+        
+    } //close if delete
+    else
+    { // update the task in the database
+        sqlite3_stmt    *statement;
+        const char *dbpath = [_databasePath UTF8String];
+        if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
+        {
+            NSString *updateSQL = [NSString stringWithFormat:
+                                   @"UPDATE CHECKLISTS SET PRIORITY=%ld WHERE ID=%ld",
+                                   item.itemPriority, item.itemKey];
+            const char *update_stmt = [updateSQL UTF8String];
+            
+            sqlite3_prepare_v2(_checklistDB, update_stmt,
+                               -1, &statement, NULL);
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+            }
+            else
+            {
+            }
+            sqlite3_finalize(statement);
+            sqlite3_close(_checklistDB);
+        } // SQLITE_OK
+        
+        if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
+        {
+            NSString *updateSQL = [NSString stringWithFormat:
+                                   @"UPDATE CHECKLISTS SET NAME=\"%@\" WHERE ID=%ld",
+                                   item.itemName, item.itemKey];
+            
+            const char *update_stmt = [updateSQL UTF8String];
+            sqlite3_prepare_v2(_checklistDB, update_stmt,
+                               -1, &statement, NULL);
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+            }
+            else
+            {
+            }
+            sqlite3_finalize(statement);
+            sqlite3_close(_checklistDB);
+        } // SQLITE_OK
+        
+    } // close else update
     [self.tableView reloadData];
     
 }
