@@ -23,7 +23,9 @@
 
 - (void) pocketsphinxDidReceiveHypothesis:(NSString *)hypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID {
 	NSLog(@"The received hypothesis is %@ with a score of %@ and an ID of %@", hypothesis, recognitionScore, utteranceID);
-    
+
+if (self.suspendSpeechCommands == NO)
+{
     if ([hypothesis  isEqual: @"READ LIST"])
     {
         self.currentrow = 0;
@@ -46,6 +48,7 @@
     {
         [self.navigationController popViewControllerAnimated:YES];
     }
+}
 }
 //end openears stuff
 

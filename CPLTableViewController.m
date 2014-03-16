@@ -52,10 +52,9 @@
 
 - (void) pocketsphinxDidReceiveHypothesis:(NSString *)hypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID {
 	NSLog(@"The received hypothesis is %@ with a score of %@ and an ID of %@", hypothesis, recognitionScore, utteranceID);
-    
-//    _listenerStatus.text = hypothesis;
 
-    
+if (self.suspendSpeechCommands == NO)
+{
     NSArray *cells = [self.tableView visibleCells]; //how to get array of all rows?
     NSArray *visible = [self.tableView indexPathsForVisibleRows];
     
@@ -65,7 +64,7 @@
      {
          if ([hypothesis  isEqual: cell.textLabel.text])
          {
-//        _listenerStatus.text = @"found it !";
+
              NSIndexPath* index = visible[idx];
              
              [self.tableView selectRowAtIndexPath:index animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
@@ -73,7 +72,7 @@
              [self performSegueWithIdentifier: @"showDetailList" sender: self];
          }
      }];
-    
+}
 }
 
 - (void) pocketsphinxDidStartCalibration {
@@ -265,6 +264,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.suspendSpeechCommands = NO;
 
     self.checkListItems = [[NSMutableArray alloc] init];
     
@@ -463,6 +464,7 @@
         secondViewController.slt = self.slt;
         secondViewController.kal = self.kal;
         secondViewController.originView = self;
+        secondViewController.suspendSpeechCommands = self.suspendSpeechCommands;
     }
     
     if ([[segue identifier] isEqualToString:@"AddToRoot"])

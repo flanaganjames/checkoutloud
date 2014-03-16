@@ -36,4 +36,5 @@ Kal *kal;
 @property (strong, nonatomic) Slt *slt;
 @property (strong, nonatomic) Kal *kal;
 @property (strong, nonatomic) CPLTableViewController *originView;
+@property BOOL suspendSpeechCommands;
 @end
