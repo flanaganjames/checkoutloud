@@ -103,6 +103,9 @@
         }
         sqlite3_close(_checklistDB);
     }
+    NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
+    
+    [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
 }
 
 - (void)viewDidLoad
