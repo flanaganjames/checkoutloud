@@ -502,7 +502,6 @@
         [self.checkListItems addObject:item];
         // want to sort this list by itemPriority
     NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
-        
     [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
     [self.tableView reloadData];
         // save the task in the database
@@ -550,6 +549,10 @@
     if (source.setDelete)
     {// delete task from database
         [self.checkListItems removeObject:item];
+        
+//        NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
+//        [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
+//        [self.tableView reloadData];
         
         sqlite3_stmt    *statement;
         const char *dbpath = [_databasePath UTF8String];
