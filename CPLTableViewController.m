@@ -470,14 +470,13 @@
     {
         CPLMUDViewController *updateViewController =
         [segue destinationViewController];
-//        
-//        NSIndexPath *myIndexPath = [self.tableView
-//                                    indexPathForSelectedRow];
-//        long row = [myIndexPath row];
-//        CheckListItem *item = self.checkListItems[row];
-//
-//        
-//        updateViewController.itemName.text = item.itemName;
+        
+        NSIndexPath *myIndexPath = [self.tableView
+                                    indexPathForSelectedRow];
+        long row = [myIndexPath row];
+        CheckListItem *item = self.checkListItems[row];
+
+        updateViewController.itemName.text = item.itemName;
 //        updateViewController.itemPriority.text = [NSString stringWithFormat: @"%ld", item.itemPriority];
 //        updateViewController.deleteSwitch.on = NO;
         

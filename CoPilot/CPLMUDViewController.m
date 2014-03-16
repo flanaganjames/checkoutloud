@@ -7,6 +7,7 @@
 //
 
 #import "CPLMUDViewController.h"
+#import "CheckListItem.h"
 
 @interface CPLMUDViewController ()
 
@@ -27,6 +28,10 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    _itemName.text = self.checkListItem.itemName;
+    _itemPriority.text = [NSString stringWithFormat: @"%ld", self.checkListItem.itemPriority];
+    self.deleteSwitch.on = NO;
 }
 
 - (void)didReceiveMemoryWarning
