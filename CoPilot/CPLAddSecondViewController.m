@@ -55,6 +55,7 @@
 	// Do any additional setup after loading the view.
     //start openears stuff
     [self.openEarsEventsObserver setDelegate:self];
+
     //end of openears stuff
 }
 

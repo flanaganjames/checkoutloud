@@ -14,7 +14,9 @@
 @interface CPLAddSecondViewController : UIViewController <OpenEarsEventsObserverDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *itemName;
 @property (weak, nonatomic) IBOutlet UITextField *itemPriority;
-@property (weak, nonatomic) IBOutlet UILabel *listLabel;
+
+
 @property CheckListItem *checkListItem;
 @property (strong, nonatomic) OpenEarsEventsObserver *openEarsEventsObserver;
+@property NSString *listParent;
 @end

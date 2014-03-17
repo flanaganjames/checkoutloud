@@ -13,9 +13,12 @@
 
 @interface CPLAddListItemViewController : UIViewController <OpenEarsEventsObserverDelegate>
 @property CheckListItem *checkListItem;
-@property (weak, nonatomic) IBOutlet UILabel *listLabel;
+
 @property (weak, nonatomic) IBOutlet UITextField *itemName;
+
+@property (weak, nonatomic) IBOutlet UIButton *saveButton;
 
 @property (weak, nonatomic) IBOutlet UITextField *itemPriority;
 @property (strong, nonatomic) OpenEarsEventsObserver *openEarsEventsObserver;
+@property NSString *listParent;
 @end

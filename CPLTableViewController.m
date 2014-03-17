@@ -474,8 +474,8 @@ if (self.suspendSpeechCommands == NO)
         CPLAddListItemViewController *addViewController =
         [segue destinationViewController];
         
-//        addViewController.listLabel.text = self.listParent;
-//        addViewController.openEarsEventsObserver = self.openEarsEventsObserver;
+        addViewController.listParent = self.listParent;
+        addViewController.openEarsEventsObserver = self.openEarsEventsObserver;
 
     }
     
