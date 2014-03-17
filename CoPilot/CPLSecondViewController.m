@@ -229,8 +229,8 @@ if (self.suspendSpeechCommands == NO)
         self.saveStateSpeechCommand = self.suspendSpeechCommands;
         self.suspendSpeechCommands = YES;
         
-//        addViewController.listLabel.text = self.listParent;
-//        addViewController.openEarsEventsObserver = self.openEarsEventsObserver;
+        addViewController.listLabel.text = self.listParent;
+        addViewController.openEarsEventsObserver = self.openEarsEventsObserver;
         
     }
     
