@@ -142,7 +142,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eLj-OB-QyB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2770" y="-8"/>
+            <point key="canvasLocation" x="1648" y="12"/>
         </scene>
         <!--Add Second View Controller-->
         <scene sceneID="RIJ-gY-2j9">
@@ -217,7 +217,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FhF-u5-TQk" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="szt-lW-wCa" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3265" y="-16"/>
+            <point key="canvasLocation" x="2145" y="376"/>
         </scene>
         <!--Add List Item View Controller-->
         <scene sceneID="iU8-qi-I0A">
@@ -475,7 +475,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="neD-XT-8af" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="iE2-IY-tQH" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3151" y="-632"/>
+            <point key="canvasLocation" x="2145" y="-429"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
