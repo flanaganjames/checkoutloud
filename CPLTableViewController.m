@@ -17,6 +17,7 @@
 @interface CPLTableViewController ()
  @property NSMutableArray *checkListItems;
 @property NSMutableArray *speechCommands;
+@property CheckListItem *updatingItem;
 // @property UITableView *tableView;   // for loadView which cases failure
 @end
 
@@ -544,9 +545,10 @@ if (self.suspendSpeechCommands == NO)
         
         long row = [self.tableView indexPathForCell:sender].row;
         
-        CheckListItem *item = self.checkListItems[row];
+//        CheckListItem *item = self.checkListItems[row];
+        self.updatingItem = self.checkListItems[row];
 
-        updateViewController.checkListItem = item;
+        updateViewController.checkListItem = self.updatingItem;
         
     }
 
@@ -639,7 +641,16 @@ if (self.suspendSpeechCommands == NO)
         
     } //close if delete
     else
-    { // update the task in the database
+    {
+        [self.checkListItems removeObject:self.updatingItem];
+        [self.checkListItems addObject:item];
+        
+        NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
+        [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
+        [self.tableView reloadData];
+        
+        
+        // update the task in the database
         sqlite3_stmt    *statement;
         const char *dbpath = [_databasePath UTF8String];
         if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
