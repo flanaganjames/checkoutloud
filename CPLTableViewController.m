@@ -198,13 +198,13 @@ if (self.suspendSpeechCommands == NO)
         sqlite3_close(_checklistDB);
     }
     
-    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Loading speechCommand"
-                                                      message:[NSString stringWithFormat: @"%d", self.speechCommands.count]
-                                                     delegate:nil
-                                            cancelButtonTitle:@"OK"
-                                            otherButtonTitles:nil];
-    
-    [message show];
+//    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Loading speechCommand"
+//                                                      message:[NSString stringWithFormat: @"%d", self.speechCommands.count]
+//                                                     delegate:nil
+//                                            cancelButtonTitle:@"OK"
+//                                            otherButtonTitles:nil];
+//    
+//    [message show];
 }
 
 - (void)reloadArrayData {
@@ -306,6 +306,34 @@ if (self.suspendSpeechCommands == NO)
     return self;
 }
 
+- (void) loadLanguageSet
+{
+    LanguageModelGenerator *lmGenerator = [[LanguageModelGenerator alloc] init];
+    
+    NSArray *words = self.speechCommands;
+    
+    NSString *name = @"CheckListWords";
+    NSError *err = [lmGenerator generateLanguageModelFromArray:words withFilesNamed:name forAcousticModelAtPath:[AcousticModel pathToModel:@"AcousticModelEnglish"]]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to create a Spanish language model instead of an English one.
+    
+    NSDictionary *languageGeneratorResults = nil;
+    
+    NSString *lmPath = nil;
+    NSString *dicPath = nil;
+	
+    if([err code] == noErr) {
+        
+        languageGeneratorResults = [err userInfo];
+		
+        lmPath = [languageGeneratorResults objectForKey:@"LMPath"];
+        dicPath = [languageGeneratorResults objectForKey:@"DictionaryPath"];
+		
+    } else {
+        NSLog(@"Error: %@",[err localizedDescription]);
+    }
+    
+    [self.pocketsphinxController startListeningWithLanguageModelAtPath:lmPath dictionaryAtPath:dicPath acousticModelAtPath:[AcousticModel pathToModel:@"AcousticModelEnglish"] languageModelIsJSGF:NO]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to perform Spanish recognition instead of English.
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -361,35 +389,7 @@ if (self.suspendSpeechCommands == NO)
 
     
     //start openears stuff
-    LanguageModelGenerator *lmGenerator = [[LanguageModelGenerator alloc] init];
-    
-
-    
-//    NSArray *words = [NSArray arrayWithObjects:@"ROUGH ENGINE", @"BACK", @"MANUAL GEAR", @"ENGINE FIRE", @"ELECTRICAL FIRE", @"MANUAL GEAR", @"PREFLIGHT EXTERIOR", @"BEFORE START", @"GO BACK", @"DONE", @"CHECK", @"READ LIST", nil];
-    
-    NSArray *words = self.speechCommands;
-    
-//  NSArray *words = [NSArray arrayWithArray:self.speechCommands];
-    
-    NSString *name = @"CheckListWords";
-    NSError *err = [lmGenerator generateLanguageModelFromArray:words withFilesNamed:name forAcousticModelAtPath:[AcousticModel pathToModel:@"AcousticModelEnglish"]]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to create a Spanish language model instead of an English one.
-    
-    
-    NSDictionary *languageGeneratorResults = nil;
-    
-    NSString *lmPath = nil;
-    NSString *dicPath = nil;
-	
-    if([err code] == noErr) {
-        
-        languageGeneratorResults = [err userInfo];
-		
-        lmPath = [languageGeneratorResults objectForKey:@"LMPath"];
-        dicPath = [languageGeneratorResults objectForKey:@"DictionaryPath"];
-		
-    } else {
-        NSLog(@"Error: %@",[err localizedDescription]);
-    }
+    [self loadLanguageSet];
     
     [OpenEarsLogging startOpenEarsLogging];
     
@@ -401,7 +401,7 @@ if (self.suspendSpeechCommands == NO)
     
 // remember to add <OpenEarsEventsObserverDelegate> to the interface definition line in the .h file
     
-    [self.pocketsphinxController startListeningWithLanguageModelAtPath:lmPath dictionaryAtPath:dicPath acousticModelAtPath:[AcousticModel pathToModel:@"AcousticModelEnglish"] languageModelIsJSGF:NO]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to perform Spanish recognition instead of English.
+
     
 //    self.listenerStatus.text = @"Listening";
     
