@@ -168,6 +168,7 @@ if (self.suspendSpeechCommands == NO)
     [self.speechCommands addObject:@"BACK"];
     [self.speechCommands addObject:@"READ LIST"];
     [self.speechCommands addObject:@"CHECK"];
+    [self.speechCommands addObject:@"OK"];
     [self.speechCommands addObject:@"ADD"];
     [self.speechCommands addObject:@"UPDATE"];
     [self.speechCommands addObject:@"SAVE"];

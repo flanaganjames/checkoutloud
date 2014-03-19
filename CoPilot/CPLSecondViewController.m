@@ -44,6 +44,18 @@ if (self.suspendSpeechCommands == NO)
         }
     }
     
+    if ([hypothesis  isEqual: @"OK"])
+    {
+        if (self.currentrow < [self.checkListItems count] - 1)
+        {// set checkmark on currentrow
+            // then increment currentrow pointer
+            // then read new current
+            
+            self.currentrow += 1;
+            [self readCurrent];
+        }
+    }
+    
     if ([hypothesis  isEqual: @"BACK"])
     {
         [self.navigationController popViewControllerAnimated:YES];
