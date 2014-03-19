@@ -613,9 +613,9 @@ if (self.suspendSpeechCommands == NO)
     {// delete task from database
         [self.checkListItems removeObject:item];
         
-//        NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
-//        [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
-//        [self.tableView reloadData];
+        NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
+        [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
+        [self.tableView reloadData];
         
         sqlite3_stmt    *statement;
         const char *dbpath = [_databasePath UTF8String];
