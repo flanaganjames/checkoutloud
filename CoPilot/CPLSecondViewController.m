@@ -13,7 +13,7 @@
 
 @interface CPLSecondViewController ()
     @property NSMutableArray *checkListItems;
-
+    @property CheckListItem *updatingItem;
 @end
 
 @implementation CPLSecondViewController
@@ -256,9 +256,9 @@ if (self.suspendSpeechCommands == NO)
         
         long row = [self.tableView indexPathForCell:sender].row;
         
-        CheckListItem *item = self.checkListItems[row];
+        self.updatingItem = self.checkListItems[row];
         
-        updateViewController.checkListItem = item;
+        updateViewController.checkListItem = self.updatingItem;
         
         self.saveStateSpeechCommand = self.suspendSpeechCommands;
         self.suspendSpeechCommands = YES;
@@ -356,7 +356,15 @@ if (self.suspendSpeechCommands == NO)
         
     } //close if delete
     else
-    { // update the task in the database
+    {
+        [self.checkListItems removeObject:self.updatingItem];
+        [self.checkListItems addObject:item];
+        
+        NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
+        [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
+        [self.tableView reloadData];
+        
+        // update the task in the database
         sqlite3_stmt    *statement;
         const char *dbpath = [_databasePath UTF8String];
         if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
