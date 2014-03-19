@@ -16,6 +16,7 @@
 
 @interface CPLTableViewController ()
  @property NSMutableArray *checkListItems;
+@property NSMutableArray *speechCommands;
 // @property UITableView *tableView;   // for loadView which cases failure
 @end
 
@@ -161,6 +162,48 @@ if (self.suspendSpeechCommands == NO)
     
 }
 
+//creates array of NSStrings to be recognized as speech commands, all uppercase
+- (void)loadSpeechCommands {
+// default commands
+    [self.speechCommands addObject:@"BACK"];
+    [self.speechCommands addObject:@"READ LIST"];
+    [self.speechCommands addObject:@"CHECK"];
+    [self.speechCommands addObject:@"ADD"];
+    [self.speechCommands addObject:@"UPDATE"];
+    [self.speechCommands addObject:@"SAVE"];
+
+//commands for items in all checklists
+    const char *dbpath = [_databasePath UTF8String];
+    sqlite3_stmt    *statement;
+    
+    if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTS"];
+        const char *query_stmt = [querySQL UTF8String];
+        
+        if (sqlite3_prepare_v2(_checklistDB,
+                               query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {  while (sqlite3_step(statement) == SQLITE_ROW)
+        {
+            NSString *taskname =
+            [[NSString alloc] initWithUTF8String:
+             (const char *) sqlite3_column_text(statement, 1)];
+            NSString *upperCaseTaskName = [taskname uppercaseString];
+            [self.speechCommands addObject:upperCaseTaskName];
+        }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(_checklistDB);
+    }
+    
+    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Loading speechCommand"
+                                                      message:[NSString stringWithFormat: @"%d", self.speechCommands.count]
+                                                     delegate:nil
+                                            cancelButtonTitle:@"OK"
+                                            otherButtonTitles:nil];
+    
+    [message show];
+}
 
 - (void)reloadArrayData {
     
@@ -268,6 +311,7 @@ if (self.suspendSpeechCommands == NO)
     self.suspendSpeechCommands = NO;
 
     self.checkListItems = [[NSMutableArray alloc] init];
+    self.speechCommands = [[NSMutableArray alloc] init];
     
     NSString *docsDir;
     
@@ -310,13 +354,21 @@ if (self.suspendSpeechCommands == NO)
     }
     
     [self loadInitialData];
-    //[self loadView];
+    
+    [self loadSpeechCommands];
+
     
     //start openears stuff
     LanguageModelGenerator *lmGenerator = [[LanguageModelGenerator alloc] init];
     
+
     
-    NSArray *words = [NSArray arrayWithObjects:@"ROUGH ENGINE", @"BACK", @"MANUAL GEAR", @"ENGINE FIRE", @"ELECTRICAL FIRE", @"MANUAL GEAR", @"PREFLIGHT EXTERIOR", @"BEFORE START", @"GO BACK", @"DONE", @"CHECK", @"READ LIST", nil];
+//    NSArray *words = [NSArray arrayWithObjects:@"ROUGH ENGINE", @"BACK", @"MANUAL GEAR", @"ENGINE FIRE", @"ELECTRICAL FIRE", @"MANUAL GEAR", @"PREFLIGHT EXTERIOR", @"BEFORE START", @"GO BACK", @"DONE", @"CHECK", @"READ LIST", nil];
+    
+    NSArray *words = self.speechCommands;
+    
+//  NSArray *words = [NSArray arrayWithArray:self.speechCommands];
+    
     NSString *name = @"CheckListWords";
     NSError *err = [lmGenerator generateLanguageModelFromArray:words withFilesNamed:name forAcousticModelAtPath:[AcousticModel pathToModel:@"AcousticModelEnglish"]]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to create a Spanish language model instead of an English one.
     
@@ -635,6 +687,7 @@ if (self.suspendSpeechCommands == NO)
 
 - (IBAction)speechCommandToggle:(id)sender
 {
+    
     if ([self.speechCommandButton.currentTitle  isEqual: @"Suspend Speech Commands"])
         {  self.suspendSpeechCommands = YES;
             [self.speechCommandButton setTitle: @"Activate Speech Commands" forState: UIControlStateNormal];
