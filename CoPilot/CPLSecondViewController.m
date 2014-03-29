@@ -56,7 +56,7 @@ if (self.suspendSpeechCommands == NO)
         }
     }
     
-    if ([hypothesis  isEqual: @"BACK"])
+    if ([hypothesis  isEqual: @"RETURN"])
     {
         [self.navigationController popViewControllerAnimated:YES];
     }

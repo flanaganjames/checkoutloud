@@ -166,7 +166,7 @@ if (self.suspendSpeechCommands == NO)
 //creates array of NSStrings to be recognized as speech commands, all uppercase
 - (void)loadSpeechCommands {
 // default commands
-    [self.speechCommands addObject:@"BACK"];
+    [self.speechCommands addObject:@"RETURN"];
     [self.speechCommands addObject:@"READ LIST"];
     [self.speechCommands addObject:@"CHECK"];
     [self.speechCommands addObject:@"OK"];
