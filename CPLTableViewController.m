@@ -19,6 +19,10 @@
 @property NSMutableArray *speechCommands;
 @property CheckListItem *updatingItem;
 // @property UITableView *tableView;   // for loadView which cases failure
+
+@property  NSString *lmPath;
+@property NSString *dicPath;
+
 @end
 
 @implementation CPLTableViewController
@@ -317,21 +321,30 @@ if (self.suspendSpeechCommands == NO)
     
     NSDictionary *languageGeneratorResults = nil;
     
-    NSString *lmPath = nil;
-    NSString *dicPath = nil;
+
 	
     if([err code] == noErr) {
         
         languageGeneratorResults = [err userInfo];
 		
-        lmPath = [languageGeneratorResults objectForKey:@"LMPath"];
-        dicPath = [languageGeneratorResults objectForKey:@"DictionaryPath"];
+        self.lmPath = [languageGeneratorResults objectForKey:@"LMPath"];
+        self.dicPath = [languageGeneratorResults objectForKey:@"DictionaryPath"];
 		
     } else {
         NSLog(@"Error: %@",[err localizedDescription]);
     }
     
-    [self.pocketsphinxController startListeningWithLanguageModelAtPath:lmPath dictionaryAtPath:dicPath acousticModelAtPath:[AcousticModel pathToModel:@"AcousticModelEnglish"] languageModelIsJSGF:NO]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to perform Spanish recognition instead of English.
+}
+
+- (void) startlanguageset
+{
+    
+    [self.pocketsphinxController startListeningWithLanguageModelAtPath:self.lmPath dictionaryAtPath:self.dicPath acousticModelAtPath:[AcousticModel pathToModel:@"AcousticModelEnglish"] languageModelIsJSGF:NO]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to perform Spanish recognition instead of English.
+}
+
+- (void) changelanguageset
+{
+[self.pocketsphinxController changeLanguageModelToFile:self.lmPath withDictionary:self.dicPath];
 }
 
 - (void)viewDidLoad
@@ -386,10 +399,11 @@ if (self.suspendSpeechCommands == NO)
     [self loadInitialData];
     
     [self loadSpeechCommands];
-
+    [self loadLanguageSet];
+    [self startlanguageset];
     
     //start openears stuff
-    [self loadLanguageSet];
+    
     
     [OpenEarsLogging startOpenEarsLogging];
     
@@ -594,6 +608,9 @@ if (self.suspendSpeechCommands == NO)
             sqlite3_finalize(statement);
             sqlite3_close(_checklistDB);
         }
+    [self loadSpeechCommands];  //reloads database as speechcommands
+    [self loadLanguageSet]; // recreates language model from speechcommands
+    [self changelanguageset]; //changes to the recreated language model
     }
     
 }
