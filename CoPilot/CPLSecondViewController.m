@@ -14,6 +14,7 @@
 @interface CPLSecondViewController ()
     @property NSMutableArray *checkListItems;
     @property CheckListItem *updatingItem;
+
 @end
 
 @implementation CPLSecondViewController
@@ -317,8 +318,10 @@ if (self.suspendSpeechCommands == NO)
             sqlite3_finalize(statement);
             sqlite3_close(_checklistDB);
         }
+        [self.mainView loadSpeechCommands];  //reloads database as speechcommands
+        [self.mainView loadLanguageSet]; // recreates language model from speechcommands
+        [self.mainView changelanguageset]; //changes to the recreated language model
     }
-    
 }
 
 - (IBAction)unwindUpdateMainList:(UIStoryboardSegue *)segue  sender:(id)sender

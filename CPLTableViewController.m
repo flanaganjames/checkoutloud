@@ -169,6 +169,8 @@ if (self.suspendSpeechCommands == NO)
 
 //creates array of NSStrings to be recognized as speech commands, all uppercase
 - (void)loadSpeechCommands {
+    
+    [self.speechCommands removeAllObjects];
 // default commands
     [self.speechCommands addObject:@"RETURN"];
     [self.speechCommands addObject:@"READ LIST"];
@@ -533,6 +535,7 @@ if (self.suspendSpeechCommands == NO)
         secondViewController.kal = self.kal;
         secondViewController.originView = self;
         secondViewController.suspendSpeechCommands = self.suspendSpeechCommands;
+        secondViewController.mainView = self;
     }
     
     if ([[segue identifier] isEqualToString:@"AddToRoot"])
@@ -612,7 +615,6 @@ if (self.suspendSpeechCommands == NO)
     [self loadLanguageSet]; // recreates language model from speechcommands
     [self changelanguageset]; //changes to the recreated language model
     }
-    
 }
 
 

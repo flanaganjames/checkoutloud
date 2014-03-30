@@ -40,4 +40,7 @@ Kal *kal;
 @property (strong, nonatomic) FliteController *fliteController;
 @property (strong, nonatomic) Slt *slt;
 @property (strong, nonatomic) Kal *kal;
+- (IBAction) loadSpeechCommands;
+- (IBAction) loadLanguageSet;
+- (IBAction) changelanguageset;
 @end
