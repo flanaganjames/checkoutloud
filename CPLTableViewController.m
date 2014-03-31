@@ -9,7 +9,7 @@
 #import "CPLTableViewController.h"
 #import "CheckListItem.h"
 #import <OpenEars/LanguageModelGenerator.h>
-#import "CPLSecondViewController.h"
+//#import "CPLSecondViewController.h"
 #import "CPLAddListItemViewController.h"
 #import "CPLMUDViewController.h"
 
@@ -580,31 +580,6 @@ if (self.suspendSpeechCommands == NO)
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    
-    if ([[segue identifier] isEqualToString:@"showDetailList"])
-    {
-        CPLSecondViewController *secondViewController =
-        [segue destinationViewController];
-        
-        NSIndexPath *myIndexPath = [self.tableView
-                                    indexPathForSelectedRow];
-        long row = [myIndexPath row];
-        CheckListItem *item = self.checkListItems[row];
-        
-        secondViewController.listParent = item.itemName;
-        secondViewController.listLabel.text = item.itemName;
-
-
-        secondViewController.openEarsEventsObserver = self.openEarsEventsObserver;
-        secondViewController.currentrow = 0;
-        secondViewController.fliteController = self.fliteController;
-        secondViewController.slt = self.slt;
-        secondViewController.kal = self.kal;
-        secondViewController.originView = self;
-        secondViewController.suspendSpeechCommands = self.suspendSpeechCommands;
-        secondViewController.mainView = self;
-    }
-    
     if ([[segue identifier] isEqualToString:@"AddToRoot"])
     {
         self.saveStateSpeechCommand = self.suspendSpeechCommands;
