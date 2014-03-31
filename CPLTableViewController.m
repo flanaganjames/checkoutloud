@@ -269,9 +269,7 @@ if (self.suspendSpeechCommands == NO)
 {
 //  self.listenerStatus.text = @"selected";
 //    
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    
-    
+//    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
     NSIndexPath *myIndexPath = [self.tableView
                                 indexPathForSelectedRow];
