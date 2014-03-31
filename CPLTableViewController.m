@@ -99,6 +99,18 @@ if (self.suspendSpeechCommands == NO)
         }
     }
     
+    if ([hypothesis  isEqual: @"NEXT"])
+    {
+        if (self.currentrow < [self.checkListItems count] - 1)
+        {// set checkmark on currentrow
+            // then increment currentrow pointer
+            // then read new current
+            
+            self.currentrow += 1;
+            [self readCurrent];
+        }
+    }
+    
     if ([hypothesis  isEqual: @"OK"])
     {
         if (self.currentrow < [self.checkListItems count] - 1)
@@ -238,6 +250,7 @@ if (self.suspendSpeechCommands == NO)
     [self.speechCommands addObject:@"ADD"];
     [self.speechCommands addObject:@"UPDATE"];
     [self.speechCommands addObject:@"SAVE"];
+    [self.speechCommands addObject:@"NEXT"];
 
 //commands for items in all checklists
     const char *dbpath = [_databasePath UTF8String];
