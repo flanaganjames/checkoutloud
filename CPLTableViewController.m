@@ -775,6 +775,7 @@ if (self.suspendSpeechCommands == NO)
     if (![self.listParent isEqual: @"ROOT"]) //
     {
         self.listParent = self.listGrandParent;
+        [self getGrandParent];
         self.listLabel.text = self.listParent;
         [self loadInitialData];
         [self.tableView reloadData];
@@ -782,6 +783,41 @@ if (self.suspendSpeechCommands == NO)
         [self loadLanguageSet];
         [self changelanguageset]; //changes to the recreated language model
     }
+}
+
+//the following cannot be done for ROOT which has no parent
+- (void) getGrandParent {
+    const char *dbpath = [_databasePath UTF8String];
+    sqlite3_stmt    *statement;
+    
+    if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTS WHERE NAME=\'%@\'", self.listParent];
+        const char *query_stmt = [querySQL UTF8String];
+        
+        if (sqlite3_prepare_v2(_checklistDB,
+                               query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            while (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                NSString *taskparent =
+                [[NSString alloc] initWithUTF8String:
+                 (const char *) sqlite3_column_text(statement, 3)];
+
+                self.listGrandParent = taskparent;
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(_checklistDB);
+    }
+
+//    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Got GrandParent"
+//    message:[NSString stringWithFormat: @"%@", self.listGrandParent]
+//                                                     delegate:nil
+//                                            cancelButtonTitle:@"OK"
+//                                            otherButtonTitles:nil];
+//
+//    [message show];
 }
     
 @end
