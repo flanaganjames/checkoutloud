@@ -116,6 +116,7 @@ if (self.suspendSpeechCommands == NO)
         if (![self.listParent isEqual: @"ROOT"]) //
         {
             self.listParent = self.listGrandParent;
+            [self getGrandParent];
             self.listLabel.text = self.listParent;
             [self loadInitialData];
             [self.tableView reloadData];
