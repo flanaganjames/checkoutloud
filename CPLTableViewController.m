@@ -22,7 +22,7 @@
 
 @property  NSString *lmPath;
 @property NSString *dicPath;
-
+@property long currentrow;
 @end
 
 @implementation CPLTableViewController
@@ -78,6 +78,46 @@ if (self.suspendSpeechCommands == NO)
              [self performSegueWithIdentifier: @"showDetailList" sender: self];
          }
      }];
+    
+    if ([hypothesis  isEqual: @"READ LIST"])
+    {
+        self.currentrow = 0;
+        [self readCurrent];
+    }
+    
+    if ([hypothesis  isEqual: @"CHECK"])
+    {
+        if (self.currentrow < [self.checkListItems count] - 1)
+        {// set checkmark on currentrow
+            // then increment currentrow pointer
+            // then read new current
+            
+            self.currentrow += 1;
+            [self readCurrent];
+        }
+    }
+    
+    if ([hypothesis  isEqual: @"OK"])
+    {
+        if (self.currentrow < [self.checkListItems count] - 1)
+        {// set checkmark on currentrow
+            // then increment currentrow pointer
+            // then read new current
+            
+            self.currentrow += 1;
+            [self readCurrent];
+        }
+    }
+    
+    if ([hypothesis  isEqual: @"RETURN"])
+    {
+        
+    }
+    
+    if ([hypothesis  isEqual: @"SELECT"])
+    {
+        
+    }
 }
 }
 
@@ -124,7 +164,15 @@ if (self.suspendSpeechCommands == NO)
 	NSLog(@"A test file that was submitted for recognition is now complete.");
 }
 
-
+- (void) readCurrent {
+    //read current row of checkListItems
+    CheckListItem *item = self.checkListItems[self.currentrow];
+    
+    NSString *text = item.itemName;
+    
+    [self.fliteController say: text withVoice:self.slt];
+    //    [self.fliteController say: text withVoice:self.kal];
+}
 
 - (void)loadInitialData {
 
