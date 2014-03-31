@@ -75,7 +75,9 @@ if (self.suspendSpeechCommands == NO)
              
              [self.tableView selectRowAtIndexPath:index animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
              
-             [self performSegueWithIdentifier: @"showDetailList" sender: self];
+            [self respondSelectRow];
+             
+//             [self performSegueWithIdentifier: @"showDetailList" sender: self];
          }
      }];
     
@@ -111,7 +113,16 @@ if (self.suspendSpeechCommands == NO)
     
     if ([hypothesis  isEqual: @"RETURN"])
     {
-        
+        if (![self.listParent isEqual: @"ROOT"]) //
+        {
+            self.listParent = self.listGrandParent;
+            self.listLabel.text = self.listParent;
+            [self loadInitialData];
+            [self.tableView reloadData];
+            [self loadSpeechCommands];
+            [self loadLanguageSet];
+            [self changelanguageset]; //changes to the recreated language model
+        }
     }
     
     if ([hypothesis  isEqual: @"SELECT"])
@@ -312,13 +323,7 @@ if (self.suspendSpeechCommands == NO)
     
 }
 
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-//  self.listenerStatus.text = @"selected";
-//    
-//    [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    
+- (void) respondSelectRow {
     NSIndexPath *myIndexPath = [self.tableView
                                 indexPathForSelectedRow];
     long row = [myIndexPath row];
@@ -332,6 +337,16 @@ if (self.suspendSpeechCommands == NO)
     [self loadSpeechCommands];
     [self loadLanguageSet];
     [self changelanguageset]; //changes to the recreated language model
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+//  self.listenerStatus.text = @"selected";
+//    
+//    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
+    [self respondSelectRow];
     
 //    [self reloadArrayData];
 //    [self.tableView reloadData];
