@@ -58,6 +58,11 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="caR-z7-ZvS">
                         <nil key="title"/>
+                        <barButtonItem key="leftBarButtonItem" title="Parent" id="2Xg-su-ogu">
+                            <connections>
+                                <action selector="backToParent:" destination="TBr-cB-YTL" id="VDS-ZR-G18"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="ydI-Ws-qYW">
                             <connections>
                                 <segue destination="nGE-oO-E3Q" kind="modal" identifier="AddToRoot" id="fNH-BR-ahx"/>
@@ -65,13 +70,14 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="backToParentButton" destination="2Xg-su-ogu" id="6yA-0Q-f62"/>
                         <outlet property="listLabel" destination="YK1-wk-4K2" id="ef1-Nc-v9g"/>
                         <outlet property="speechCommandButton" destination="389-HO-DKa" id="SPZ-Gu-mY7"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7RQ-wb-c29" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="694" y="-38"/>
+            <point key="canvasLocation" x="562" y="-197"/>
         </scene>
         <!--Second View Controller-->
         <scene sceneID="4dj-NG-sFb">

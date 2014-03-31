@@ -280,6 +280,7 @@ if (self.suspendSpeechCommands == NO)
     
     self.listGrandParent = self.listParent;
     self.listParent = item.itemName;
+    self.listLabel.text = self.listParent;
     [self loadInitialData];
     [self.tableView reloadData];
     [self loadSpeechCommands];
@@ -735,6 +736,9 @@ if (self.suspendSpeechCommands == NO)
         { self.suspendSpeechCommands = NO;
             [self.speechCommandButton setTitle: @"Suspend Speech Commands" forState: UIControlStateNormal];
         }
+}
+
+- (IBAction)backToParent:(id)sender {
 }
     
 @end

@@ -26,6 +26,8 @@ Kal *kal;
 
 @property (weak, nonatomic) IBOutlet UILabel *listLabel;
 - (IBAction)speechCommandToggle:(id)sender;
+- (IBAction)backToParent:(id)sender;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *backToParentButton;
 @property (weak, nonatomic) IBOutlet UIButton *speechCommandButton;
 @property BOOL suspendSpeechCommands;
 @property BOOL saveStateSpeechCommand;
