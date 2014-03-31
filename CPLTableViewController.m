@@ -739,6 +739,16 @@ if (self.suspendSpeechCommands == NO)
 }
 
 - (IBAction)backToParent:(id)sender {
+    if (![self.listParent isEqual: @"ROOT"]) //
+    {
+        self.listParent = self.listGrandParent;
+        self.listLabel.text = self.listParent;
+        [self loadInitialData];
+        [self.tableView reloadData];
+        [self loadSpeechCommands];
+        [self loadLanguageSet];
+        [self changelanguageset]; //changes to the recreated language model
+    }
 }
     
 @end
