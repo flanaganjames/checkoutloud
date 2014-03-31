@@ -138,7 +138,9 @@ if (self.suspendSpeechCommands == NO)
         
         if (sqlite3_prepare_v2(_checklistDB,
                                query_stmt, -1, &statement, NULL) == SQLITE_OK)
-        {  while (sqlite3_step(statement) == SQLITE_ROW)
+        {
+        [self.checkListItems removeAllObjects]; // remove the current list of checklistitems
+        while (sqlite3_step(statement) == SQLITE_ROW)
         {
             NSString *taskname =
             [[NSString alloc] initWithUTF8String:
@@ -268,15 +270,22 @@ if (self.suspendSpeechCommands == NO)
 //  self.listenerStatus.text = @"selected";
 //    
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-//    
-//    NSIndexPath *myIndexPath = [self.tableView
-//                                indexPathForSelectedRow];
-//    long row = [myIndexPath row];
-//    
-//    CheckListItem *item  = self.checkListItems[row];
-//    
-//    self.listGrandParent = self.listParent;
-//    self.listParent = item.itemName;
+    
+    
+    
+    NSIndexPath *myIndexPath = [self.tableView
+                                indexPathForSelectedRow];
+    long row = [myIndexPath row];
+    CheckListItem *item  = self.checkListItems[row];
+    
+    self.listGrandParent = self.listParent;
+    self.listParent = item.itemName;
+    [self loadInitialData];
+    [self.tableView reloadData];
+    [self loadSpeechCommands];
+    [self loadLanguageSet];
+    [self changelanguageset]; //changes to the recreated language model
+    
 //    [self reloadArrayData];
 //    [self.tableView reloadData];
 //
@@ -399,7 +408,6 @@ if (self.suspendSpeechCommands == NO)
     }
     
     [self loadInitialData];
-    
     [self loadSpeechCommands];
     [self loadLanguageSet];
     [self startlanguageset];
