@@ -125,10 +125,7 @@ if (self.suspendSpeechCommands == NO)
         }
     }
     
-    if ([hypothesis  isEqual: @"SELECT"])
-    {
-        
-    }
+
 }
 }
 
