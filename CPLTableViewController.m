@@ -352,7 +352,7 @@ UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"starting loadinitialda
     self.listGrandParent = self.listParent;
     self.listGrandParentKey = self.listParentKey;
     self.listParent = item.itemName;
-    self.listParentKey = item.itemParentKey;
+    self.listParentKey = item.itemKey;
     self.listLabel.text = self.listParent;
     [self loadInitialData];
     [self.tableView reloadData];
