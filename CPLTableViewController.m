@@ -206,12 +206,12 @@ if (self.suspendSpeechCommands == NO)
         NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTSBYKEY WHERE PARENTKEY=\'%ld\'",self.listParentKey];
         const char *query_stmt = [querySQL UTF8String];
         
-UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"starting loadinitialdata"
-    message:  [NSString stringWithFormat: @"%@", querySQL ]
-    delegate:self
-    cancelButtonTitle:@"OK"
-    otherButtonTitles:nil];
-[alert show];
+//UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"starting loadinitialdata"
+//    message:  [NSString stringWithFormat: @"%@", querySQL ]
+//    delegate:self
+//    cancelButtonTitle:@"OK"
+//    otherButtonTitles:nil];
+//[alert show];
         
         
         if (sqlite3_prepare_v2(_checklistDB,
@@ -492,12 +492,12 @@ UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"starting loadinitialda
             //    _status.text = @"Failed to open/create database";
         }
     }
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"viewDidLoad before loadinitialdata"
-    message:  [NSString stringWithFormat: @"%@", _databasePath ]
-    delegate:self
-    cancelButtonTitle:@"OK"
-    otherButtonTitles:nil];
-    [alert show];
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"viewDidLoad before loadinitialdata"
+//    message:  [NSString stringWithFormat: @"%@", _databasePath ]
+//    delegate:self
+//    cancelButtonTitle:@"OK"
+//    otherButtonTitles:nil];
+//    [alert show];
     
     [self loadInitialData];
     [self loadSpeechCommands];
