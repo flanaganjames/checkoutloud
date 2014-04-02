@@ -294,54 +294,6 @@ if (self.suspendSpeechCommands == NO)
 //    [message show];
 }
 
-//- (void)reloadArrayData {
-//    
-//    for (CheckListItem *item in self.checkListItems) {
-//        [self.checkListItems removeObject:item];
-//    }
-//    
-//    [self.tableView reloadData];
-//    
-//    const char *dbpath = [_databasePath UTF8String];
-//    sqlite3_stmt    *statement;
-//    
-//    if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
-//    {
-//        NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTS WHERE PARENT=\'%@\'", self.listParent];
-//        const char *query_stmt = [querySQL UTF8String];
-//        
-//        if (sqlite3_prepare_v2(_checklistDB,
-//                               query_stmt, -1, &statement, NULL) == SQLITE_OK)
-//        {  while (sqlite3_step(statement) == SQLITE_ROW)
-//        {
-//            NSString *taskname =
-//            [[NSString alloc] initWithUTF8String:
-//             (const char *) sqlite3_column_text(statement, 1)];
-//            int taskpriority = sqlite3_column_int(statement, 2);
-//            NSString *taskparent =
-//            [[NSString alloc] initWithUTF8String:
-//             (const char *) sqlite3_column_text(statement, 3)];
-//            long taskkey = sqlite3_column_int(statement, 0);
-//            CheckListItem *item = [[CheckListItem alloc] init];
-//            item.itemName = taskname;
-//            item.itemKey = *(&(taskkey));
-//            item.itemPriority = *(&(taskpriority));
-//            item.itemParent = taskparent;
-//            [self.checkListItems addObject:item];
-//            
-//        }
-//            sqlite3_finalize(statement);
-//        }
-//        sqlite3_close(_checklistDB);
-//    }
-//    
-//    NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
-//    
-//    [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
-//    
-//    [self.tableView reloadData];
-//    
-//}
 
 - (void) respondSelectRow {
     NSIndexPath *myIndexPath = [self.tableView
