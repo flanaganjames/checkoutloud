@@ -132,7 +132,7 @@ if (self.suspendSpeechCommands == NO)
             self.listParentKey = self.listGrandParentKey;
             [self getGrandParent];
             self.listLabel.text = self.listParent;
-            [self loadInitialData];
+            [self loadCurrentParentList];
             [self.tableView reloadData];
             [self loadSpeechCommands];
             [self loadLanguageSet];
@@ -197,7 +197,7 @@ if (self.suspendSpeechCommands == NO)
     //    [self.fliteController say: text withVoice:self.kal];
 }
 
-- (void)loadInitialData {
+- (void)loadCurrentParentList {
 
     const char *dbpath = [_databasePath UTF8String];
     sqlite3_stmt    *statement;
@@ -207,7 +207,7 @@ if (self.suspendSpeechCommands == NO)
         NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTSBYKEY WHERE PARENTKEY=\'%ld\'",self.listParentKey];
         const char *query_stmt = [querySQL UTF8String];
         
-//UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"starting loadinitialdata"
+//UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"starting loadCurrentParentList"
 //    message:  [NSString stringWithFormat: @"%@", querySQL ]
 //    delegate:self
 //    cancelButtonTitle:@"OK"
@@ -307,7 +307,7 @@ if (self.suspendSpeechCommands == NO)
     self.listParent = item.itemName;
     self.listParentKey = item.itemKey;
     self.listLabel.text = self.listParent;
-    [self loadInitialData];
+    [self loadCurrentParentList];
     [self.tableView reloadData];
     [self loadSpeechCommands];
     [self loadLanguageSet];
@@ -444,14 +444,14 @@ if (self.suspendSpeechCommands == NO)
             //    _status.text = @"Failed to open/create database";
         }
     }
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"viewDidLoad before loadinitialdata"
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"viewDidLoad before loadCurrentParentList"
 //    message:  [NSString stringWithFormat: @"%@", _databasePath ]
 //    delegate:self
 //    cancelButtonTitle:@"OK"
 //    otherButtonTitles:nil];
 //    [alert show];
     
-    [self loadInitialData];
+    [self loadCurrentParentList];
     [self loadSpeechCommands];
     [self loadLanguageSet];
     [self startlanguageset];
@@ -762,7 +762,7 @@ if (self.suspendSpeechCommands == NO)
         self.listParentKey = self.listGrandParentKey;
         [self getGrandParent];
         self.listLabel.text = self.listParent;
-        [self loadInitialData];
+        [self loadCurrentParentList];
         [self.tableView reloadData];
         [self loadSpeechCommands];
         [self loadLanguageSet];
