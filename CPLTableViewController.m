@@ -129,6 +129,7 @@ if (self.suspendSpeechCommands == NO)
         if (![self.listParent isEqual: @"ROOT"]) //
         {
             self.listParent = self.listGrandParent;
+            self.listParentKey = self.listGrandParentKey;
             [self getGrandParent];
             self.listLabel.text = self.listParent;
             [self loadInitialData];
@@ -203,8 +204,16 @@ if (self.suspendSpeechCommands == NO)
     
     if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTS WHERE PARENT=\'%@\'", self.listParent];
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTSBYKEY WHERE PARENTKEY=\'%ld\'",self.listParentKey];
         const char *query_stmt = [querySQL UTF8String];
+        
+//UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"starting loadinitialdata"
+//    message:  [NSString stringWithFormat: @"%@", querySQL ]
+//    delegate:self
+//    cancelButtonTitle:@"OK"
+//    otherButtonTitles:nil];
+//[alert show];
+        
         
         if (sqlite3_prepare_v2(_checklistDB,
                                query_stmt, -1, &statement, NULL) == SQLITE_OK)
@@ -216,16 +225,16 @@ if (self.suspendSpeechCommands == NO)
             [[NSString alloc] initWithUTF8String:
              (const char *) sqlite3_column_text(statement, 1)];
             int taskpriority = sqlite3_column_int(statement, 2);
-            NSString *taskparent =
-            [[NSString alloc] initWithUTF8String:
-             (const char *) sqlite3_column_text(statement, 3)];
+            long taskparentkey = sqlite3_column_int(statement, 3);
             long taskkey = sqlite3_column_int(statement, 0);
             CheckListItem *item = [[CheckListItem alloc] init];
             item.itemName = taskname;
             item.itemKey = *(&(taskkey));
             item.itemPriority = *(&(taskpriority));
-            item.itemParent = taskparent;
+            item.itemParent = self.listParent;
+            item.itemParentKey = *(&(taskparentkey));
             [self.checkListItems addObject:item];
+
             
         }
             sqlite3_finalize(statement);
@@ -286,54 +295,6 @@ if (self.suspendSpeechCommands == NO)
 //    [message show];
 }
 
-- (void)reloadArrayData {
-    
-    for (CheckListItem *item in self.checkListItems) {
-        [self.checkListItems removeObject:item];
-    }
-    
-    [self.tableView reloadData];
-    
-    const char *dbpath = [_databasePath UTF8String];
-    sqlite3_stmt    *statement;
-    
-    if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
-    {
-        NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTS WHERE PARENT=\'%@\'", self.listParent];
-        const char *query_stmt = [querySQL UTF8String];
-        
-        if (sqlite3_prepare_v2(_checklistDB,
-                               query_stmt, -1, &statement, NULL) == SQLITE_OK)
-        {  while (sqlite3_step(statement) == SQLITE_ROW)
-        {
-            NSString *taskname =
-            [[NSString alloc] initWithUTF8String:
-             (const char *) sqlite3_column_text(statement, 1)];
-            int taskpriority = sqlite3_column_int(statement, 2);
-            NSString *taskparent =
-            [[NSString alloc] initWithUTF8String:
-             (const char *) sqlite3_column_text(statement, 3)];
-            long taskkey = sqlite3_column_int(statement, 0);
-            CheckListItem *item = [[CheckListItem alloc] init];
-            item.itemName = taskname;
-            item.itemKey = *(&(taskkey));
-            item.itemPriority = *(&(taskpriority));
-            item.itemParent = taskparent;
-            [self.checkListItems addObject:item];
-            
-        }
-            sqlite3_finalize(statement);
-        }
-        sqlite3_close(_checklistDB);
-    }
-    
-    NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
-    
-    [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
-    
-    [self.tableView reloadData];
-    
-}
 
 - (void) respondSelectRow {
     NSIndexPath *myIndexPath = [self.tableView
@@ -342,7 +303,9 @@ if (self.suspendSpeechCommands == NO)
     CheckListItem *item  = self.checkListItems[row];
     
     self.listGrandParent = self.listParent;
+    self.listGrandParentKey = self.listParentKey;
     self.listParent = item.itemName;
+    self.listParentKey = item.itemKey;
     self.listLabel.text = self.listParent;
     [self loadInitialData];
     [self.tableView reloadData];
@@ -360,8 +323,7 @@ if (self.suspendSpeechCommands == NO)
     
     [self respondSelectRow];
     
-//    [self reloadArrayData];
-//    [self.tableView reloadData];
+
 //
 }
 
@@ -447,6 +409,8 @@ if (self.suspendSpeechCommands == NO)
     
     self.listParent = @"ROOT";
     self.listGrandParent = @"ROOT";
+    self.listParentKey = 0;
+    self.listGrandParentKey = 0;
     self.listLabel.text = self.listParent;
 
     
@@ -468,7 +432,7 @@ if (self.suspendSpeechCommands == NO)
         {
             char *errMsg;
             const char *sql_stmt =
-            "CREATE TABLE IF NOT EXISTS CHECKLISTS (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME, PRIORITY, PARENT)";
+            "CREATE TABLE IF NOT EXISTS CHECKLISTSBYKEY (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME, PRIORITY, PARENTKEY)";
             if (sqlite3_exec(_checklistDB, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK)
             {
                 //_status.text = @"Failed to create table";
@@ -480,6 +444,12 @@ if (self.suspendSpeechCommands == NO)
             //    _status.text = @"Failed to open/create database";
         }
     }
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"viewDidLoad before loadinitialdata"
+//    message:  [NSString stringWithFormat: @"%@", _databasePath ]
+//    delegate:self
+//    cancelButtonTitle:@"OK"
+//    otherButtonTitles:nil];
+//    [alert show];
     
     [self loadInitialData];
     [self loadSpeechCommands];
@@ -648,15 +618,15 @@ if (self.suspendSpeechCommands == NO)
         if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
         {
             NSString *insertSQL = [NSString stringWithFormat:
-                                   @"INSERT INTO CHECKLISTS (name, priority, parent, haschild) VALUES (\'%@\', %ld,\'%@\',\'%@\')",
-                                   item.itemName, item.itemPriority, self.listParent, @"NO"];
+                                   @"INSERT INTO CHECKLISTSBYKEY (name, priority, parentkey) VALUES (\'%@\', %ld, %ld)",
+                                item.itemName, item.itemPriority, self.listParentKey];
             const char *insert_stmt = [insertSQL UTF8String];
-            //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"SQL in Unwind"
-            //    message:  [NSString stringWithFormat: @"%s", insert_stmt ]
-            //    delegate:self
-            //    cancelButtonTitle:@"OK"
-            //    otherButtonTitles:nil];
-            //    [alert show];
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"SQL in Unwind"
+//    message:  [NSString stringWithFormat: @"%s", insert_stmt ]
+//    delegate:self
+//    cancelButtonTitle:@"OK"
+//    otherButtonTitles:nil];
+//    [alert show];
             sqlite3_prepare_v2(_checklistDB, insert_stmt,
                                -1, &statement, NULL);
             if (sqlite3_step(statement) == SQLITE_DONE)
@@ -700,7 +670,7 @@ if (self.suspendSpeechCommands == NO)
         if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
         {
             NSString *updateSQL = [NSString stringWithFormat:
-                                   @"DELETE FROM CHECKLISTS WHERE ID=%ld",item.itemKey];
+                                   @"DELETE FROM CHECKLISTSBYKEY WHERE ID=%ld",item.itemKey];
             const char *update_stmt = [updateSQL UTF8String];
             
             sqlite3_prepare_v2(_checklistDB, update_stmt,
@@ -732,7 +702,7 @@ if (self.suspendSpeechCommands == NO)
         if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
         {
             NSString *updateSQL = [NSString stringWithFormat:
-                                   @"UPDATE CHECKLISTS SET PRIORITY=%ld WHERE ID=%ld",
+                                   @"UPDATE CHECKLISTSBYKEY SET PRIORITY=%ld WHERE ID=%ld",
                                    item.itemPriority, item.itemKey];
             const char *update_stmt = [updateSQL UTF8String];
             
@@ -751,7 +721,7 @@ if (self.suspendSpeechCommands == NO)
         if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
         {
             NSString *updateSQL = [NSString stringWithFormat:
-                                   @"UPDATE CHECKLISTS SET NAME=\"%@\" WHERE ID=%ld",
+                                   @"UPDATE CHECKLISTSBYKEY SET NAME=\"%@\" WHERE ID=%ld",
                                    item.itemName, item.itemKey];
             
             const char *update_stmt = [updateSQL UTF8String];
@@ -769,8 +739,7 @@ if (self.suspendSpeechCommands == NO)
         
     } // close else update
     
-//    [self reloadArrayData];
-    // this crashes with message "NSArray mutated while enumerated"
+
 }
 
 - (IBAction)speechCommandToggle:(id)sender
@@ -790,6 +759,7 @@ if (self.suspendSpeechCommands == NO)
     if (![self.listParent isEqual: @"ROOT"]) //
     {
         self.listParent = self.listGrandParent;
+        self.listParentKey = self.listGrandParentKey;
         [self getGrandParent];
         self.listLabel.text = self.listParent;
         [self loadInitialData];
@@ -807,7 +777,7 @@ if (self.suspendSpeechCommands == NO)
     
     if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTS WHERE NAME=\'%@\'", self.listParent];
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTSBYKEY WHERE ID=%ld", self.listParentKey];
         const char *query_stmt = [querySQL UTF8String];
         
         if (sqlite3_prepare_v2(_checklistDB,
@@ -815,11 +785,11 @@ if (self.suspendSpeechCommands == NO)
         {
             while (sqlite3_step(statement) == SQLITE_ROW)
             {
-                NSString *taskparent =
-                [[NSString alloc] initWithUTF8String:
-                 (const char *) sqlite3_column_text(statement, 3)];
+                
+                long taskparentkey = sqlite3_column_int(statement, 3);
+                self.listGrandParentKey = *(&(taskparentkey));
 
-                self.listGrandParent = taskparent;
+           //     self.listGrandParent = taskparent;
             }
             sqlite3_finalize(statement);
         }

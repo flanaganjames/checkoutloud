@@ -36,7 +36,8 @@ Kal *kal;
 @property (nonatomic) sqlite3 *checklistDB;
 @property NSString *listParent;
 @property NSString *listGrandParent;
-
+@property long listParentKey;
+@property long listGrandParentKey;
 @property (strong, nonatomic) PocketsphinxController *pocketsphinxController;
 @property (strong, nonatomic) OpenEarsEventsObserver *openEarsEventsObserver;
 @property (strong, nonatomic) FliteController *fliteController;
