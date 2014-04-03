@@ -228,7 +228,6 @@ if (self.suspendSpeechCommands == NO)
             item.itemParent = self.listParent;
             item.itemParentKey = *(&(taskparentkey));
             [self.checkListItems addObject:item];
-
             
         }
             sqlite3_finalize(statement);
@@ -698,13 +697,11 @@ if (self.suspendSpeechCommands == NO)
     self.suspendSpeechCommands = self.saveStateSpeechCommand;
     CPLAddListItemViewController *source = [segue sourceViewController];
     CheckListItem *item = source.checkListItem;
+    item.itemParent = self.listParent;
+    item.itemParentKey = self.listParentKey;
     if (item != nil)
     {
-        [self.checkListItems addObject:item];
-        // want to sort this list by itemPriority
-    NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
-    [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
-    [self.tableView reloadData];
+
         // save the task in the database
         sqlite3_stmt    *statement;
         const char *dbpath = [_databasePath UTF8String];
@@ -712,16 +709,11 @@ if (self.suspendSpeechCommands == NO)
         {
             NSString *insertSQL = [NSString stringWithFormat:
                                    @"INSERT INTO CHECKLISTSBYKEY (name, priority, parentkey) VALUES (\'%@\', %ld, %ld)",
-                                item.itemName, item.itemPriority, self.listParentKey];
+                                item.itemName, item.itemPriority, item.itemParentKey];
             const char *insert_stmt = [insertSQL UTF8String];
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"SQL in Unwind"
-//    message:  [NSString stringWithFormat: @"%s", insert_stmt ]
-//    delegate:self
-//    cancelButtonTitle:@"OK"
-//    otherButtonTitles:nil];
-//    [alert show];
             sqlite3_prepare_v2(_checklistDB, insert_stmt,
                                -1, &statement, NULL);
+            
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
             }
@@ -731,6 +723,33 @@ if (self.suspendSpeechCommands == NO)
             sqlite3_finalize(statement);
             sqlite3_close(_checklistDB);
         }
+        
+        //need to get the added item's itemkey
+        if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
+        {
+            NSString *querySQL = [NSString stringWithFormat: @"SELECT last_insert_rowid()"];
+            const char *query_stmt = [querySQL UTF8String];
+            
+            if (sqlite3_prepare_v2(_checklistDB,
+                                   query_stmt, -1, &statement, NULL) == SQLITE_OK)
+            {
+                while (sqlite3_step(statement) == SQLITE_ROW)
+                {
+                    long taskkey = sqlite3_column_int(statement, 0);
+                    item.itemKey = *(&(taskkey));
+                }
+                sqlite3_finalize(statement);
+            }
+            sqlite3_close(_checklistDB);
+        }
+        
+        // now that we have its itemkey we can add the item to the checklists
+        [self.checkListItems addObject:item];
+        // want to sort this list by itemPriority
+        NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
+        [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
+        [self.tableView reloadData];
+        
     [self loadSpeechCommands];  //reloads database as speechcommands
     [self loadLanguageSet]; // recreates language model from speechcommands
     [self changelanguageset]; //changes to the recreated language model
