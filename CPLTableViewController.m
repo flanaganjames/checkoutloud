@@ -536,12 +536,7 @@ if (self.suspendSpeechCommands == NO)
             //    _status.text = @"Failed to open/create database";
         }
     }
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"viewDidLoad before loadCurrentParentList"
-//    message:  [NSString stringWithFormat: @"%@", _databasePath ]
-//    delegate:self
-//    cancelButtonTitle:@"OK"
-//    otherButtonTitles:nil];
-//    [alert show];
+
     
     [self loadCurrentParentList];
     [self loadSpeechCommands];
@@ -721,12 +716,14 @@ if (self.suspendSpeechCommands == NO)
             {
             }
             sqlite3_finalize(statement);
-            sqlite3_close(_checklistDB);
+//            sqlite3_close(_checklistDB);
+//to do the followin (get itemkey, need to do it before the close
         }
         
         //need to get the added item's itemkey
-        if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
-        {
+
+//        if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
+//        {
             NSString *querySQL = [NSString stringWithFormat: @"SELECT last_insert_rowid()"];
             const char *query_stmt = [querySQL UTF8String];
             
@@ -741,7 +738,14 @@ if (self.suspendSpeechCommands == NO)
                 sqlite3_finalize(statement);
             }
             sqlite3_close(_checklistDB);
-        }
+//        }
+        
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"check itemkey just added"
+    message:  [NSString stringWithFormat: @"%ld", item.itemKey]
+    delegate:self
+    cancelButtonTitle:@"OK"
+    otherButtonTitles:nil];
+    [alert show];
         
         // now that we have its itemkey we can add the item to the checklists
         [self.checkListItems addObject:item];
