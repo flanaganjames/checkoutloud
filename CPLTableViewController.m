@@ -852,7 +852,8 @@ if (self.suspendSpeechCommands == NO)
 }
 
 //the following cannot be done for ROOT which has no parent
-- (void) getGrandParent {
+- (void) getGrandParent
+{
     const char *dbpath = [_databasePath UTF8String];
     sqlite3_stmt    *statement;
     
@@ -869,15 +870,42 @@ if (self.suspendSpeechCommands == NO)
                 
                 long taskparentkey = sqlite3_column_int(statement, 3);
                 self.listGrandParentKey = *(&(taskparentkey));
+                //this is the parentkeyfor the current list parent
 
-           //     self.listGrandParent = taskparent;
             }
             sqlite3_finalize(statement);
         }
         sqlite3_close(_checklistDB);
     }
 
-
+    if (self.listGrandParentKey != 0) //if grandparentkey is 0 that means current list is ROOT
+    {
+        if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
+        {
+            NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTSBYKEY WHERE ID=%ld", self.listGrandParentKey];
+            const char *query_stmt = [querySQL UTF8String];
+            
+            if (sqlite3_prepare_v2(_checklistDB,
+                                   query_stmt, -1, &statement, NULL) == SQLITE_OK)
+            {
+                while (sqlite3_step(statement) == SQLITE_ROW)
+                {
+                    NSString *taskname =
+                    [[NSString alloc] initWithUTF8String:
+                     (const char *) sqlite3_column_text(statement, 1)];
+                    
+                    self.listGrandParent = taskname;
+                }
+                sqlite3_finalize(statement);
+            }
+            sqlite3_close(_checklistDB);
+        }
+    }
+    else
+    {  self.listGrandParent = @"ROOT";
+        self.listGrandParentKey = 0;
+    }
 }
+
     
 @end
