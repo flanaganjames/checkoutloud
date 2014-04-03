@@ -18,6 +18,7 @@
 @interface CPLTableViewController ()
  @property NSMutableArray *checkListItems;
 @property NSMutableArray *speechCommands;
+@property NSMutableArray *descendants;
 @property CheckListItem *updatingItem;
 // @property UITableView *tableView;   // for loadView which cases failure
 
@@ -207,14 +208,6 @@ if (self.suspendSpeechCommands == NO)
         NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTSBYKEY WHERE PARENTKEY=\'%ld\'",self.listParentKey];
         const char *query_stmt = [querySQL UTF8String];
         
-//UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"starting loadCurrentParentList"
-//    message:  [NSString stringWithFormat: @"%@", querySQL ]
-//    delegate:self
-//    cancelButtonTitle:@"OK"
-//    otherButtonTitles:nil];
-//[alert show];
-        
-        
         if (sqlite3_prepare_v2(_checklistDB,
                                query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
@@ -247,6 +240,90 @@ if (self.suspendSpeechCommands == NO)
     [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
     
 }
+
+- (void) deleteOneByKey:(long) aKey {
+    
+    sqlite3_stmt    *statement;
+    const char *dbpath = [_databasePath UTF8String];
+    if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
+    {
+        NSString *updateSQL = [NSString stringWithFormat:
+                               @"DELETE FROM CHECKLISTSBYKEY WHERE ID=%ld", aKey];
+        const char *update_stmt = [updateSQL UTF8String];
+        
+        sqlite3_prepare_v2(_checklistDB, update_stmt,
+                           -1, &statement, NULL);
+        if (sqlite3_step(statement) == SQLITE_DONE)
+        {
+        }
+        else
+        {
+        }
+        sqlite3_finalize(statement);
+        sqlite3_close(_checklistDB);
+    }
+}
+
+
+- (void) findAllDescendantsbyKey:(long) parentKey {
+    
+    [self.descendants removeAllObjects];
+    NSMutableArray *unchecked = [NSMutableArray alloc];
+    
+    const char *dbpath = [_databasePath UTF8String];
+    sqlite3_stmt    *statement;
+    
+    if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTSBYKEY WHERE PARENTKEY=\'%ld\'",parentKey];
+        const char *query_stmt = [querySQL UTF8String];
+        
+        if (sqlite3_prepare_v2(_checklistDB,
+                               query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            while (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                long taskkey = sqlite3_column_int(statement, 0);
+                NSNumber *aNumber = [NSNumber numberWithInt:(taskkey)];
+                [unchecked addObject:aNumber];
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(_checklistDB);
+    }
+    
+    while ([unchecked count] > 0) {
+        
+        long aKey = [unchecked[0] longValue];
+        
+        const char *dbpath = [_databasePath UTF8String];
+        sqlite3_stmt    *statement;
+        
+        if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
+        {
+            NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTSBYKEY WHERE PARENTKEY=\'%ld\'",aKey];
+            const char *query_stmt = [querySQL UTF8String];
+            
+            if (sqlite3_prepare_v2(_checklistDB,
+                                   query_stmt, -1, &statement, NULL) == SQLITE_OK)
+            {
+                while (sqlite3_step(statement) == SQLITE_ROW)
+                {
+                    long taskkey = sqlite3_column_int(statement, 0);
+                    NSNumber *aNumber = [NSNumber numberWithInt:(taskkey)];
+                    [unchecked addObject:aNumber]; // add desc of 0th item to unchecked list
+                }
+                sqlite3_finalize(statement);
+            }
+            sqlite3_close(_checklistDB);
+        }
+        
+        [self.descendants addObject: unchecked[0]]; // place the 0th item in descendants list
+        [unchecked removeObject: unchecked[0]]; // remove the 0th item from unchecked list
+    }
+}
+
+
 
 //creates array of NSStrings to be recognized as speech commands, all uppercase
 - (void)loadSpeechCommands {
@@ -664,27 +741,9 @@ if (self.suspendSpeechCommands == NO)
         NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
         [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
         [self.tableView reloadData];
-        
-        sqlite3_stmt    *statement;
-        const char *dbpath = [_databasePath UTF8String];
-        if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
-        {
-            NSString *updateSQL = [NSString stringWithFormat:
-                                   @"DELETE FROM CHECKLISTSBYKEY WHERE ID=%ld",item.itemKey];
-            const char *update_stmt = [updateSQL UTF8String];
-            
-            sqlite3_prepare_v2(_checklistDB, update_stmt,
-                               -1, &statement, NULL);
-            if (sqlite3_step(statement) == SQLITE_DONE)
-            {
-            }
-            else
-            {
-            }
-            sqlite3_finalize(statement);
-            sqlite3_close(_checklistDB);
-        } // SQLITE_OK
-        
+        long aKey =  item.itemKey;
+        [self deleteOneByKey:aKey];
+                
     } //close if delete
     else
     {
