@@ -740,12 +740,12 @@ if (self.suspendSpeechCommands == NO)
             sqlite3_close(_checklistDB);
 //        }
         
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"check itemkey just added"
-    message:  [NSString stringWithFormat: @"%ld", item.itemKey]
-    delegate:self
-    cancelButtonTitle:@"OK"
-    otherButtonTitles:nil];
-    [alert show];
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"check itemkey just added"
+//    message:  [NSString stringWithFormat: @"%ld", item.itemKey]
+//    delegate:self
+//    cancelButtonTitle:@"OK"
+//    otherButtonTitles:nil];
+//    [alert show];
         
         // now that we have its itemkey we can add the item to the checklists
         [self.checkListItems addObject:item];
