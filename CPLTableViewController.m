@@ -104,6 +104,7 @@ if (self.suspendSpeechCommands == NO)
         else
         {
             [self.readListButton setTitle: @"Read List" forState: UIControlStateNormal];
+            [self.fliteController say:@"List Ended" withVoice:self.slt];
         }
     }
     
@@ -113,6 +114,7 @@ if (self.suspendSpeechCommands == NO)
         if (![self.listParent isEqual: @"ROOT"]) //
         {
             self.listParent = self.listGrandParent;
+            [self.fliteController say:self.listParent withVoice:self.slt];
             self.listParentKey = self.listGrandParentKey;
             [self getGrandParent];
             self.listLabel.text = self.listParent;
@@ -385,6 +387,7 @@ if (self.suspendSpeechCommands == NO)
     [self loadSpeechCommands];
     [self loadLanguageSet];
     [self changelanguageset]; //changes to the recreated language model
+    [self.fliteController say:self.listParent withVoice:self.slt];
 }
 
 
