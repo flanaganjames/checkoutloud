@@ -257,6 +257,13 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "James Flanagan";
 				TargetAttributes = {
+					17249CBE18CC30E600A6C5EF = {
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
 					17249CE218CC30E600A6C5EF = {
 						TestTargetID = 17249CBE18CC30E600A6C5EF;
 					};
