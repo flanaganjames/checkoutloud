@@ -5,7 +5,7 @@
 //  Created by James Flanagan on 3/8/14.
 //  Copyright (c) 2014 James Flanagan. All rights reserved.
 //
-// NAVIGATE BY KEY VERSION
+// Plans: cut and Move, read list button, timer functions, dressing it up
 
 #import "CPLTableViewController.h"
 #import "CheckListItem.h"
@@ -931,4 +931,28 @@ if (self.suspendSpeechCommands == NO)
 }
 
     
+- (IBAction)readListButton:(id)sender {
+    if ([self.readListButton.currentTitle  isEqual: @"Read List"])
+    {
+        [self.readListButton setTitle: @"Check" forState: UIControlStateNormal];
+        self.currentrow = 0;
+        [self readCurrent];
+    }
+    else
+    {
+        if (self.currentrow < [self.checkListItems count] - 1)
+        {// set checkmark on currentrow
+            // then increment currentrow pointer
+            // then read new current
+            
+            self.currentrow += 1;
+            [self readCurrent];
+        }
+        else
+        {
+        [self.readListButton setTitle: @"Read List" forState: UIControlStateNormal];
+        }
+    }
+
+}
 @end

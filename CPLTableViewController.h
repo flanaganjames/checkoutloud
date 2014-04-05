@@ -23,6 +23,8 @@ Slt *slt;
 Kal *kal;
 
 @interface CPLTableViewController : UITableViewController <OpenEarsEventsObserverDelegate>
+@property (weak, nonatomic) IBOutlet UIButton *readListButton;
+- (IBAction)readListButton:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UILabel *listLabel;
 - (IBAction)speechCommandToggle:(id)sender;
