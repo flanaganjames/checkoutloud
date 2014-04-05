@@ -86,11 +86,12 @@ if (self.suspendSpeechCommands == NO)
     
     if ([hypothesis  isEqual: @"READ LIST"])
     {
-        self.currentrow = 0;
-        [self readCurrent];
+            [self.readListButton setTitle: @"Check" forState: UIControlStateNormal];
+            self.currentrow = 0;
+            [self readCurrent];
     }
     
-    if ([hypothesis  isEqual: @"CHECK"])
+    if ([hypothesis  isEqual: @"CHECK"] | [hypothesis  isEqual: @"NEXT"]| [hypothesis  isEqual: @"OK"])
     {
         if (self.currentrow < [self.checkListItems count] - 1)
         {// set checkmark on currentrow
@@ -100,31 +101,12 @@ if (self.suspendSpeechCommands == NO)
             self.currentrow += 1;
             [self readCurrent];
         }
-    }
-    
-    if ([hypothesis  isEqual: @"NEXT"])
-    {
-        if (self.currentrow < [self.checkListItems count] - 1)
-        {// set checkmark on currentrow
-            // then increment currentrow pointer
-            // then read new current
-            
-            self.currentrow += 1;
-            [self readCurrent];
+        else
+        {
+            [self.readListButton setTitle: @"Read List" forState: UIControlStateNormal];
         }
     }
     
-    if ([hypothesis  isEqual: @"OK"])
-    {
-        if (self.currentrow < [self.checkListItems count] - 1)
-        {// set checkmark on currentrow
-            // then increment currentrow pointer
-            // then read new current
-            
-            self.currentrow += 1;
-            [self readCurrent];
-        }
-    }
     
     if ([hypothesis  isEqual: @"RETURN"])
     {
@@ -139,6 +121,7 @@ if (self.suspendSpeechCommands == NO)
             [self loadSpeechCommands];
             [self loadLanguageSet];
             [self changelanguageset]; //changes to the recreated language model
+            [self.readListButton setTitle: @"Read List" forState: UIControlStateNormal];
         }
     }
     
