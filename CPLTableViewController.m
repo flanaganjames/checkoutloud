@@ -942,17 +942,28 @@ if (self.suspendSpeechCommands == NO)
     }
     else
     {
-        if (self.currentrow < [self.checkListItems count] - 1)
-        {// set checkmark on currentrow
+        if (self.currentrow < [self.currentcells count] - 1)
+        {
+            //cell is selected in the readcurrent method
+            
+            // set checkmark on currentrow
+            UITableViewCell *cell = self.currentcells[self.currentrow ];
+            cell.accessoryType = UITableViewCellAccessoryCheckmark; //sets visible checkmark
+            //also need to add a property to checklistitems indicating their checked status
             // then increment currentrow pointer
             // then read new current
-            
             self.currentrow += 1;
-            [self readCurrent];
+            [self readCurrent]; // this also selects that row
         }
         else
         {
-        [self.readListButton setTitle: @"Read List" forState: UIControlStateNormal];
+            // set checkmark on currentrow
+            UITableViewCell *cell = self.currentcells[self.currentrow ];
+            cell.accessoryType = UITableViewCellAccessoryCheckmark; //sets visible checkmark
+            //also need to add a property to checklistitems indicating their checked status
+            
+            [self.readListButton setTitle: @"Read List" forState: UIControlStateNormal];
+            [self.fliteController say:@"List Ended" withVoice:self.slt];
         }
     }
 
