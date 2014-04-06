@@ -140,6 +140,7 @@ if (self.suspendSpeechCommands == NO)
             [self loadLanguageSet];
             [self changelanguageset]; //changes to the recreated language model
             [self.readListButton setTitle: @"Read List" forState: UIControlStateNormal];
+
         }
     }
     
@@ -875,6 +876,7 @@ if (self.suspendSpeechCommands == NO)
         [self loadSpeechCommands];
         [self loadLanguageSet];
         [self changelanguageset]; //changes to the recreated language model
+        [self.readListButton setTitle: @"Read List" forState: UIControlStateNormal];
     }
 }
 
