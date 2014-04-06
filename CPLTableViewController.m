@@ -5,7 +5,7 @@
 //  Created by James Flanagan on 3/8/14.
 //  Copyright (c) 2014 James Flanagan. All rights reserved.
 //
-// Plans: cut and Move, read list button, timer functions, dressing it up
+// Plans: cut and Move, prepopulate database, timer functions, dressing it up
 
 #import "CPLTableViewController.h"
 #import "CheckListItem.h"
@@ -26,6 +26,8 @@
 @property  NSString *lmPath;
 @property NSString *dicPath;
 @property long currentrow;
+@property NSArray *currentcells;
+@property NSArray *currentcellpaths;
 @end
 
 @implementation CPLTableViewController
@@ -100,6 +102,8 @@ if (self.suspendSpeechCommands == NO)
             
             self.currentrow += 1;
             [self readCurrent];
+       //     cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    //  selectRowAtIndexPath
         }
         else
         {
@@ -119,7 +123,7 @@ if (self.suspendSpeechCommands == NO)
             [self getGrandParent];
             self.listLabel.text = self.listParent;
             [self loadCurrentParentList];
-            [self.tableView reloadData];
+            [self cellreloader]; //[self.tableView reloadData];
             [self loadSpeechCommands];
             [self loadLanguageSet];
             [self changelanguageset]; //changes to the recreated language model
@@ -383,7 +387,7 @@ if (self.suspendSpeechCommands == NO)
     self.listParentKey = item.itemKey;
     self.listLabel.text = self.listParent;
     [self loadCurrentParentList];
-    [self.tableView reloadData];
+    [self cellreloader]; //[self.tableView reloadData];
     [self loadSpeechCommands];
     [self loadLanguageSet];
     [self changelanguageset]; //changes to the recreated language model
@@ -738,7 +742,7 @@ if (self.suspendSpeechCommands == NO)
         // want to sort this list by itemPriority
         NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
         [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
-        [self.tableView reloadData];
+        [self cellreloader]; //[self.tableView reloadData];
         
     [self loadSpeechCommands];  //reloads database as speechcommands
     [self loadLanguageSet]; // recreates language model from speechcommands
@@ -749,7 +753,7 @@ if (self.suspendSpeechCommands == NO)
 
 - (IBAction)unwindToList:(UIStoryboardSegue *)segue  sender:(id)sender
 {
-[self.tableView reloadData];
+[self cellreloader]; //[self.tableView reloadData];
 
 }
 
@@ -765,7 +769,7 @@ if (self.suspendSpeechCommands == NO)
         
         NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
         [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
-        [self.tableView reloadData];
+        [self cellreloader]; //[self.tableView reloadData];
         long aKey =  item.itemKey;
         [self findAllDescendantsbyKey:aKey];
         while ([self.descendants count] > 0) {
@@ -783,7 +787,7 @@ if (self.suspendSpeechCommands == NO)
         
         NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
         [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
-        [self.tableView reloadData];
+        [self cellreloader]; //[self.tableView reloadData];
         
         
         // update the task in the database
@@ -853,7 +857,7 @@ if (self.suspendSpeechCommands == NO)
         [self getGrandParent];
         self.listLabel.text = self.listParent;
         [self loadCurrentParentList];
-        [self.tableView reloadData];
+        [self cellreloader]; //[self.tableView reloadData];
         [self loadSpeechCommands];
         [self loadLanguageSet];
         [self changelanguageset]; //changes to the recreated language model
@@ -941,4 +945,14 @@ if (self.suspendSpeechCommands == NO)
     }
 
 }
+
+
+- (void) cellreloader
+{
+    [self.tableView reloadData];
+    self.currentcells = [self.tableView visibleCells]; //how to get array of all rows?
+    self.currentcellpaths = [self.tableView indexPathsForVisibleRows];
+}
+
+
 @end
