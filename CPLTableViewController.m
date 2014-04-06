@@ -66,8 +66,8 @@
 
 if (self.suspendSpeechCommands == NO)
 {
-    NSArray *cells = [self.tableView visibleCells]; //how to get array of all rows?
-    NSArray *visible = [self.tableView indexPathsForVisibleRows];
+    NSArray *cells = self.currentcells;
+    NSArray *visible = self.currentcellpaths;
     
     [cells enumerateObjectsUsingBlock:^(UITableViewCell *cell,
                                         NSUInteger idx,
@@ -95,18 +95,30 @@ if (self.suspendSpeechCommands == NO)
     
     if ([hypothesis  isEqual: @"CHECK"] | [hypothesis  isEqual: @"NEXT"]| [hypothesis  isEqual: @"OK"])
     {
-        if (self.currentrow < [self.checkListItems count] - 1)
-        {// set checkmark on currentrow
-            // then increment currentrow pointer
-            // then read new current
-            
+        
+        //if (self.currentrow < [self.checkListItems count] - 1)
+        if (self.currentrow < [self.currentcells count] - 1)
+        {
+            //cell is selected in the readcurrent method
+
+            // set checkmark on currentrow
+            UITableViewCell *cell = self.currentcells[self.currentrow ];
+            cell.accessoryType = UITableViewCellAccessoryCheckmark; //sets visible checkmark
+            //also need to add a property to checklistitems indicating their checked status
+        // then increment currentrow pointer
+        // then read new current
             self.currentrow += 1;
-            [self readCurrent];
-       //     cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            [self readCurrent]; // this also selects that row
+
+            
     //  selectRowAtIndexPath
         }
         else
-        {
+        {   // set checkmark on currentrow
+            UITableViewCell *cell = self.currentcells[self.currentrow ];
+            cell.accessoryType = UITableViewCellAccessoryCheckmark; //sets visible checkmark
+            //also need to add a property to checklistitems indicating their checked status
+            
             [self.readListButton setTitle: @"Read List" forState: UIControlStateNormal];
             [self.fliteController say:@"List Ended" withVoice:self.slt];
         }
@@ -181,7 +193,7 @@ if (self.suspendSpeechCommands == NO)
 - (void) readCurrent {
     //read current row of checkListItems
     CheckListItem *item = self.checkListItems[self.currentrow];
-    
+    [self.tableView selectRowAtIndexPath:self.currentcellpaths[self.currentrow ] animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
     NSString *text = item.itemName;
     
     [self.fliteController say: text withVoice:self.slt];
