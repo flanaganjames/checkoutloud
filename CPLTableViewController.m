@@ -404,6 +404,7 @@ if (self.suspendSpeechCommands == NO)
     [self loadLanguageSet];
     [self changelanguageset]; //changes to the recreated language model
     [self.fliteController say:self.listParent withVoice:self.slt];
+    [self.readListButton setTitle: @"Read List" forState: UIControlStateNormal];
 }
 
 
