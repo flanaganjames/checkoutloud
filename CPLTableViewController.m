@@ -608,6 +608,7 @@ if (self.suspendSpeechCommands == NO)
     CheckListItem *checkItem = [self.checkListItems objectAtIndex:indexPath.row];
 	
 	cell.textLabel.text = checkItem.itemName;
+    cell.accessoryType = UITableViewCellAccessoryDetailButton;
     
     return cell;
     
@@ -935,7 +936,7 @@ if (self.suspendSpeechCommands == NO)
     
 - (IBAction)readListButton:(id)sender {
     if ([self.readListButton.currentTitle  isEqual: @"Read List"])
-    {
+    {   [self cellreloader];
         [self.readListButton setTitle: @"Check" forState: UIControlStateNormal];
         self.currentrow = 0;
         [self readCurrent];
