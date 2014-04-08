@@ -595,6 +595,8 @@ if (self.suspendSpeechCommands == NO)
     [self loadSpeechCommands];
     [self loadLanguageSet];
     [self startlanguageset];
+    [self cellreloader]; //[self.tableView reloadData];
+//    [self changelanguageset];
     
     //start openears stuff
     
