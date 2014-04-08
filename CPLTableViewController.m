@@ -61,92 +61,140 @@
 }
 
 
-- (void) pocketsphinxDidReceiveHypothesis:(NSString *)hypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID {
+- (void) pocketsphinxDidReceiveHypothesis:(NSString *)hypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID
+{
 	NSLog(@"The received hypothesis is %@ with a score of %@ and an ID of %@", hypothesis, recognitionScore, utteranceID);
 
 if (self.suspendSpeechCommands == NO)
 {
-    NSArray *cells = self.currentcells;
-    NSArray *visible = self.currentcellpaths;
-    
-    [cells enumerateObjectsUsingBlock:^(UITableViewCell *cell,
-                                        NSUInteger idx,
-                                        BOOL *stop)
-     {
-         if ([hypothesis  isEqual: cell.textLabel.text])
+    if ([self.readListButton.currentTitle  isEqual: @"Read List"])
+    {// in this mode reading a list member's name drills down to its children,, if any
+        NSArray *cells = self.currentcells;
+        NSArray *visible = self.currentcellpaths;
+        
+        [cells enumerateObjectsUsingBlock:^(UITableViewCell *cell,
+                                            NSUInteger idx,
+                                            BOOL *stop)
          {
+             if ([hypothesis  isEqual: cell.textLabel.text])
+             {
 
-             NSIndexPath* index = visible[idx];
-             
-             [self.tableView selectRowAtIndexPath:index animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
-             
-            [self respondSelectRow];
-             
-//             [self performSegueWithIdentifier: @"showDetailList" sender: self];
-         }
-     }];
-    
-    if ([hypothesis  isEqual: @"READ LIST"])
-    {
+                 NSIndexPath* index = visible[idx];
+                 
+                 [self.tableView selectRowAtIndexPath:index animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
+                 
+                [self respondSelectRow];
+                 
+             }
+         }];
+        
+        if ([hypothesis  isEqual: @"READ LIST"])
+        {
+            if (![self.listParent isEqual: @"ROOT"])
+            {
             [self.readListButton setTitle: @"Check" forState: UIControlStateNormal];
+            }
             self.currentrow = 0;
             [self readCurrent];
-    }
-    
-    if ([hypothesis  isEqual: @"CHECK"] | [hypothesis  isEqual: @"NEXT"]| [hypothesis  isEqual: @"OK"])
-    {
+        }
         
-        //if (self.currentrow < [self.checkListItems count] - 1)
-        if (self.currentrow < [self.currentcells count] - 1)
+        if ([hypothesis  isEqual: @"NEXT"]| [hypothesis  isEqual: @"OK"])
         {
-            //cell is selected in the readcurrent method
-
-            // set checkmark on currentrow
-            UITableViewCell *cell = self.currentcells[self.currentrow ];
-            cell.accessoryType = UITableViewCellAccessoryCheckmark; //sets visible checkmark
-            //also need to add a property to checklistitems indicating their checked status
-        // then increment currentrow pointer
-        // then read new current
-            self.currentrow += 1;
-            [self readCurrent]; // this also selects that row
-
-            
-    //  selectRowAtIndexPath
+            if (self.currentrow < [self.currentcells count] - 1)
+            {
+                self.currentrow += 1;
+                [self readCurrent]; // this also selects that row
+            }
+            else
+            {
+                [self.fliteController say:@"List Ended" withVoice:self.slt];
+            }
         }
-        else
-        {   // set checkmark on currentrow
-            UITableViewCell *cell = self.currentcells[self.currentrow ];
-            cell.accessoryType = UITableViewCellAccessoryCheckmark; //sets visible checkmark
-            //also need to add a property to checklistitems indicating their checked status
-            
-            [self.readListButton setTitle: @"Read List" forState: UIControlStateNormal];
-            [self.fliteController say:@"List Ended" withVoice:self.slt];
-        }
-    }
-    
-    
-    if ([hypothesis  isEqual: @"RETURN"])
-    {
-        if (![self.listParent isEqual: @"ROOT"]) //
+        
+        if ([hypothesis  isEqual: @"RETURN"])
         {
-            self.listParent = self.listGrandParent;
-            [self.fliteController say:self.listParent withVoice:self.slt];
-            self.listParentKey = self.listGrandParentKey;
-            [self getGrandParent];
-            self.listLabel.text = self.listParent;
-            [self loadCurrentParentList];
-            [self cellreloader]; //[self.tableView reloadData];
-            [self loadSpeechCommands];
-            [self loadLanguageSet];
-            [self changelanguageset]; //changes to the recreated language model
-            [self.readListButton setTitle: @"Read List" forState: UIControlStateNormal];
+            if (![self.listParent isEqual: @"ROOT"]) //
+            {
+                self.listParent = self.listGrandParent;
+                [self.fliteController say:self.listParent withVoice:self.slt];
+                self.listParentKey = self.listGrandParentKey;
+                [self getGrandParent];
+                self.listLabel.text = self.listParent;
+                [self loadCurrentParentList];
+                [self cellreloader]; //[self.tableView reloadData];
+                [self loadSpeechCommands];
+                [self loadLanguageSet];
+                [self changelanguageset]; //changes to the recreated language model
+                [self.readListButton setTitle: @"Read List" forState: UIControlStateNormal];
 
+            }
         }
-    }
-    
+    }// end if readlistbutton is "Read List"
+    else  // readListButton is "Check
+    {   CheckListItem *item = self.checkListItems[self.currentrow];
+        [self.tableView selectRowAtIndexPath:self.currentcellpaths[self.currentrow ] animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
+        NSString *text = item.itemName;
+        
+        if ([hypothesis  isEqual: text])
+        {
+        
+            //if (self.currentrow < [self.checkListItems count] - 1)
+            if (self.currentrow < [self.currentcells count] - 1)
+            {
+                //cell is selected in the readcurrent method
+                
+                // set checkmark on currentrow
+                UITableViewCell *cell = self.currentcells[self.currentrow ];
+                cell.accessoryType = UITableViewCellAccessoryCheckmark; //sets visible checkmark
+                //also need to add a property to checklistitems indicating their checked status
+                // then increment currentrow pointer
+                // then read new current
+                self.currentrow += 1;
+                [self readCurrent]; // this also selects that row
+            }
+            else
+            {   // set checkmark on currentrow
+                UITableViewCell *cell = self.currentcells[self.currentrow ];
+                cell.accessoryType = UITableViewCellAccessoryCheckmark; //sets visible checkmark
+                //also need to add a property to checklistitems indicating their checked status
+                
+                [self.readListButton setTitle: @"Read List" forState: UIControlStateNormal];
+                [self.fliteController say:@"List Ended" withVoice:self.slt];
+            }
+        }
+        
+        if ([hypothesis  isEqual: @"CHECK"] | [hypothesis  isEqual: @"NEXT"]| [hypothesis  isEqual: @"OK"] | [hypothesis  isEqual: @"DONE"])
+        {
+            NSString *saythis =  [NSString stringWithFormat:
+             @"Please repeat item   '%@'   to mark it as done ", text];
+            
+             // tell user that they must repeat the list item to mark it as checked
+             [self.fliteController say: saythis withVoice:self.slt];
+        }
+        
+        if ([hypothesis  isEqual: @"RETURN"])
+        {
+            if (![self.listParent isEqual: @"ROOT"]) //
+            {
+                self.listParent = self.listGrandParent;
+                [self.fliteController say:self.listParent withVoice:self.slt];
+                self.listParentKey = self.listGrandParentKey;
+                [self getGrandParent];
+                self.listLabel.text = self.listParent;
+                [self loadCurrentParentList];
+                [self cellreloader]; //[self.tableView reloadData];
+                [self loadSpeechCommands];
+                [self loadLanguageSet];
+                [self changelanguageset]; //changes to the recreated language model
+                [self.readListButton setTitle: @"Read List" forState: UIControlStateNormal];
+                
+            }
+        }
+        
+    } // end if readlistbutton is "Check"
 
-}
-}
+}// end if (self.suspendSpeechCommands == NO)
+}//end pocketsphinxDidReceiveHypothesis
 
 - (void) pocketsphinxDidStartCalibration {
 	NSLog(@"Pocketsphinx calibration has started.");
@@ -353,6 +401,7 @@ if (self.suspendSpeechCommands == NO)
     [self.speechCommands addObject:@"UPDATE"];
     [self.speechCommands addObject:@"SAVE"];
     [self.speechCommands addObject:@"NEXT"];
+    [self.speechCommands addObject:@"DONE"];
 
 //commands for items in all checklists
     const char *dbpath = [_databasePath UTF8String];
