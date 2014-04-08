@@ -90,7 +90,7 @@ if (self.suspendSpeechCommands == NO)
         
         if ([hypothesis  isEqual: @"READ LIST"])
         {
-            if (![self.listParent isEqual: @"ROOT"])
+            if (![self.listParent isEqual: @"MASTER LIST"])
             {
             [self.readListButton setTitle: @"Check" forState: UIControlStateNormal];
             }
@@ -113,7 +113,7 @@ if (self.suspendSpeechCommands == NO)
         
         if ([hypothesis  isEqual: @"RETURN"])
         {
-            if (![self.listParent isEqual: @"ROOT"]) //
+            if (![self.listParent isEqual: @"MASTER LIST"]) //
             {
                 self.listParent = self.listGrandParent;
                 [self.fliteController say:self.listParent withVoice:self.slt];
@@ -174,7 +174,7 @@ if (self.suspendSpeechCommands == NO)
         
         if ([hypothesis  isEqual: @"RETURN"])
         {
-            if (![self.listParent isEqual: @"ROOT"]) //
+            if (![self.listParent isEqual: @"MASTER LIST"]) //
             {
                 self.listParent = self.listGrandParent;
                 [self.fliteController say:self.listParent withVoice:self.slt];
@@ -552,8 +552,8 @@ if (self.suspendSpeechCommands == NO)
     
     NSArray *dirPaths;
     
-    self.listParent = @"ROOT";
-    self.listGrandParent = @"ROOT";
+    self.listParent = @"MASTER LIST";
+    self.listGrandParent = @"MASTER LIST";
     self.listParentKey = 0;
     self.listGrandParentKey = 0;
     self.listLabel.text = self.listParent;
@@ -914,7 +914,7 @@ if (self.suspendSpeechCommands == NO)
 }
 
 - (IBAction)backToParent:(id)sender {
-    if (![self.listParent isEqual: @"ROOT"]) //
+    if (![self.listParent isEqual: @"MASTER LIST"]) //
     {
         self.listParent = self.listGrandParent;
         self.listParentKey = self.listGrandParentKey;
@@ -929,7 +929,7 @@ if (self.suspendSpeechCommands == NO)
     }
 }
 
-//the following cannot be done for ROOT which has no parent
+//the following cannot be done for MASTER LIST which has no parent
 - (void) getGrandParent
 {
     const char *dbpath = [_databasePath UTF8String];
@@ -956,7 +956,7 @@ if (self.suspendSpeechCommands == NO)
         sqlite3_close(_checklistDB);
     }
 
-    if (self.listGrandParentKey != 0) //if grandparentkey is 0 that means current list is ROOT
+    if (self.listGrandParentKey != 0) //if grandparentkey is 0 that means current list is MASTER LIST
     {
         if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
         {
@@ -980,7 +980,7 @@ if (self.suspendSpeechCommands == NO)
         }
     }
     else
-    {  self.listGrandParent = @"ROOT";
+    {  self.listGrandParent = @"MASTER LIST";
         self.listGrandParentKey = 0;
     }
 }
