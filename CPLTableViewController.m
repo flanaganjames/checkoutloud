@@ -903,13 +903,13 @@ if (self.suspendSpeechCommands == NO)
 - (IBAction)speechCommandToggle:(id)sender
 {
     
-    if ([self.speechCommandButton.currentTitle  isEqual: @"Suspend Speech Commands"])
+    if ([self.speechCommandButton.currentTitle  isEqual: @"Suspend Speech"])
         {  self.suspendSpeechCommands = YES;
-            [self.speechCommandButton setTitle: @"Activate Speech Commands" forState: UIControlStateNormal];
+            [self.speechCommandButton setTitle: @"Activate Speech" forState: UIControlStateNormal];
         }
     else
         { self.suspendSpeechCommands = NO;
-            [self.speechCommandButton setTitle: @"Suspend Speech Commands" forState: UIControlStateNormal];
+            [self.speechCommandButton setTitle: @"Suspend Speech" forState: UIControlStateNormal];
         }
 }
 
