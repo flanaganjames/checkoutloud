@@ -135,7 +135,7 @@ if (self.suspendSpeechCommands == NO)
         [self.tableView selectRowAtIndexPath:self.currentcellpaths[self.currentrow ] animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
         NSString *text = item.itemName;
         
-        if ([hypothesis  isEqual: text])
+        if ([hypothesis  isEqual: text] | [hypothesis  isEqual: @"CONSIDER IT DONE"])
         {
             if (self.currentrow < [self.currentcells count] - 1)
             {
@@ -400,6 +400,7 @@ if (self.suspendSpeechCommands == NO)
     [self.speechCommands addObject:@"SAVE"];
     [self.speechCommands addObject:@"NEXT"];
     [self.speechCommands addObject:@"DONE"];
+    [self.speechCommands addObject:@"CONSIDER IT DONE"];
 
 //commands for items in all checklists
     const char *dbpath = [_databasePath UTF8String];
