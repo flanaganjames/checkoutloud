@@ -98,7 +98,7 @@ if (self.suspendSpeechCommands == NO)
             [self readCurrent];
         }
         
-        if ([hypothesis  isEqual: @"NEXT"]| [hypothesis  isEqual: @"OK"])
+        if ([hypothesis  isEqual: @"NEXT"] | [hypothesis  isEqual: @"OK"])
         {
             if (self.currentrow < [self.currentcells count] - 1)
             {
@@ -137,8 +137,6 @@ if (self.suspendSpeechCommands == NO)
         
         if ([hypothesis  isEqual: text])
         {
-        
-            //if (self.currentrow < [self.checkListItems count] - 1)
             if (self.currentrow < [self.currentcells count] - 1)
             {
                 //cell is selected in the readcurrent method
@@ -1028,6 +1026,7 @@ if (self.suspendSpeechCommands == NO)
 - (void) cellreloader
 {
     [self.tableView reloadData];
+    self.currentrow = 0;
     self.currentcells = [self.tableView visibleCells]; //how to get array of all rows?
     self.currentcellpaths = [self.tableView indexPathsForVisibleRows];
 }
