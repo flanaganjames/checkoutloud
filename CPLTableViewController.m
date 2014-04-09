@@ -634,8 +634,8 @@ if (self.suspendSpeechCommands == NO)
     [self.openEarsEventsObserver setDelegate:self];
     
     
-    [self.fliteController say:@"CHECK IT" withVoice:self.slt];
-    [self.fliteController say:@"OUT LOUD" withVoice:self.slt];
+    [self.fliteController say:@"CHECK IT OUT LOUD, WELCOME" withVoice:self.slt];
+
 //    [self.fliteController say:@"Hey Boss.  Another day, another dollar." withVoice:self.kal];
     
 // remember to add <OpenEarsEventsObserverDelegate> to the interface definition line in the .h file

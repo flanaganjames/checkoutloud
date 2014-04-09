@@ -31,7 +31,7 @@
 		17249D1218CCD48D00A6C5EF /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249D1118CCD48D00A6C5EF /* AudioToolbox.framework */; };
 		172CD32E18CFDD8800427D63 /* Kal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 172CD32D18CFDD8800427D63 /* Kal.framework */; };
 		172CD39518D228B900427D63 /* CPLAddListItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 172CD39418D228B900427D63 /* CPLAddListItemViewController.m */; };
-		1735E90418F5A66D002CC3B9 /* checklist.db in Resources */ = {isa = PBXBuildFile; fileRef = 1735E90318F5A66D002CC3B9 /* checklist.db */; };
+		1735E90618F5A798002CC3B9 /* checklist.db in Resources */ = {isa = PBXBuildFile; fileRef = 1735E90518F5A798002CC3B9 /* checklist.db */; };
 		17D5714A18D5474300663FAE /* CPLMUDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D5714918D5474300663FAE /* CPLMUDViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -79,7 +79,7 @@
 		172CD32D18CFDD8800427D63 /* Kal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kal.framework; path = ../OpenEarsDistribution/OpenEarsExtras/openearsextras/FliteVoices/Kal.framework; sourceTree = "<group>"; };
 		172CD39318D228B900427D63 /* CPLAddListItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLAddListItemViewController.h; sourceTree = "<group>"; };
 		172CD39418D228B900427D63 /* CPLAddListItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLAddListItemViewController.m; sourceTree = "<group>"; };
-		1735E90318F5A66D002CC3B9 /* checklist.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = checklist.db; sourceTree = "<group>"; };
+		1735E90518F5A798002CC3B9 /* checklist.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = checklist.db; sourceTree = "<group>"; };
 		17D5714818D5474300663FAE /* CPLMUDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLMUDViewController.h; sourceTree = "<group>"; };
 		17D5714918D5474300663FAE /* CPLMUDViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLMUDViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -117,7 +117,7 @@
 		17249CB618CC30E600A6C5EF = {
 			isa = PBXGroup;
 			children = (
-				1735E90318F5A66D002CC3B9 /* checklist.db */,
+				1735E90518F5A798002CC3B9 /* checklist.db */,
 				17249CC818CC30E600A6C5EF /* CoPilot */,
 				17249CEA18CC30E600A6C5EF /* CoPilotTests */,
 				17249CC118CC30E600A6C5EF /* Frameworks */,
@@ -296,7 +296,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1735E90418F5A66D002CC3B9 /* checklist.db in Resources */,
+				1735E90618F5A798002CC3B9 /* checklist.db in Resources */,
 				17249CDE18CC30E600A6C5EF /* Images.xcassets in Resources */,
 				17249D0718CCC18F00A6C5EF /* AcousticModelSpanish.bundle in Resources */,
 				17249D0618CCC18F00A6C5EF /* AcousticModelEnglish.bundle in Resources */,
