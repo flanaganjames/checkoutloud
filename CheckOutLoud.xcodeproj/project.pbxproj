@@ -32,6 +32,7 @@
 		172CD32E18CFDD8800427D63 /* Kal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 172CD32D18CFDD8800427D63 /* Kal.framework */; };
 		172CD39518D228B900427D63 /* CPLAddListItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 172CD39418D228B900427D63 /* CPLAddListItemViewController.m */; };
 		1735E90618F5A798002CC3B9 /* checklist.db in Resources */ = {isa = PBXBuildFile; fileRef = 1735E90518F5A798002CC3B9 /* checklist.db */; };
+		174CC80418F5E40A00D8D8A1 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 174CC80318F5E40A00D8D8A1 /* Icon-Small@2x.png */; };
 		17D5714A18D5474300663FAE /* CPLMUDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D5714918D5474300663FAE /* CPLMUDViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -46,21 +47,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		17249CBF18CC30E600A6C5EF /* Check It Out Loud.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Check It Out Loud.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		17249CBF18CC30E600A6C5EF /* CheckOutLoud.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CheckOutLoud.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		17249CC218CC30E600A6C5EF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		17249CC418CC30E600A6C5EF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		17249CC618CC30E600A6C5EF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		17249CCA18CC30E600A6C5EF /* Check It Out Loud-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Check It Out Loud-Info.plist"; sourceTree = "<group>"; };
+		17249CCA18CC30E600A6C5EF /* CheckOutLoud-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CheckOutLoud-Info.plist"; sourceTree = "<group>"; };
 		17249CCC18CC30E600A6C5EF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		17249CCE18CC30E600A6C5EF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		17249CD018CC30E600A6C5EF /* Check It Out Loud-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Check It Out Loud-Prefix.pch"; sourceTree = "<group>"; };
+		17249CD018CC30E600A6C5EF /* CheckOutLoud-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CheckOutLoud-Prefix.pch"; sourceTree = "<group>"; };
 		17249CD118CC30E600A6C5EF /* CPLAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CPLAppDelegate.h; sourceTree = "<group>"; };
 		17249CD218CC30E600A6C5EF /* CPLAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CPLAppDelegate.m; sourceTree = "<group>"; };
 		17249CD518CC30E600A6C5EF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		17249CDD18CC30E600A6C5EF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		17249CE318CC30E600A6C5EF /* Check It Out LoudTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Check It Out LoudTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		17249CE318CC30E600A6C5EF /* CheckOutLoudTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CheckOutLoudTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		17249CE418CC30E600A6C5EF /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		17249CEC18CC30E600A6C5EF /* Check It Out LoudTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Check It Out LoudTests-Info.plist"; sourceTree = "<group>"; };
+		17249CEC18CC30E600A6C5EF /* CheckOutLoudTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CheckOutLoudTests-Info.plist"; sourceTree = "<group>"; };
 		17249CEE18CC30E600A6C5EF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		17249CF018CC30E600A6C5EF /* CoPilotTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoPilotTests.m; sourceTree = "<group>"; };
 		17249CFA18CC346100A6C5EF /* CPLTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CPLTableViewController.h; path = ../CPLTableViewController.h; sourceTree = "<group>"; };
@@ -80,6 +81,7 @@
 		172CD39318D228B900427D63 /* CPLAddListItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLAddListItemViewController.h; sourceTree = "<group>"; };
 		172CD39418D228B900427D63 /* CPLAddListItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLAddListItemViewController.m; sourceTree = "<group>"; };
 		1735E90518F5A798002CC3B9 /* checklist.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = checklist.db; sourceTree = "<group>"; };
+		174CC80318F5E40A00D8D8A1 /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Small@2x.png"; path = "../../Icons/PNG Images/leatherhat/Icon-Small@2x.png"; sourceTree = "<group>"; };
 		17D5714818D5474300663FAE /* CPLMUDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLMUDViewController.h; sourceTree = "<group>"; };
 		17D5714918D5474300663FAE /* CPLMUDViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLMUDViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -128,8 +130,8 @@
 		17249CC018CC30E600A6C5EF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				17249CBF18CC30E600A6C5EF /* Check It Out Loud.app */,
-				17249CE318CC30E600A6C5EF /* Check It Out LoudTests.xctest */,
+				17249CBF18CC30E600A6C5EF /* CheckOutLoud.app */,
+				17249CE318CC30E600A6C5EF /* CheckOutLoudTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -175,10 +177,11 @@
 		17249CC918CC30E600A6C5EF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				17249CCA18CC30E600A6C5EF /* Check It Out Loud-Info.plist */,
+				174CC80318F5E40A00D8D8A1 /* Icon-Small@2x.png */,
+				17249CCA18CC30E600A6C5EF /* CheckOutLoud-Info.plist */,
 				17249CCB18CC30E600A6C5EF /* InfoPlist.strings */,
 				17249CCE18CC30E600A6C5EF /* main.m */,
-				17249CD018CC30E600A6C5EF /* Check It Out Loud-Prefix.pch */,
+				17249CD018CC30E600A6C5EF /* CheckOutLoud-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -195,7 +198,7 @@
 		17249CEB18CC30E600A6C5EF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				17249CEC18CC30E600A6C5EF /* Check It Out LoudTests-Info.plist */,
+				17249CEC18CC30E600A6C5EF /* CheckOutLoudTests-Info.plist */,
 				17249CED18CC30E600A6C5EF /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -215,9 +218,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		17249CBE18CC30E600A6C5EF /* Check It Out Loud */ = {
+		17249CBE18CC30E600A6C5EF /* CheckOutLoud */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 17249CF418CC30E600A6C5EF /* Build configuration list for PBXNativeTarget "Check It Out Loud" */;
+			buildConfigurationList = 17249CF418CC30E600A6C5EF /* Build configuration list for PBXNativeTarget "CheckOutLoud" */;
 			buildPhases = (
 				17249CBB18CC30E600A6C5EF /* Sources */,
 				17249CBC18CC30E600A6C5EF /* Frameworks */,
@@ -227,14 +230,14 @@
 			);
 			dependencies = (
 			);
-			name = "Check It Out Loud";
+			name = CheckOutLoud;
 			productName = CoPilot;
-			productReference = 17249CBF18CC30E600A6C5EF /* Check It Out Loud.app */;
+			productReference = 17249CBF18CC30E600A6C5EF /* CheckOutLoud.app */;
 			productType = "com.apple.product-type.application";
 		};
-		17249CE218CC30E600A6C5EF /* Check It Out LoudTests */ = {
+		17249CE218CC30E600A6C5EF /* CheckOutLoudTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 17249CF718CC30E600A6C5EF /* Build configuration list for PBXNativeTarget "Check It Out LoudTests" */;
+			buildConfigurationList = 17249CF718CC30E600A6C5EF /* Build configuration list for PBXNativeTarget "CheckOutLoudTests" */;
 			buildPhases = (
 				17249CDF18CC30E600A6C5EF /* Sources */,
 				17249CE018CC30E600A6C5EF /* Frameworks */,
@@ -245,9 +248,9 @@
 			dependencies = (
 				17249CE918CC30E600A6C5EF /* PBXTargetDependency */,
 			);
-			name = "Check It Out LoudTests";
+			name = CheckOutLoudTests;
 			productName = CoPilotTests;
-			productReference = 17249CE318CC30E600A6C5EF /* Check It Out LoudTests.xctest */;
+			productReference = 17249CE318CC30E600A6C5EF /* CheckOutLoudTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -272,7 +275,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 17249CBA18CC30E600A6C5EF /* Build configuration list for PBXProject "Check It Out Loud" */;
+			buildConfigurationList = 17249CBA18CC30E600A6C5EF /* Build configuration list for PBXProject "CheckOutLoud" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -285,8 +288,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				17249CBE18CC30E600A6C5EF /* Check It Out Loud */,
-				17249CE218CC30E600A6C5EF /* Check It Out LoudTests */,
+				17249CBE18CC30E600A6C5EF /* CheckOutLoud */,
+				17249CE218CC30E600A6C5EF /* CheckOutLoudTests */,
 			);
 		};
 /* End PBXProject section */
@@ -302,6 +305,7 @@
 				17249D0618CCC18F00A6C5EF /* AcousticModelEnglish.bundle in Resources */,
 				17249CCD18CC30E600A6C5EF /* InfoPlist.strings in Resources */,
 				17249CD618CC30E600A6C5EF /* Main.storyboard in Resources */,
+				174CC80418F5E40A00D8D8A1 /* Icon-Small@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,7 +346,7 @@
 /* Begin PBXTargetDependency section */
 		17249CE918CC30E600A6C5EF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 17249CBE18CC30E600A6C5EF /* Check It Out Loud */;
+			target = 17249CBE18CC30E600A6C5EF /* CheckOutLoud */;
 			targetProxy = 17249CE818CC30E600A6C5EF /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -456,9 +460,9 @@
 					/Users/jamesflanagan/Documents/Xworkspace/OpenEarsDistribution/OpenEarsExtras/openearsextras/FliteVoices,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CoPilot/Check It Out Loud-Prefix.pch";
-				INFOPLIST_FILE = "CoPilot/Check It Out Loud-Info.plist";
-				PRODUCT_NAME = "Check It Out Loud";
+				GCC_PREFIX_HEADER = "CoPilot/CheckOutLoud-Prefix.pch";
+				INFOPLIST_FILE = "CoPilot/CheckOutLoud-Info.plist";
+				PRODUCT_NAME = CheckOutLoud;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -474,9 +478,9 @@
 					/Users/jamesflanagan/Documents/Xworkspace/OpenEarsDistribution/OpenEarsExtras/openearsextras/FliteVoices,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CoPilot/Check It Out Loud-Prefix.pch";
-				INFOPLIST_FILE = "CoPilot/Check It Out Loud-Info.plist";
-				PRODUCT_NAME = "Check It Out Loud";
+				GCC_PREFIX_HEADER = "CoPilot/CheckOutLoud-Prefix.pch";
+				INFOPLIST_FILE = "CoPilot/CheckOutLoud-Info.plist";
+				PRODUCT_NAME = CheckOutLoud;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -496,8 +500,8 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "CoPilotTests/Check It Out LoudTests-Info.plist";
-				PRODUCT_NAME = "Check It Out LoudTests";
+				INFOPLIST_FILE = "CoPilotTests/CheckOutLoudTests-Info.plist";
+				PRODUCT_NAME = CheckOutLoudTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -514,8 +518,8 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CoPilot/CoPilot-Prefix.pch";
-				INFOPLIST_FILE = "CoPilotTests/Check It Out LoudTests-Info.plist";
-				PRODUCT_NAME = "Check It Out LoudTests";
+				INFOPLIST_FILE = "CoPilotTests/CheckOutLoudTests-Info.plist";
+				PRODUCT_NAME = CheckOutLoudTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -524,7 +528,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		17249CBA18CC30E600A6C5EF /* Build configuration list for PBXProject "Check It Out Loud" */ = {
+		17249CBA18CC30E600A6C5EF /* Build configuration list for PBXProject "CheckOutLoud" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				17249CF218CC30E600A6C5EF /* Debug */,
@@ -533,7 +537,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		17249CF418CC30E600A6C5EF /* Build configuration list for PBXNativeTarget "Check It Out Loud" */ = {
+		17249CF418CC30E600A6C5EF /* Build configuration list for PBXNativeTarget "CheckOutLoud" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				17249CF518CC30E600A6C5EF /* Debug */,
@@ -542,7 +546,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		17249CF718CC30E600A6C5EF /* Build configuration list for PBXNativeTarget "Check It Out LoudTests" */ = {
+		17249CF718CC30E600A6C5EF /* Build configuration list for PBXNativeTarget "CheckOutLoudTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				17249CF818CC30E600A6C5EF /* Debug */,
