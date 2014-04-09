@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		171392AB18F5A12A0079FC6F /* checklist.db in Resources */ = {isa = PBXBuildFile; fileRef = 171392AA18F5A12A0079FC6F /* checklist.db */; };
 		17249CC318CC30E600A6C5EF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249CC218CC30E600A6C5EF /* Foundation.framework */; };
 		17249CC518CC30E600A6C5EF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249CC418CC30E600A6C5EF /* CoreGraphics.framework */; };
 		17249CC718CC30E600A6C5EF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249CC618CC30E600A6C5EF /* UIKit.framework */; };
@@ -45,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		171392AA18F5A12A0079FC6F /* checklist.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = checklist.db; sourceTree = "<group>"; };
 		17249CBF18CC30E600A6C5EF /* CoPilot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoPilot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		17249CC218CC30E600A6C5EF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		17249CC418CC30E600A6C5EF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -115,6 +117,7 @@
 		17249CB618CC30E600A6C5EF = {
 			isa = PBXGroup;
 			children = (
+				171392AA18F5A12A0079FC6F /* checklist.db */,
 				17249CC818CC30E600A6C5EF /* CoPilot */,
 				17249CEA18CC30E600A6C5EF /* CoPilotTests */,
 				17249CC118CC30E600A6C5EF /* Frameworks */,
@@ -293,6 +296,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				171392AB18F5A12A0079FC6F /* checklist.db in Resources */,
 				17249CDE18CC30E600A6C5EF /* Images.xcassets in Resources */,
 				17249D0718CCC18F00A6C5EF /* AcousticModelSpanish.bundle in Resources */,
 				17249D0618CCC18F00A6C5EF /* AcousticModelEnglish.bundle in Resources */,

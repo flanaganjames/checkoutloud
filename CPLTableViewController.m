@@ -558,35 +558,64 @@ if (self.suspendSpeechCommands == NO)
     self.listLabel.text = self.listParent;
 
     
+    NSFileManager *filemgr = [NSFileManager defaultManager];
+    NSError *error;
+    NSString *currentPath;
+    currentPath = [filemgr currentDirectoryPath]; // this should be root
+    NSString *distributedDB;
+//    distributedDB = [[NSString alloc] initWithString: [currentPath stringByAppendingPathComponent: @"checklist.db"]];
+    
+    distributedDB = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"checklist.db"];
+
     // Get the documents directory
     
     dirPaths = NSSearchPathForDirectoriesInDomains(
-                    NSDocumentDirectory, NSUserDomainMask, YES);
+                NSDocumentDirectory, NSUserDomainMask, YES);
     docsDir = dirPaths[0];
-    
     // Build the path to the database file
-    
     _databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"checklist.db"]];
-    
-    NSFileManager *filemgr = [NSFileManager defaultManager];
+
+
+
     if ([filemgr fileExistsAtPath: _databasePath ] == NO)
     {
-        const char *dbpath = [_databasePath UTF8String];
-        if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
+        if ([filemgr fileExistsAtPath: distributedDB])
         {
-            char *errMsg;
-            const char *sql_stmt =
-            "CREATE TABLE IF NOT EXISTS CHECKLISTSBYKEY (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME, PRIORITY, PARENTKEY)";
-            if (sqlite3_exec(_checklistDB, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK)
+            if([filemgr copyItemAtPath:distributedDB toPath:_databasePath error:&error])
             {
-                //_status.text = @"Failed to create table";
+                NSLog(@"%@", @"file copied");
+//                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"file copied"
+//                    message:  [NSString stringWithFormat: @"%@", _databasePath]
+//                                                               delegate:self
+//                                                      cancelButtonTitle:@"OK"
+//                                                      otherButtonTitles:nil];
+//                [alert show];
             }
-            sqlite3_close(_checklistDB);
+            else
+            {
+                NSLog(@"%@", error);
+            }
         }
         else
-        {
-            //    _status.text = @"Failed to open/create database";
-        }
+        { NSLog(@"%@", @"distributed file not found");}
+        
+        
+//        const char *dbpath = [_databasePath UTF8String];
+//        if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
+//        {
+//            char *errMsg;
+//            const char *sql_stmt =
+//            "CREATE TABLE IF NOT EXISTS CHECKLISTSBYKEY (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME, PRIORITY, PARENTKEY)";
+//            if (sqlite3_exec(_checklistDB, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK)
+//            {
+//                //_status.text = @"Failed to create table";
+//            }
+//            sqlite3_close(_checklistDB);
+//        }
+//        else
+//        {
+//            //    _status.text = @"Failed to open/create database";
+//        }
     }
 
     
@@ -795,12 +824,7 @@ if (self.suspendSpeechCommands == NO)
             sqlite3_close(_checklistDB);
 //        }
         
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"check itemkey just added"
-//    message:  [NSString stringWithFormat: @"%ld", item.itemKey]
-//    delegate:self
-//    cancelButtonTitle:@"OK"
-//    otherButtonTitles:nil];
-//    [alert show];
+
         
         // now that we have its itemkey we can add the item to the checklists
         [self.checkListItems addObject:item];
