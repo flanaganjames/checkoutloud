@@ -16,8 +16,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "17249CBE18CC30E600A6C5EF"
                BuildableName = "CoPilot.app"
-               BlueprintName = "CoPilot"
-               ReferencedContainer = "container:CoPilot.xcodeproj">
+               BlueprintName = "Check It Out Loud"
+               ReferencedContainer = "container:Check It Out Loud.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -34,8 +34,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "17249CE218CC30E600A6C5EF"
                BuildableName = "CoPilotTests.xctest"
-               BlueprintName = "CoPilotTests"
-               ReferencedContainer = "container:CoPilot.xcodeproj">
+               BlueprintName = "Check It Out LoudTests"
+               ReferencedContainer = "container:Check It Out Loud.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -44,8 +44,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "17249CBE18CC30E600A6C5EF"
             BuildableName = "CoPilot.app"
-            BlueprintName = "CoPilot"
-            ReferencedContainer = "container:CoPilot.xcodeproj">
+            BlueprintName = "Check It Out Loud"
+            ReferencedContainer = "container:Check It Out Loud.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -63,8 +63,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "17249CBE18CC30E600A6C5EF"
             BuildableName = "CoPilot.app"
-            BlueprintName = "CoPilot"
-            ReferencedContainer = "container:CoPilot.xcodeproj">
+            BlueprintName = "Check It Out Loud"
+            ReferencedContainer = "container:Check It Out Loud.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -81,8 +81,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "17249CBE18CC30E600A6C5EF"
             BuildableName = "CoPilot.app"
-            BlueprintName = "CoPilot"
-            ReferencedContainer = "container:CoPilot.xcodeproj">
+            BlueprintName = "Check It Out Loud"
+            ReferencedContainer = "container:Check It Out Loud.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
