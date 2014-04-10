@@ -687,12 +687,12 @@ if (self.suspendSpeechCommands == NO)
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     // Configure the cell...
     
-    UIImage *image = [UIImage imageNamed:@"icon-Small.png"];
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
-    button.frame = frame;
-    [button setBackgroundImage:image forState:UIControlStateNormal];
-    cell.accessoryView = button;
+//    UIImage *image = [UIImage imageNamed:@"icon-Small.png"];
+//    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+//    CGRect frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
+//    button.frame = frame;
+//    [button setBackgroundImage:image forState:UIControlStateNormal];
+//    cell.accessoryView = button;
     
     CheckListItem *checkItem = [self.checkListItems objectAtIndex:indexPath.row];
 	
@@ -936,13 +936,13 @@ if (self.suspendSpeechCommands == NO)
 - (IBAction)speechCommandToggle:(id)sender
 {
     
-    if ([self.speechCommandButton.currentTitle  isEqual: @"Suspend Speech"])
+    if ([self.speechCommandButton.currentTitle  isEqual: @"Check Out-Loud"])
         {  self.suspendSpeechCommands = YES;
-            [self.speechCommandButton setTitle: @"Activate Speech" forState: UIControlStateNormal];
+            [self.speechCommandButton setTitle: @"Check Quietly" forState: UIControlStateNormal];
         }
     else
         { self.suspendSpeechCommands = NO;
-            [self.speechCommandButton setTitle: @"Suspend Speech" forState: UIControlStateNormal];
+            [self.speechCommandButton setTitle: @"Check Out-Loud" forState: UIControlStateNormal];
         }
 }
 
