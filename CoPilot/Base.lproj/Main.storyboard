@@ -68,9 +68,9 @@
                             </connections>
                         </barButtonItem>
                         <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" id="3Yt-QF-NI1">
-                            <rect key="frame" x="76" y="5" width="168" height="34"/>
+                            <rect key="frame" x="78" y="8" width="164" height="29"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="Check Out-Loud">
+                            <state key="normal" title="Check Out-Loud" image="check-Icon-Small.png">
                                 <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -272,6 +272,7 @@
     </scenes>
     <resources>
         <image name="Icon-Small.png" width="29" height="29"/>
+        <image name="check-Icon-Small.png" width="29" height="29"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

@@ -35,6 +35,7 @@
 		174CC80418F5E40A00D8D8A1 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 174CC80318F5E40A00D8D8A1 /* Icon-Small@2x.png */; };
 		174CC80718F5EF7300D8D8A1 /* CPLTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 174CC80618F5EF7300D8D8A1 /* CPLTableViewCell.m */; };
 		174CC80918F617FA00D8D8A1 /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 174CC80818F617FA00D8D8A1 /* Icon-Small.png */; };
+		17B782B518F75999009FC64C /* check-Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 17B782B418F75999009FC64C /* check-Icon-Small.png */; };
 		17D5714A18D5474300663FAE /* CPLMUDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D5714918D5474300663FAE /* CPLMUDViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -87,6 +88,7 @@
 		174CC80518F5EF7300D8D8A1 /* CPLTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLTableViewCell.h; sourceTree = "<group>"; };
 		174CC80618F5EF7300D8D8A1 /* CPLTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLTableViewCell.m; sourceTree = "<group>"; };
 		174CC80818F617FA00D8D8A1 /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Small.png"; path = "../../Icons/PNG Images/leatherhat/Icon-Small.png"; sourceTree = "<group>"; };
+		17B782B418F75999009FC64C /* check-Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "check-Icon-Small.png"; path = "../../Icons/PNG Images/greencheckmark/check-Icon-Small.png"; sourceTree = "<group>"; };
 		17D5714818D5474300663FAE /* CPLMUDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLMUDViewController.h; sourceTree = "<group>"; };
 		17D5714918D5474300663FAE /* CPLMUDViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLMUDViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -184,6 +186,7 @@
 		17249CC918CC30E600A6C5EF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				17B782B418F75999009FC64C /* check-Icon-Small.png */,
 				174CC80818F617FA00D8D8A1 /* Icon-Small.png */,
 				174CC80318F5E40A00D8D8A1 /* Icon-Small@2x.png */,
 				17249CCA18CC30E600A6C5EF /* CheckOutLoud-Info.plist */,
@@ -315,6 +318,7 @@
 				17249CCD18CC30E600A6C5EF /* InfoPlist.strings in Resources */,
 				17249CD618CC30E600A6C5EF /* Main.storyboard in Resources */,
 				174CC80418F5E40A00D8D8A1 /* Icon-Small@2x.png in Resources */,
+				17B782B518F75999009FC64C /* check-Icon-Small.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
