@@ -131,10 +131,8 @@ if (self.suspendSpeechCommands == NO)
         
         if ([hypothesis  isEqual: @"READ LIST"])
         {
-            if (![self.listParent isEqual: @"MASTER LIST"])
-            {
-                [self.readListButton setTitle: @"Check" forState: UIControlStateNormal];
-            }
+            [self cellreloader];
+            [self.readListButton setTitle: @"Check" forState: UIControlStateNormal];
             self.currentrow = 0;
             [self readCurrent];
         }
@@ -1063,12 +1061,7 @@ if (self.suspendSpeechCommands == NO)
 
     
 - (IBAction)readListButton:(id)sender {
-    if ([self.readListButton.currentTitle  isEqual: @"Read List"])
-    {   [self cellreloader];
-        [self.readListButton setTitle: @"Check" forState: UIControlStateNormal];
-        self.currentrow = 0;
-        [self readCurrent];
-    }
+
     if ([self.readListButton.currentTitle  isEqual: @"Check"])
     {
         if (self.currentrow < [self.currentcells count] - 1)
@@ -1095,7 +1088,13 @@ if (self.suspendSpeechCommands == NO)
             [self.fliteController say:@"List Ended" withVoice:self.slt];
         }
     }
-
+    
+    if ([self.readListButton.currentTitle  isEqual: @"Read List"])
+    {   [self cellreloader];
+        [self.readListButton setTitle: @"Check" forState: UIControlStateNormal];
+        self.currentrow = 0;
+        [self readCurrent];
+    }
 }
 
 
