@@ -634,7 +634,7 @@ if (self.suspendSpeechCommands == NO)
     [self.openEarsEventsObserver setDelegate:self];
     
     
-    [self.fliteController say:@"CHECK IT OUT LOUD, WELCOME" withVoice:self.slt];
+    [self.fliteController say:@"CHECK OUT LOUD, WELCOME" withVoice:self.slt];
 
 //    [self.fliteController say:@"Hey Boss.  Another day, another dollar." withVoice:self.kal];
     
@@ -686,6 +686,13 @@ if (self.suspendSpeechCommands == NO)
     static NSString *CellIdentifier = @"CheckListCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     // Configure the cell...
+    
+    UIImage *image = [UIImage imageNamed:@"icon-Small.png"];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    CGRect frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
+    button.frame = frame;
+    [button setBackgroundImage:image forState:UIControlStateNormal];
+    cell.accessoryView = button;
     
     CheckListItem *checkItem = [self.checkListItems objectAtIndex:indexPath.row];
 	
