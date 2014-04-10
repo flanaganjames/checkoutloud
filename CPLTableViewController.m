@@ -67,7 +67,7 @@
 
 if (self.suspendSpeechCommands == NO)
 {
-    if ([self.readListButton.currentTitle  isEqual: @"Read List"])
+    if ([self.readListButton.currentTitle  isEqual: @"Choose List"])
     {// in this mode reading a list member's name drills down to its children,, if any
         NSArray *cells = self.currentcells;
         NSArray *visible = self.currentcellpaths;
@@ -88,11 +88,52 @@ if (self.suspendSpeechCommands == NO)
              }
          }];
         
+        if ([hypothesis  isEqual: @"RETURN"])
+        {
+            if (![self.listParent isEqual: @"MASTER LIST"]) //
+            {
+                self.listParent = self.listGrandParent;
+                [self.fliteController say:self.listParent withVoice:self.slt];
+                self.listParentKey = self.listGrandParentKey;
+                [self getGrandParent];
+                self.listLabel.text = self.listParent;
+                [self loadCurrentParentList];
+                [self cellreloader]; //[self.tableView reloadData];
+                [self loadSpeechCommands];
+                [self loadLanguageSet];
+                [self changelanguageset]; //changes to the recreated language model
+                [self.readListButton setTitle: @"Choose List" forState: UIControlStateNormal];
+
+            }
+        }
+    }// end if readlistbutton is "Read List"
+    
+    if ([self.readListButton.currentTitle  isEqual: @"Read List"])
+    {// in this mode reading a list member's name drills down to its children,, if any
+        NSArray *cells = self.currentcells;
+        NSArray *visible = self.currentcellpaths;
+        
+        [cells enumerateObjectsUsingBlock:^(UITableViewCell *cell,
+                                            NSUInteger idx,
+                                            BOOL *stop)
+         {
+             if ([hypothesis  isEqual: cell.textLabel.text])
+             {
+                 
+                 NSIndexPath* index = visible[idx];
+                 
+                 [self.tableView selectRowAtIndexPath:index animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
+                 
+                 [self respondSelectRow];
+                 
+             }
+         }];
+        
         if ([hypothesis  isEqual: @"READ LIST"])
         {
             if (![self.listParent isEqual: @"MASTER LIST"])
             {
-            [self.readListButton setTitle: @"Check" forState: UIControlStateNormal];
+                [self.readListButton setTitle: @"Check" forState: UIControlStateNormal];
             }
             self.currentrow = 0;
             [self readCurrent];
@@ -125,12 +166,14 @@ if (self.suspendSpeechCommands == NO)
                 [self loadSpeechCommands];
                 [self loadLanguageSet];
                 [self changelanguageset]; //changes to the recreated language model
-                [self.readListButton setTitle: @"Read List" forState: UIControlStateNormal];
-
+                [self.readListButton setTitle: @"Choose List" forState: UIControlStateNormal];
+                
             }
         }
     }// end if readlistbutton is "Read List"
-    else  // readListButton is "Check
+    
+    
+    if ([self.readListButton.currentTitle  isEqual: @"Check"])
     {   CheckListItem *item = self.checkListItems[self.currentrow];
         [self.tableView selectRowAtIndexPath:self.currentcellpaths[self.currentrow ] animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
         NSString *text = item.itemName;
@@ -184,7 +227,7 @@ if (self.suspendSpeechCommands == NO)
                 [self loadSpeechCommands];
                 [self loadLanguageSet];
                 [self changelanguageset]; //changes to the recreated language model
-                [self.readListButton setTitle: @"Read List" forState: UIControlStateNormal];
+                [self.readListButton setTitle: @"Choose List" forState: UIControlStateNormal];
                 
             }
         }
@@ -958,7 +1001,7 @@ if (self.suspendSpeechCommands == NO)
         [self loadSpeechCommands];
         [self loadLanguageSet];
         [self changelanguageset]; //changes to the recreated language model
-        [self.readListButton setTitle: @"Read List" forState: UIControlStateNormal];
+        [self.readListButton setTitle: @"Choose List" forState: UIControlStateNormal];
     }
 }
 
@@ -1026,7 +1069,7 @@ if (self.suspendSpeechCommands == NO)
         self.currentrow = 0;
         [self readCurrent];
     }
-    else
+    if ([self.readListButton.currentTitle  isEqual: @"Check"])
     {
         if (self.currentrow < [self.currentcells count] - 1)
         {
