@@ -176,7 +176,7 @@ if (self.suspendSpeechCommands == NO)
         [self.tableView selectRowAtIndexPath:self.currentcellpaths[self.currentrow ] animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
         NSString *text = item.itemName;
         
-        if ([hypothesis  isEqual: text] | [hypothesis  isEqual: @"CONSIDER IT DONE"])
+        if ([hypothesis  isEqual: text] | [hypothesis  isEqual: @"CONSIDER IT DONE"] |[hypothesis  isEqual: @"GOOD TO GO"])
         {
             if (self.currentrow < [self.currentcells count] - 1)
             {
@@ -205,7 +205,7 @@ if (self.suspendSpeechCommands == NO)
         if ([hypothesis  isEqual: @"CHECK"] | [hypothesis  isEqual: @"NEXT"]| [hypothesis  isEqual: @"OK"] | [hypothesis  isEqual: @"DONE"])
         {
             NSString *saythis =  [NSString stringWithFormat:
-             @"Please repeat item   '%@'   to mark it as done, or say Consider it Done ", text];
+             @"Please repeat item   '%@'   to mark it as done, or say GOOD TO GO ", text];
             
              // tell user that they must repeat the list item to mark it as checked
              [self.fliteController say: saythis withVoice:self.slt];
