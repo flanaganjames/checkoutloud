@@ -102,7 +102,10 @@ if (self.suspendSpeechCommands == NO)
                 [self loadSpeechCommands];
                 [self loadLanguageSet];
                 [self changelanguageset]; //changes to the recreated language model
-                [self.readListButton setTitle: @"Choose List" forState: UIControlStateNormal];
+                if ([self.listParent isEqual: @"MASTER LIST"])
+                {
+                    [self.readListButton setTitle: @"Choose List" forState: UIControlStateNormal];
+                }
 
             }
         }
@@ -164,7 +167,10 @@ if (self.suspendSpeechCommands == NO)
                 [self loadSpeechCommands];
                 [self loadLanguageSet];
                 [self changelanguageset]; //changes to the recreated language model
-                [self.readListButton setTitle: @"Choose List" forState: UIControlStateNormal];
+                if ([self.listParent isEqual: @"MASTER LIST"])
+                {
+                    [self.readListButton setTitle: @"Choose List" forState: UIControlStateNormal];
+                }
                 
             }
         }
@@ -176,7 +182,7 @@ if (self.suspendSpeechCommands == NO)
         [self.tableView selectRowAtIndexPath:self.currentcellpaths[self.currentrow ] animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
         NSString *text = item.itemName;
         
-        if ([hypothesis  isEqual: text] | [hypothesis  isEqual: @"CONSIDER IT DONE"] |[hypothesis  isEqual: @"GOOD TO GO"])
+        if ([hypothesis  isEqual: text] | [hypothesis  isEqual: @"CONSIDER IT DONE"] |[hypothesis  isEqual: @"CHECK"])
         {
             if (self.currentrow < [self.currentcells count] - 1)
             {
@@ -202,10 +208,10 @@ if (self.suspendSpeechCommands == NO)
             }
         }
         
-        if ([hypothesis  isEqual: @"CHECK"] | [hypothesis  isEqual: @"NEXT"]| [hypothesis  isEqual: @"OK"] | [hypothesis  isEqual: @"DONE"])
+        if ([hypothesis  isEqual: @"NEXT"]| [hypothesis  isEqual: @"OK"] | [hypothesis  isEqual: @"DONE"])
         {
             NSString *saythis =  [NSString stringWithFormat:
-             @"Please repeat item   '%@'   to mark it as done, or say GOOD TO GO ", text];
+             @"Please repeat item   '%@'   to mark it as done, or say CONSIDER IT DONE ", text];
             
              // tell user that they must repeat the list item to mark it as checked
              [self.fliteController say: saythis withVoice:self.slt];
@@ -225,8 +231,10 @@ if (self.suspendSpeechCommands == NO)
                 [self loadSpeechCommands];
                 [self loadLanguageSet];
                 [self changelanguageset]; //changes to the recreated language model
-                [self.readListButton setTitle: @"Choose List" forState: UIControlStateNormal];
-                
+                if ([self.listParent isEqual: @"MASTER LIST"])
+                {
+                    [self.readListButton setTitle: @"Choose List" forState: UIControlStateNormal];
+                }
             }
         }
         
@@ -999,7 +1007,10 @@ if (self.suspendSpeechCommands == NO)
         [self loadSpeechCommands];
         [self loadLanguageSet];
         [self changelanguageset]; //changes to the recreated language model
-        [self.readListButton setTitle: @"Choose List" forState: UIControlStateNormal];
+        if ([self.listParent isEqual: @"MASTER LIST"])
+        {
+            [self.readListButton setTitle: @"Choose List" forState: UIControlStateNormal];
+        }
     }
 }
 
