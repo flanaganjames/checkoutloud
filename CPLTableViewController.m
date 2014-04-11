@@ -205,7 +205,7 @@ if (self.suspendSpeechCommands == NO)
         if ([hypothesis  isEqual: @"CHECK"] | [hypothesis  isEqual: @"NEXT"]| [hypothesis  isEqual: @"OK"] | [hypothesis  isEqual: @"DONE"])
         {
             NSString *saythis =  [NSString stringWithFormat:
-             @"Please repeat item   '%@'   to mark it as done ", text];
+             @"Please repeat item   '%@'   to mark it as done, or say Consider it Done ", text];
             
              // tell user that they must repeat the list item to mark it as checked
              [self.fliteController say: saythis withVoice:self.slt];
