@@ -748,6 +748,7 @@ if (self.suspendSpeechCommands == NO)
 	
 	cell.textLabel.text = checkItem.itemName;
     cell.accessoryType = UITableViewCellAccessoryDetailButton;
+    cell.textLabel.font = [UIFont systemFontOfSize:14.0];
     
     return cell;
     
