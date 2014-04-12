@@ -110,7 +110,7 @@ if (self.suspendSpeechCommands == NO)
 
             }
         }
-    }// end if readlistbutton is "Read List"
+    }// end if readlistbutton is "Tap or Say List Name"
     
     if ([self.readListButton.currentTitle  isEqual: @"Tap or Say Read List"] | [self.readListButton.currentTitle  isEqual: @"Tap To Read List"])
     {// in this mode reading a list member's name drills down to its children,, if any
@@ -388,13 +388,6 @@ if (self.suspendSpeechCommands == NO)
             {
                 long taskkey = sqlite3_column_int(statement, 0);
 
-//    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"find DIRECT descendents WITH Key"
-//        message:[NSString stringWithFormat: @"%ld", taskkey]
-//                                                     delegate:nil
-//                                            cancelButtonTitle:@"OK"
-//                                            otherButtonTitles:nil];
-//    [message show];
-
             [self.unchecked_descendants addObject:[NSNumber numberWithInt:(taskkey)]];
             }
             sqlite3_finalize(statement);
@@ -404,13 +397,6 @@ if (self.suspendSpeechCommands == NO)
     
     while ([self.unchecked_descendants count] > 0) {
     long aKey = [self.unchecked_descendants[0] longValue];
-    
-//UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"indirect descendents of key "
-//    message:[NSString stringWithFormat: @"%ld", aKey]
-//                                                 delegate:nil
-//                                        cancelButtonTitle:@"OK"
-//                                        otherButtonTitles:nil];
-//[message show];
         
         const char *dbpath = [_databasePath UTF8String];
         sqlite3_stmt    *statement;
@@ -1141,9 +1127,18 @@ if (self.suspendSpeechCommands == NO)
             cell.accessoryType = UITableViewCellAccessoryCheckmark; //sets visible checkmark
             //also need to add a property to checklistitems indicating their checked status
             
-            [self.readListButton setTitle: @"Read List" forState: UIControlStateNormal];
+            if (self.suspendSpeechCommands == NO)
+            {
+                [self.readListButton setTitle: @"Tap or Say Read List" forState: UIControlStateNormal];
+
+            }
+            else
+            {
+                [self.readListButton setTitle: @"Tap To Read List" forState: UIControlStateNormal];
+            }
             [self.fliteController say:@"List Ended" withVoice:self.slt];
         }
+        return;
     }
     
     if ([self.readListButton.currentTitle  isEqual: @"Tap To Read List"] | [self.readListButton.currentTitle  isEqual: @"Tap or Say Read List"])
@@ -1154,6 +1149,12 @@ if (self.suspendSpeechCommands == NO)
     }
 }
 
+//UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"last item"
+//    message:[NSString stringWithFormat: @"%@", [self.readListButton currentTitle]]
+//                                                 delegate:nil
+//                                        cancelButtonTitle:@"OK"
+//                                        otherButtonTitles:nil];
+//[message show];
 
 - (void) cellreloader
 {
