@@ -105,7 +105,7 @@ if (self.suspendSpeechCommands == NO)
                 if ([self.listParent isEqual: @"MASTER LIST"])
                 {
                     [self.readListButton setTitle: @"Tap or Say List Name" forState: UIControlStateNormal];
-
+                    self.backToParentButton.title = @"Read Me";
                 }
 
             }
@@ -113,7 +113,7 @@ if (self.suspendSpeechCommands == NO)
     }// end if readlistbutton is "Tap or Say List Name"
     
     if ([self.readListButton.currentTitle  isEqual: @"Tap or Say Read List"] | [self.readListButton.currentTitle  isEqual: @"Tap To Read List"])
-    {// in this mode reading a list member's name drills down to its children,, if any
+    {
         NSArray *cells = self.currentcells;
         NSArray *visible = self.currentcellpaths;
         
@@ -169,7 +169,8 @@ if (self.suspendSpeechCommands == NO)
                 [self loadLanguageSet];
                 [self changelanguageset]; //changes to the recreated language model
                 if ([self.listParent isEqual: @"MASTER LIST"])
-                {  if (self.suspendSpeechCommands == NO)
+                {  self.backToParentButton.title = @"Read Me";
+                    if (self.suspendSpeechCommands == NO)
                     {
                     [self.readListButton setTitle: @"Tap or Say List Name" forState: UIControlStateNormal];
                     }
@@ -179,7 +180,7 @@ if (self.suspendSpeechCommands == NO)
                 }
             }
         }
-    }// end if readlistbutton is "Read List"
+    }// end if readlistbutton is "Tap or Say Read List"
     
     
     if ([self.readListButton.currentTitle  isEqual: @"Check"])
@@ -238,7 +239,7 @@ if (self.suspendSpeechCommands == NO)
                 [self loadLanguageSet];
                 [self changelanguageset]; //changes to the recreated language model
                 if ([self.listParent isEqual: @"MASTER LIST"])
-                {
+                { self.backToParentButton.title = @"Read Me";
                     [self.readListButton setTitle: @"Tap or Say List Name" forState: UIControlStateNormal];
                 }
             }
@@ -1157,7 +1158,7 @@ if (self.suspendSpeechCommands == NO)
 -(void) showReadMe
 {
 UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Disclaimer/Instructions"
-    message:[NSString stringWithFormat: @"%C Modify this checklist to suit ( icons \"+\" and \"info\").  Not intended to replace any other required checklist.\n %C First level is a list of lists. Deeper levels can be read to you and checked. Don't expect anything fancy between levels.\n %C Use voice to choose list, command to read, respond (say: \"check\", \"affirmative\"), and return. Voice commands can be disabled when ambient noise causes unwanted results (tap \"Check Out Loud\").\n %C Recognition depends on terms used. Experiment but use upper case. A future version may use a better engine.\n %C No use (not aviation, not automotive, not etc.) has been approved by any regulatory body. Your use is at your own risk.", (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022]
+    message:[NSString stringWithFormat: @"%C Modify this checklist to suit ( icons \"+\" and \"info\").  Not intended to replace any other required checklist.\n %C First level is a list of lists. Deeper levels can be read to you and checked. Does not track checked status between levels.\n %C Use voice to choose list, command to read, respond (say: \"check\", \"affirmative\"), and return. Voice commands can be disabled when ambient noise causes unwanted results (tap \"Check Out Loud\").\n %C Recognition depends on terms used. Experiment but use upper case. Slow response may be addressed in a future version with another engine.\n %C No use (not aviation, not automotive, not etc.) has been approved by any regulatory body. Your use is at your own risk.", (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022]
     delegate:nil
     cancelButtonTitle:@"OK"
     otherButtonTitles:nil];
