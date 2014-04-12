@@ -484,6 +484,8 @@ if (self.suspendSpeechCommands == NO)
     long row = [myIndexPath row];
     CheckListItem *item  = self.checkListItems[row];
     
+    self.backToParentButton.title = @"Return";
+    
     self.listGrandParent = self.listParent;
     self.listGrandParentKey = self.listParentKey;
     self.listParent = item.itemName;
@@ -591,6 +593,7 @@ if (self.suspendSpeechCommands == NO)
     [super viewDidLoad];
     
     self.suspendSpeechCommands = NO;
+    self.backToParentButton.title = @"Read Me";
 
     self.checkListItems = [[NSMutableArray alloc] init];
     self.speechCommands = [[NSMutableArray alloc] init];
@@ -1034,7 +1037,7 @@ if (self.suspendSpeechCommands == NO)
         [self loadLanguageSet];
         [self changelanguageset]; //changes to the recreated language model
         if ([self.listParent isEqual: @"MASTER LIST"])
-        {
+        { self.backToParentButton.title = @"Read Me";
             if (self.suspendSpeechCommands == NO)
             {
             [self.readListButton setTitle: @"Tap or Say List Name" forState: UIControlStateNormal];
@@ -1044,6 +1047,8 @@ if (self.suspendSpeechCommands == NO)
             }
         }
     }
+    else
+    {[self showReadMe];}
 }
 
 //the following cannot be done for MASTER LIST which has no parent
@@ -1149,8 +1154,20 @@ if (self.suspendSpeechCommands == NO)
     }
 }
 
+-(void) showReadMe
+{
+UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Disclaimer/Instructions"
+    message:[NSString stringWithFormat: @"%C Modify this checklist to suit your need (use icons \"+\" and \"info\").  This is an aid and not intended to replace any other required checklist. First level is a list of lists. Second and deeper levels can be read to you and checked. You may have additional levels but don't expect anything fancy between levels.\n %C Use voice to choose list, command to read, and respond (say: \"check\", \"affirmative\"). You can also navigate and respond by tap.  Voice commands can be disabled when ambient noise causes unwanted results (tap \"Check Out Loud\").\n %C This may possibly suit any hands-free use of checklists.  No use (not aviation, not automotive, not etc.) has been approved by any regulatory body. Your use is at your own risk.", (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022]
+    delegate:nil
+    cancelButtonTitle:@"OK"
+    otherButtonTitles:nil];
+[message show];
+    
+}
+
 //UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"last item"
-//    message:[NSString stringWithFormat: @"%@", [self.readListButton currentTitle]]
+//    message:[NSString stringWithFormat: @"%C line 1.\n %C line 2,\n %C line 3", (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022]
+//                        
 //                                                 delegate:nil
 //                                        cancelButtonTitle:@"OK"
 //                                        otherButtonTitles:nil];
