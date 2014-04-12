@@ -22,7 +22,7 @@
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="EAc-pg-uHQ">
                             <rect key="frame" x="0.0" y="174" width="320" height="29"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="Choose List" image="Icon-Small.png">
+                            <state key="normal" title="Tap or Say List Name" image="Icon-Small.png">
                                 <color key="titleColor" red="0.47450980390000003" green="0.050889933259999999" blue="0.13224602790000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -68,9 +68,9 @@
                             </connections>
                         </barButtonItem>
                         <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" id="3Yt-QF-NI1">
-                            <rect key="frame" x="78" y="8" width="164" height="29"/>
+                            <rect key="frame" x="79" y="8" width="162" height="29"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="Check Out-Loud" image="check-Icon-Small.png">
+                            <state key="normal" title="Check Out Loud" image="check-Icon-Small.png">
                                 <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>

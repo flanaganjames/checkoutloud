@@ -67,7 +67,7 @@
 
 if (self.suspendSpeechCommands == NO)
 {
-    if ([self.readListButton.currentTitle  isEqual: @"Choose List"])
+    if ([self.readListButton.currentTitle  isEqual: @"Tap or Say List Name"])
     {// in this mode reading a list member's name drills down to its children,, if any
         NSArray *cells = self.currentcells;
         NSArray *visible = self.currentcellpaths;
@@ -104,14 +104,15 @@ if (self.suspendSpeechCommands == NO)
                 [self changelanguageset]; //changes to the recreated language model
                 if ([self.listParent isEqual: @"MASTER LIST"])
                 {
-                    [self.readListButton setTitle: @"Choose List" forState: UIControlStateNormal];
+                    [self.readListButton setTitle: @"Tap or Say List Name" forState: UIControlStateNormal];
+
                 }
 
             }
         }
     }// end if readlistbutton is "Read List"
     
-    if ([self.readListButton.currentTitle  isEqual: @"Read List"])
+    if ([self.readListButton.currentTitle  isEqual: @"Tap or Say Read List"] | [self.readListButton.currentTitle  isEqual: @"Tap Read List"])
     {// in this mode reading a list member's name drills down to its children,, if any
         NSArray *cells = self.currentcells;
         NSArray *visible = self.currentcellpaths;
@@ -168,10 +169,14 @@ if (self.suspendSpeechCommands == NO)
                 [self loadLanguageSet];
                 [self changelanguageset]; //changes to the recreated language model
                 if ([self.listParent isEqual: @"MASTER LIST"])
-                {
-                    [self.readListButton setTitle: @"Choose List" forState: UIControlStateNormal];
+                {  if (self.suspendSpeechCommands == NO)
+                    {
+                    [self.readListButton setTitle: @"Tap or Say List Name" forState: UIControlStateNormal];
+                    }
+                    else
+                    {[self.readListButton setTitle: @"Tap List Name" forState: UIControlStateNormal];
+                    }
                 }
-                
             }
         }
     }// end if readlistbutton is "Read List"
@@ -182,7 +187,7 @@ if (self.suspendSpeechCommands == NO)
         [self.tableView selectRowAtIndexPath:self.currentcellpaths[self.currentrow ] animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
         NSString *text = item.itemName;
         
-        if ([hypothesis  isEqual: text] | [hypothesis  isEqual: @"CONSIDER IT DONE"] |[hypothesis  isEqual: @"CHECK"])
+        if ([hypothesis  isEqual: text] | [hypothesis  isEqual: @"CONSIDER IT DONE"] |[hypothesis  isEqual: @"CHECK"] |[hypothesis  isEqual: @"AFFIRMATIVE"])
         {
             if (self.currentrow < [self.currentcells count] - 1)
             {
@@ -203,7 +208,8 @@ if (self.suspendSpeechCommands == NO)
                 cell.accessoryType = UITableViewCellAccessoryCheckmark; //sets visible checkmark
                 //also need to add a property to checklistitems indicating their checked status
                 
-                [self.readListButton setTitle: @"Read List" forState: UIControlStateNormal];
+                [self.readListButton setTitle: @"Tap or Say Read List" forState: UIControlStateNormal];
+                
                 [self.fliteController say:@"List Ended" withVoice:self.slt];
             }
         }
@@ -211,7 +217,7 @@ if (self.suspendSpeechCommands == NO)
         if ([hypothesis  isEqual: @"NEXT"]| [hypothesis  isEqual: @"OK"] | [hypothesis  isEqual: @"DONE"])
         {
             NSString *saythis =  [NSString stringWithFormat:
-             @"Please repeat item   '%@'   to mark it as done, or say CONSIDER IT DONE ", text];
+             @"Please repeat item   '%@'   to mark it as done, or say affirmative ", text];
             
              // tell user that they must repeat the list item to mark it as checked
              [self.fliteController say: saythis withVoice:self.slt];
@@ -233,7 +239,7 @@ if (self.suspendSpeechCommands == NO)
                 [self changelanguageset]; //changes to the recreated language model
                 if ([self.listParent isEqual: @"MASTER LIST"])
                 {
-                    [self.readListButton setTitle: @"Choose List" forState: UIControlStateNormal];
+                    [self.readListButton setTitle: @"Tap or Say List Name" forState: UIControlStateNormal];
                 }
             }
         }
@@ -450,6 +456,7 @@ if (self.suspendSpeechCommands == NO)
     [self.speechCommands addObject:@"NEXT"];
     [self.speechCommands addObject:@"DONE"];
     [self.speechCommands addObject:@"CONSIDER IT DONE"];
+    [self.speechCommands addObject:@"AFFIRMATIVE"];
 
 //commands for items in all checklists
     const char *dbpath = [_databasePath UTF8String];
@@ -502,7 +509,17 @@ if (self.suspendSpeechCommands == NO)
     [self loadLanguageSet];
     [self changelanguageset]; //changes to the recreated language model
     [self.fliteController say:self.listParent withVoice:self.slt];
-    [self.readListButton setTitle: @"Read List" forState: UIControlStateNormal];
+    
+    if (self.suspendSpeechCommands == NO)
+    {
+        [self.readListButton setTitle: @"Tap or Say Read List" forState: UIControlStateNormal];
+    }
+    else
+    {[self.readListButton setTitle: @"Tap Read List" forState: UIControlStateNormal];
+    }
+    
+    
+//    [self.fliteController say:@"SAY OR TAP READ LIST" withVoice:self.slt];
 }
 
 
@@ -683,7 +700,8 @@ if (self.suspendSpeechCommands == NO)
     [self.openEarsEventsObserver setDelegate:self];
     
     
-    [self.fliteController say:@"CHECK OUT LOUD, WELCOME" withVoice:self.slt];
+    [self.fliteController say:@"WELCOME TO CHECK OUT LOUD" withVoice:self.slt];
+    [self.fliteController say:@"SAY A LIST NAME" withVoice:self.slt];
 
 //    [self.fliteController say:@"Hey Boss.  Another day, another dollar." withVoice:self.kal];
     
@@ -748,7 +766,7 @@ if (self.suspendSpeechCommands == NO)
 	
 	cell.textLabel.text = checkItem.itemName;
     cell.accessoryType = UITableViewCellAccessoryDetailButton;
-    cell.textLabel.font = [UIFont systemFontOfSize:14.0];
+    cell.textLabel.font = [UIFont systemFontOfSize:16.0];
     
     return cell;
     
@@ -987,13 +1005,35 @@ if (self.suspendSpeechCommands == NO)
 - (IBAction)speechCommandToggle:(id)sender
 {
     
-    if ([self.speechCommandButton.currentTitle  isEqual: @"Check Out-Loud"])
+    if ([self.speechCommandButton.currentTitle  isEqual: @"Check Out Loud"])
         {  self.suspendSpeechCommands = YES;
-            [self.speechCommandButton setTitle: @"Check Quietly" forState: UIControlStateNormal];
+            [self.speechCommandButton setTitle: @"Tap to Check" forState: UIControlStateNormal];
+            if ([self.listParent isEqual: @"MASTER LIST"])
+            {
+            [self.readListButton setTitle: @"Tap List Name" forState: UIControlStateNormal];
+            }
+            else
+            {
+                if (![self.readListButton.currentTitle isEqual: @"Check"])
+                {
+                [self.readListButton setTitle: @"Tap Read List" forState: UIControlStateNormal];
+                }
+            }
         }
     else
         { self.suspendSpeechCommands = NO;
-            [self.speechCommandButton setTitle: @"Check Out-Loud" forState: UIControlStateNormal];
+            [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
+            if ([self.listParent isEqual: @"MASTER LIST"])
+            {
+            [self.readListButton setTitle: @"Tap or Say List Name" forState: UIControlStateNormal];
+            }
+            else
+            {
+                if (![self.readListButton.currentTitle isEqual: @"Check"])
+                {
+                    [self.readListButton setTitle: @"Tap or Say Read List" forState: UIControlStateNormal];
+                }
+            }
         }
 }
 
@@ -1011,7 +1051,13 @@ if (self.suspendSpeechCommands == NO)
         [self changelanguageset]; //changes to the recreated language model
         if ([self.listParent isEqual: @"MASTER LIST"])
         {
-            [self.readListButton setTitle: @"Choose List" forState: UIControlStateNormal];
+            if (self.suspendSpeechCommands == NO)
+            {
+            [self.readListButton setTitle: @"Tap or Say List Name" forState: UIControlStateNormal];
+            }
+            else
+            {[self.readListButton setTitle: @"Tap List Name" forState: UIControlStateNormal];
+            }
         }
     }
 }
@@ -1102,7 +1148,7 @@ if (self.suspendSpeechCommands == NO)
         }
     }
     
-    if ([self.readListButton.currentTitle  isEqual: @"Read List"])
+    if ([self.readListButton.currentTitle  isEqual: @"Tap Read List"] | [self.readListButton.currentTitle  isEqual: @"Tap or Say Read List"])
     {   [self cellreloader];
         [self.readListButton setTitle: @"Check" forState: UIControlStateNormal];
         self.currentrow = 0;
