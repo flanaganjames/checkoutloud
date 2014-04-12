@@ -112,7 +112,7 @@ if (self.suspendSpeechCommands == NO)
         }
     }// end if readlistbutton is "Read List"
     
-    if ([self.readListButton.currentTitle  isEqual: @"Tap or Say Read List"] | [self.readListButton.currentTitle  isEqual: @"Tap Read List"])
+    if ([self.readListButton.currentTitle  isEqual: @"Tap or Say Read List"] | [self.readListButton.currentTitle  isEqual: @"Tap To Read List"])
     {// in this mode reading a list member's name drills down to its children,, if any
         NSArray *cells = self.currentcells;
         NSArray *visible = self.currentcellpaths;
@@ -515,11 +515,9 @@ if (self.suspendSpeechCommands == NO)
         [self.readListButton setTitle: @"Tap or Say Read List" forState: UIControlStateNormal];
     }
     else
-    {[self.readListButton setTitle: @"Tap Read List" forState: UIControlStateNormal];
+    {[self.readListButton setTitle: @"Tap To Read List" forState: UIControlStateNormal];
     }
     
-    
-//    [self.fliteController say:@"SAY OR TAP READ LIST" withVoice:self.slt];
 }
 
 
@@ -1016,7 +1014,7 @@ if (self.suspendSpeechCommands == NO)
             {
                 if (![self.readListButton.currentTitle isEqual: @"Check"])
                 {
-                [self.readListButton setTitle: @"Tap Read List" forState: UIControlStateNormal];
+                [self.readListButton setTitle: @"Tap To Read List" forState: UIControlStateNormal];
                 }
             }
         }
@@ -1148,7 +1146,7 @@ if (self.suspendSpeechCommands == NO)
         }
     }
     
-    if ([self.readListButton.currentTitle  isEqual: @"Tap Read List"] | [self.readListButton.currentTitle  isEqual: @"Tap or Say Read List"])
+    if ([self.readListButton.currentTitle  isEqual: @"Tap To Read List"] | [self.readListButton.currentTitle  isEqual: @"Tap or Say Read List"])
     {   [self cellreloader];
         [self.readListButton setTitle: @"Check" forState: UIControlStateNormal];
         self.currentrow = 0;
