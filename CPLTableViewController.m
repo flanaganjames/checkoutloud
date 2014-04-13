@@ -1162,7 +1162,7 @@ CustomIOS7AlertView *alert = [[CustomIOS7AlertView alloc] init];
 
 
     
-NSString *message = [NSString stringWithFormat:@"%C Modify this checklist to suit using icons \"+\" and \"info\".  Not intended to replace any other required checklist.\n %C Master List is a list of lists. Deeper levels can be read aloud to you and checked by voice or by tap. Does not record checked status after navigating between levels.\n %C From Master List say a list name, from there command to \"read list\", respond by saying \"check\" or \"affirmative\", and say \"return\" to Master List. When ambient noise causes unwanted results voice commands can be disabled by tapping \"Check Out Loud\".\n %C Speech recognition accuracy depends on terms used. Slow response may be addressed in a future version with another engine.\n %C No use (aviation, automotive, etc.) has been approved. Use wisely and at your own risk.", (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022 ];
+NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n\n%C Modify this checklist to suit using icons \"+\" and \"info\".  Not intended to replace any other required checklist.\n%CMaster List is a list of lists. Deeper levels can be created to any depth.\n%CDeeper lists can be read aloud to you and checked by voice or by tap. Does not record/recall checked status after navigating between levels.\n%CFrom Master List say a list name; \nfrom there command to \"read list\"; \nrespond by saying \"check\" or \"affirmative\" or repeat item name; \nsay \"return\" to go to previous level.\n%CWhen ambient noise causes unwanted results, voice commands can be disabled: tap \"Check Out Loud\".\n%CSpeech recognition accuracy depends on terms used. Sluggish response may be addressed in a future version with another engine.\n%CNo use (aviation, automotive, etc.) has been approved.\n%CUse wisely and at your own risk.", (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022  ];
     
 [alert setContainerView:[self createAlertView:message]];
 
@@ -1172,31 +1172,19 @@ NSString *message = [NSString stringWithFormat:@"%C Modify this checklist to sui
 
 - (UIView *)createAlertView:(NSString *)msg
 {
-    UIView *demoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 100)];
+    UIView *demoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 450)];
     demoView.layer.cornerRadius = 8.0f;
     demoView.layer.masksToBounds = YES;
     demoView.backgroundColor = [UIColor whiteColor];
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 280, 30)];
-    title.text = @"Instructions / Disclaimers";
-    title.textColor = [UIColor blackColor];
-    title.backgroundColor = [UIColor clearColor];
-    title.font =  [UIFont fontWithName:@"verdana" size:14];
-    title.numberOfLines = 0;
-    [demoView addSubview:title];
-    UIButton *btn=[UIButton buttonWithType:UIButtonTypeCustom];
-    btn.frame= CGRectMake(20,50,38,30);
-    [btn setImage:[UIImage imageNamed:@"circle-checked.png"] forState:UIControlStateNormal];
-    [btn addTarget:self action:@selector(toggleMe:) forControlEvents:UIControlEventTouchUpInside];
-    btn.backgroundColor = [UIColor clearColor];
-    [demoView  addSubview:btn];
-    UILabel *lblShare= [[UILabel alloc] initWithFrame:CGRectMake(70, 50, 190, 30)];
-    lblShare.text=msg;
-    lblShare.numberOfLines=20;
-    lblShare.textColor =[UIColor blackColor];
-    lblShare.font=[UIFont fontWithName:@"verdana" size:14];
-    lblShare.textAlignment=UITextAlignmentLeft;
-    lblShare.backgroundColor =[UIColor clearColor];
-    [demoView addSubview:lblShare];
+    
+    
+    UITextView *myTextView = [[UITextView alloc] initWithFrame:CGRectMake(10, 0, 290, 440)];
+    myTextView.text = msg;
+    myTextView.font = [UIFont fontWithName:@"verdana" size:14];
+    //some other setup like setting the font for the UITextView...
+    [demoView addSubview:myTextView];
+    [myTextView sizeToFit];
+    
     return demoView;
 }
 

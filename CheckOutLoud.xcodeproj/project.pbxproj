@@ -37,7 +37,7 @@
 		17D5714A18D5474300663FAE /* CPLMUDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D5714918D5474300663FAE /* CPLMUDViewController.m */; };
 		17DA602F18FA38E4005D2F85 /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 17DA602E18FA38E4005D2F85 /* Icon-Small.png */; };
 		17DA603118FA3902005D2F85 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17DA603018FA3902005D2F85 /* Icon-Small@2x.png */; };
-		17DA605318FAFAB9005D2F85 /* CustomIOS7AlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17DA605218FAFAB9005D2F85 /* CustomIOS7AlertView.m */; };
+		17DA605718FB12FA005D2F85 /* CustomIOS7AlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17DA605618FB12FA005D2F85 /* CustomIOS7AlertView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,8 +92,8 @@
 		17D5714918D5474300663FAE /* CPLMUDViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLMUDViewController.m; sourceTree = "<group>"; };
 		17DA602E18FA38E4005D2F85 /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Small.png"; path = "../../Icons/PNG Images/CheckOutLoud/Icon-Small.png"; sourceTree = "<group>"; };
 		17DA603018FA3902005D2F85 /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Small@2x.png"; path = "../../Icons/PNG Images/CheckOutLoud/Icon-Small@2x.png"; sourceTree = "<group>"; };
-		17DA605118FAFAB9005D2F85 /* CustomIOS7AlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomIOS7AlertView.h; sourceTree = "<group>"; };
-		17DA605218FAFAB9005D2F85 /* CustomIOS7AlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomIOS7AlertView.m; sourceTree = "<group>"; };
+		17DA605518FB12FA005D2F85 /* CustomIOS7AlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomIOS7AlertView.h; sourceTree = "<group>"; };
+		17DA605618FB12FA005D2F85 /* CustomIOS7AlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomIOS7AlertView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,7 +167,7 @@
 		17249CC818CC30E600A6C5EF /* CoPilot */ = {
 			isa = PBXGroup;
 			children = (
-				17DA605018FAFAB9005D2F85 /* View */,
+				17DA605418FB12FA005D2F85 /* View */,
 				17249CFA18CC346100A6C5EF /* CPLTableViewController.h */,
 				17249CFB18CC346100A6C5EF /* CPLTableViewController.m */,
 				172CD39318D228B900427D63 /* CPLAddListItemViewController.h */,
@@ -230,11 +230,11 @@
 			path = Framework;
 			sourceTree = "<group>";
 		};
-		17DA605018FAFAB9005D2F85 /* View */ = {
+		17DA605418FB12FA005D2F85 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				17DA605118FAFAB9005D2F85 /* CustomIOS7AlertView.h */,
-				17DA605218FAFAB9005D2F85 /* CustomIOS7AlertView.m */,
+				17DA605518FB12FA005D2F85 /* CustomIOS7AlertView.h */,
+				17DA605618FB12FA005D2F85 /* CustomIOS7AlertView.m */,
 			);
 			name = View;
 			path = "../../CustomIOSAlertView/ios-custom-alertview/CustomIOS7AlertView/CustomIOS7AlertView/View";
@@ -352,7 +352,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				17DA605318FAFAB9005D2F85 /* CustomIOS7AlertView.m in Sources */,
+				17DA605718FB12FA005D2F85 /* CustomIOS7AlertView.m in Sources */,
 				17249CD318CC30E600A6C5EF /* CPLAppDelegate.m in Sources */,
 				17249CFC18CC346100A6C5EF /* CPLTableViewController.m in Sources */,
 				17249CCF18CC30E600A6C5EF /* main.m in Sources */,
