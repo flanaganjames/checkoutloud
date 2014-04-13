@@ -112,7 +112,7 @@ if (self.suspendSpeechCommands == NO)
         }
     }// end if readlistbutton is "Tap or Say List Name"
     
-    if ([self.readListButton.currentTitle  isEqual: @"Tap or Say Read List"] | [self.readListButton.currentTitle  isEqual: @"Tap To Read List"])
+    if ([self.readListButton.currentTitle  isEqual: @"Tap here or say \"Read List\""] | [self.readListButton.currentTitle  isEqual: @"Tap here to Read List"])
     {
         NSArray *cells = self.currentcells;
         NSArray *visible = self.currentcellpaths;
@@ -180,7 +180,7 @@ if (self.suspendSpeechCommands == NO)
                 }
             }
         }
-    }// end if readlistbutton is "Tap or Say Read List"
+    }// end if readlistbutton is "Tap here or say \"Read List\""
     
     
     if ([self.readListButton.currentTitle  isEqual: @"Check"])
@@ -209,7 +209,7 @@ if (self.suspendSpeechCommands == NO)
                 cell.accessoryType = UITableViewCellAccessoryCheckmark; //sets visible checkmark
                 //also need to add a property to checklistitems indicating their checked status
                 
-                [self.readListButton setTitle: @"Tap or Say Read List" forState: UIControlStateNormal];
+                [self.readListButton setTitle: @"Tap here or say \"Read List\"" forState: UIControlStateNormal];
                 
                 [self.fliteController say:@"List Ended" withVoice:self.slt];
             }
@@ -501,10 +501,10 @@ if (self.suspendSpeechCommands == NO)
     
     if (self.suspendSpeechCommands == NO)
     {
-        [self.readListButton setTitle: @"Tap or Say Read List" forState: UIControlStateNormal];
+        [self.readListButton setTitle: @"Tap here or say \"Read List\"" forState: UIControlStateNormal];
     }
     else
-    {[self.readListButton setTitle: @"Tap To Read List" forState: UIControlStateNormal];
+    {[self.readListButton setTitle: @"Tap here to Read List" forState: UIControlStateNormal];
     }
     
 }
@@ -1004,7 +1004,7 @@ if (self.suspendSpeechCommands == NO)
             {
                 if (![self.readListButton.currentTitle isEqual: @"Check"])
                 {
-                [self.readListButton setTitle: @"Tap To Read List" forState: UIControlStateNormal];
+                [self.readListButton setTitle: @"Tap here to Read List" forState: UIControlStateNormal];
                 }
             }
         }
@@ -1019,7 +1019,7 @@ if (self.suspendSpeechCommands == NO)
             {
                 if (![self.readListButton.currentTitle isEqual: @"Check"])
                 {
-                    [self.readListButton setTitle: @"Tap or Say Read List" forState: UIControlStateNormal];
+                    [self.readListButton setTitle: @"Tap here or say \"Read List\"" forState: UIControlStateNormal];
                 }
             }
         }
@@ -1135,19 +1135,19 @@ if (self.suspendSpeechCommands == NO)
             
             if (self.suspendSpeechCommands == NO)
             {
-                [self.readListButton setTitle: @"Tap or Say Read List" forState: UIControlStateNormal];
+                [self.readListButton setTitle: @"Tap here or say \"Read List\"" forState: UIControlStateNormal];
 
             }
             else
             {
-                [self.readListButton setTitle: @"Tap To Read List" forState: UIControlStateNormal];
+                [self.readListButton setTitle: @"Tap here to Read List" forState: UIControlStateNormal];
             }
             [self.fliteController say:@"List Ended" withVoice:self.slt];
         }
         return;
     }
     
-    if ([self.readListButton.currentTitle  isEqual: @"Tap To Read List"] | [self.readListButton.currentTitle  isEqual: @"Tap or Say Read List"])
+    if ([self.readListButton.currentTitle  isEqual: @"Tap here to Read List"] | [self.readListButton.currentTitle  isEqual: @"Tap here or say \"Read List\""])
     {   [self cellreloader];
         [self.readListButton setTitle: @"Check" forState: UIControlStateNormal];
         self.currentrow = 0;
@@ -1157,8 +1157,8 @@ if (self.suspendSpeechCommands == NO)
 
 -(void) showReadMe
 {
-UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Disclaimer/Instructions"
-    message:[NSString stringWithFormat: @"%C Modify this checklist to suit ( icons \"+\" and \"info\").  Not intended to replace any other required checklist.\n %C First level is a list of lists. Deeper levels can be read to you and checked. Does not track checked status between levels.\n %C Use voice to choose list, command to read, respond (say: \"check\", \"affirmative\"), and return. Voice commands can be disabled when ambient noise causes unwanted results (tap \"Check Out Loud\").\n %C Recognition depends on terms used. Experiment but use upper case. Slow response may be addressed in a future version with another engine.\n %C No use (not aviation, not automotive, not etc.) has been approved by any regulatory body. Your use is at your own risk.", (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022]
+UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Instructions/Disclaimer"
+    message:[NSString stringWithFormat: @"%C Modify this checklist to suit ( icons \"+\" and \"info\").  Not intended to replace any other required checklist.\n %C Master List is a list of lists. Deeper levels can be read aloud to you and checked by voice or by tap. Does not record tracked status after navigating between levels.\n %C Use voice to: choose list, command to read, respond (say: \"check\", \"affirmative\"), and return to Master List. Voice commands can be disabled when ambient noise causes unwanted results (tap \"Check Out Loud\").\n %C Recognition depends on terms used. Slow response may be addressed in a future version with another engine.\n %C No use (aviation, automotive, etc.) has been approved. Use wisely and at your own risk.", (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022]
     delegate:nil
     cancelButtonTitle:@"OK"
     otherButtonTitles:nil];
