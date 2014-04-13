@@ -31,7 +31,7 @@
     if (self.itemName.text.length > 0) {
        	self.checkListItem = [[CheckListItem alloc] init];
         
-        self.checkListItem.itemName = self.itemName.text;
+        self.checkListItem.itemName = [self.itemName.text uppercaseString];
         self.checkListItem.itemPriority = [self.itemPriority.text longLongValue];
     }
         //

@@ -46,7 +46,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if (self.itemName.text.length > 0) {
-        self.checkListItem.itemName = self.itemName.text;}
+        self.checkListItem.itemName = [self.itemName.text uppercaseString];}
     
     if (self.itemPriority.text.length > 0) {
         self.checkListItem.itemPriority = [self.itemPriority.text longLongValue];}
