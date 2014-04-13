@@ -1172,18 +1172,18 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n\n%
 
 - (UIView *)createAlertView:(NSString *)msg
 {
-    UIView *demoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 450)];
+    UIView *demoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 475)];
     demoView.layer.cornerRadius = 8.0f;
     demoView.layer.masksToBounds = YES;
     demoView.backgroundColor = [UIColor whiteColor];
     
     
-    UITextView *myTextView = [[UITextView alloc] initWithFrame:CGRectMake(10, 0, 290, 440)];
+    UITextView *myTextView = [[UITextView alloc] initWithFrame:CGRectMake(10, 0, 290, 475)];
     myTextView.text = msg;
     myTextView.font = [UIFont fontWithName:@"verdana" size:14];
     //some other setup like setting the font for the UITextView...
+//    [myTextView sizeToFit];
     [demoView addSubview:myTextView];
-    [myTextView sizeToFit];
     
     return demoView;
 }
