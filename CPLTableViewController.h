@@ -15,6 +15,7 @@
 #import <Slt/Slt.h>
 #import <Kal/Kal.h>
 #import <OpenEars/FliteController.h>
+#import "CustomIOS7AlertView.h"
 
 PocketsphinxController *pocketsphinxController;
 OpenEarsEventsObserver *openEarsEventsObserver;

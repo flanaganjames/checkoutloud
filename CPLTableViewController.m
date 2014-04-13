@@ -1157,13 +1157,47 @@ if (self.suspendSpeechCommands == NO)
 
 -(void) showReadMe
 {
-UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Instructions/Disclaimer"
-    message:[NSString stringWithFormat: @"%C Modify this checklist to suit ( icons \"+\" and \"info\").  Not intended to replace any other required checklist.\n %C Master List is a list of lists. Deeper levels can be read aloud to you and checked by voice or by tap. Does not record checked status after navigating between levels.\n %C From Master List say a list name, from there command to \"read list\", respond by saying \"check\" or \"affirmative\", and say \"return\" to Master List. When ambient noise causes unwanted results voice commands can be disabled by tapping \"Check Out Loud\".\n %C Speech recognition accuracy depends on terms used. Slow response may be addressed in a future version with another engine.\n %C No use (aviation, automotive, etc.) has been approved. Use wisely and at your own risk.", (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022]
-    delegate:nil
-    cancelButtonTitle:@"OK"
-    otherButtonTitles:nil];
-[message show];
     
+CustomIOS7AlertView *alert = [[CustomIOS7AlertView alloc] init];
+
+
+    
+NSString *message = [NSString stringWithFormat:@"%C Modify this checklist to suit using icons \"+\" and \"info\".  Not intended to replace any other required checklist.\n %C Master List is a list of lists. Deeper levels can be read aloud to you and checked by voice or by tap. Does not record checked status after navigating between levels.\n %C From Master List say a list name, from there command to \"read list\", respond by saying \"check\" or \"affirmative\", and say \"return\" to Master List. When ambient noise causes unwanted results voice commands can be disabled by tapping \"Check Out Loud\".\n %C Speech recognition accuracy depends on terms used. Slow response may be addressed in a future version with another engine.\n %C No use (aviation, automotive, etc.) has been approved. Use wisely and at your own risk.", (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022 ];
+    
+[alert setContainerView:[self createAlertView:message]];
+
+[alert show];
+    
+}
+
+- (UIView *)createAlertView:(NSString *)msg
+{
+    UIView *demoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 100)];
+    demoView.layer.cornerRadius = 8.0f;
+    demoView.layer.masksToBounds = YES;
+    demoView.backgroundColor = [UIColor whiteColor];
+    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 280, 30)];
+    title.text = @"Instructions / Disclaimers";
+    title.textColor = [UIColor blackColor];
+    title.backgroundColor = [UIColor clearColor];
+    title.font =  [UIFont fontWithName:@"verdana" size:14];
+    title.numberOfLines = 0;
+    [demoView addSubview:title];
+    UIButton *btn=[UIButton buttonWithType:UIButtonTypeCustom];
+    btn.frame= CGRectMake(20,50,38,30);
+    [btn setImage:[UIImage imageNamed:@"circle-checked.png"] forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(toggleMe:) forControlEvents:UIControlEventTouchUpInside];
+    btn.backgroundColor = [UIColor clearColor];
+    [demoView  addSubview:btn];
+    UILabel *lblShare= [[UILabel alloc] initWithFrame:CGRectMake(70, 50, 190, 30)];
+    lblShare.text=msg;
+    lblShare.numberOfLines=20;
+    lblShare.textColor =[UIColor blackColor];
+    lblShare.font=[UIFont fontWithName:@"verdana" size:14];
+    lblShare.textAlignment=UITextAlignmentLeft;
+    lblShare.backgroundColor =[UIColor clearColor];
+    [demoView addSubview:lblShare];
+    return demoView;
 }
 
 //UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"last item"
