@@ -68,7 +68,7 @@
 
 if (self.suspendSpeechCommands == NO)
 {
-    if ([self.readListButton.currentTitle  isEqual: @"Tap or Say List Name"])
+    if ([self.listParent isEqual: @"MASTER LIST"])
     {// in this mode reading a list member's name drills down to its children,, if any
         NSArray *cells = self.currentcells;
         NSArray *visible = self.currentcellpaths;
@@ -106,9 +106,10 @@ if (self.suspendSpeechCommands == NO)
 
             }
         }
-    }// end if readlistbutton is "Tap or Say List Name"
-    
-    if ([self.readListButton.currentTitle  isEqual: @"Tap here or say \"Read List\""] | [self.readListButton.currentTitle  isEqual: @"Tap here to Read List"])
+    }// end if ([self.listParent isEqual: @"MASTER LIST"])
+    else
+    {
+    if (![self.readListButton.currentTitle  isEqual: @"Check"])
     {
         NSArray *cells = self.currentcells;
         NSArray *visible = self.currentcellpaths;
@@ -164,19 +165,9 @@ if (self.suspendSpeechCommands == NO)
                 [self loadSpeechCommands];
                 [self loadLanguageSet];
                 [self changelanguageset]; //changes to the recreated language model
-                if ([self.listParent isEqual: @"MASTER LIST"])
-                {  self.backToParentButton.title = @"Read Me";
-                    if (self.suspendSpeechCommands == NO)
-                    {
-                    [self.readListButton setTitle: @"Tap or Say List Name" forState: UIControlStateNormal];
-                    }
-                    else
-                    {[self.readListButton setTitle: @"Tap List Name" forState: UIControlStateNormal];
-                    }
-                }
             }
         }
-    }// end if readlistbutton is "Tap here or say \"Read List\""
+    }// else NOT ([self.listParent isEqual: @"MASTER LIST"])
     
     
     if ([self.readListButton.currentTitle  isEqual: @"Check"])
@@ -242,6 +233,7 @@ if (self.suspendSpeechCommands == NO)
         }
         
     } // end if readlistbutton is "Check"
+    }// end else is not master list
 
 }// end if (self.suspendSpeechCommands == NO)
 }//end pocketsphinxDidReceiveHypothesis
