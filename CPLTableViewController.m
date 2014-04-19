@@ -62,9 +62,11 @@
 }
 
 
-- (void) pocketsphinxDidReceiveHypothesis:(NSString *)hypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID
+- (void) pocketsphinxDidReceiveHypothesis:(NSString *)rawhypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID
 {
-	NSLog(@"The received hypothesis is %@ with a score of %@ and an ID of %@", hypothesis, recognitionScore, utteranceID);
+	NSLog(@"The received hypothesis is %@ with a score of %@ and an ID of %@", rawhypothesis, recognitionScore, utteranceID);
+    
+NSString *hypothesis = [NSString stringWithFormat: @" %@", rawhypothesis];
 
 if (self.suspendSpeechCommands == NO)
 {
@@ -110,7 +112,7 @@ if (self.suspendSpeechCommands == NO)
                  }
              }];
             
-            if ([hypothesis  isEqual: @"READ LIST"])
+            if ([hypothesis  isEqual: @" READ LIST"])
             {
                 if ([self.readListButton.currentTitle  isEqual: @"Tap here to Read List"] | [self.readListButton.currentTitle  isEqual: @"Tap here or say \"Read List\""])
                 {
@@ -121,7 +123,7 @@ if (self.suspendSpeechCommands == NO)
                 }
             }
             
-            if ([hypothesis  isEqual: @"RETURN"])
+            if ([hypothesis  isEqual: @" RETURN"])
             {
                 if (![self.listParent isEqual: @"MASTER LIST"]) //
                 {
@@ -143,7 +145,7 @@ if (self.suspendSpeechCommands == NO)
             [self.tableView selectRowAtIndexPath:self.currentcellpaths[self.currentrow ] animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
             NSString *text = item.itemName;
             
-            if ([hypothesis  isEqual: text] | [hypothesis  isEqual: @"CONSIDER IT DONE"] |[hypothesis  isEqual: @"CHECK"] |[hypothesis  isEqual: @"AFFIRMATIVE"])
+            if ([hypothesis  isEqual: text] | [hypothesis  isEqual: @" CONSIDER IT DONE"] |[hypothesis  isEqual: @" CHECK"] |[hypothesis  isEqual: @" AFFIRMATIVE"])
             {
                 if (self.currentrow < [self.currentcells count] - 1)
                 {
@@ -170,7 +172,7 @@ if (self.suspendSpeechCommands == NO)
                 }
             }
             
-            if ([hypothesis  isEqual: @"NEXT"]| [hypothesis  isEqual: @"OK"] | [hypothesis  isEqual: @"DONE"])
+            if ([hypothesis  isEqual: @" NEXT"]| [hypothesis  isEqual: @" OK"] | [hypothesis  isEqual: @" DONE"])
             {
                 NSString *saythis =
                  @"Please say affirmative or say check or say consider it done";
@@ -179,7 +181,7 @@ if (self.suspendSpeechCommands == NO)
                  [self.fliteController say: saythis withVoice:self.slt];
             }
             
-            if ([hypothesis  isEqual: @"RETURN"])
+            if ([hypothesis  isEqual: @" RETURN"])
             {
                 if (![self.listParent isEqual: @"MASTER LIST"]) //
                 {
@@ -695,14 +697,16 @@ if (self.suspendSpeechCommands == NO)
 //    cell.accessoryView = button;
     
     CheckListItem *checkItem = [self.checkListItems objectAtIndex:indexPath.row];
-	
-	cell.textLabel.text = checkItem.itemName;
+	NSString *paddedName = [NSString stringWithFormat: @" %@", checkItem.itemName];
+	cell.textLabel.text = paddedName;
     cell.accessoryType = UITableViewCellAccessoryDetailButton;
     cell.textLabel.font = [UIFont systemFontOfSize:16.0];
     cell.textLabel.textColor = [UIColor blackColor];
     cell.textLabel.backgroundColor = [UIColor greenColor];
     cell.textLabel.layer.cornerRadius = 10.0;
     cell.textLabel.layer.masksToBounds = YES;
+    cell.textLabel.layer.borderWidth = 1;
+    cell.textLabel.layer.borderColor = [UIColor blueColor].CGColor;
     
     return cell;
     
