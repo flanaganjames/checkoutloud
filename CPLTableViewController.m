@@ -91,7 +91,7 @@ if (self.suspendSpeechCommands == NO)
     }// end if ([self.listParent isEqual: @"MASTER LIST"])
     else
     {
-        if (![self.readListButton.currentTitle  isEqual: @"Check"])
+        if (!self.checkingStatus)
         {
             NSArray *cells = self.currentcells;
             NSArray *visible = self.currentcellpaths;
@@ -114,10 +114,9 @@ if (self.suspendSpeechCommands == NO)
             
             if ([hypothesis  isEqual: @" READ LIST"])
             {
-                if ([self.readListButton.currentTitle  isEqual: @"Tap here to Read List"] | [self.readListButton.currentTitle  isEqual: @"Tap here or say \"Read List\""])
-                {
+                if (!self.checkingStatus)
+                {    self.checkingStatus = YES;
                     [self cellreloader];
-                    [self.readListButton setTitle: @"Check" forState: UIControlStateNormal];
                     self.currentrow = 0;
                     [self readCurrent];
                 }
@@ -140,7 +139,7 @@ if (self.suspendSpeechCommands == NO)
                 }
             }
         }
-        if ([self.readListButton.currentTitle  isEqual: @"Check"])
+        if (self.checkingStatus)
         {   CheckListItem *item = self.checkListItems[self.currentrow];
             [self.tableView selectRowAtIndexPath:self.currentcellpaths[self.currentrow ] animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
             NSString *text = item.itemName;
@@ -167,7 +166,7 @@ if (self.suspendSpeechCommands == NO)
                     //also need to add a property to checklistitems indicating their checked status
                     
                     [self.readListButton setTitle: @"Tap here or say \"Read List\"" forState: UIControlStateNormal];
-                    
+                    self.checkingStatus = NO;
                     [self.fliteController say:@"List Ended" withVoice:self.slt];
                 }
             }
@@ -540,6 +539,7 @@ if (self.suspendSpeechCommands == NO)
     [super viewDidLoad];
     
     self.suspendSpeechCommands = NO;
+    self.checkingStatus = NO;
     self.backToParentButton.title = @"Read Me";
 
     self.checkListItems = [[NSMutableArray alloc] init];
@@ -943,7 +943,7 @@ if (self.suspendSpeechCommands == NO)
 }
 
 - (IBAction)speechCommandToggle:(id)sender
-{
+{   self.checkingStatus= NO;
     if (self.suspendSpeechCommands)
         {  self.suspendSpeechCommands = NO;
         }
@@ -1039,7 +1039,7 @@ if (self.suspendSpeechCommands == NO)
     
 - (IBAction)readListButton:(id)sender {
 
-    if ([self.readListButton.currentTitle  isEqual: @"Check"])
+    if (self.checkingStatus)
     {
         if (self.currentrow < [self.currentcells count] - 1)
         {
@@ -1064,21 +1064,23 @@ if (self.suspendSpeechCommands == NO)
             if (self.suspendSpeechCommands == NO)
             {
                 [self.readListButton setTitle: @"Tap here or say \"Read List\"" forState: UIControlStateNormal];
+                self.checkingStatus = NO;
 
             }
             else
             {
                 [self.readListButton setTitle: @"Tap here to Read List" forState: UIControlStateNormal];
+                self.checkingStatus = NO;
             }
+            
             [self.fliteController say:@"List Ended" withVoice:self.slt];
         }
         return;
     }//end readListButton.currentTitle  isEqual: @"Check"
     
-    if ([self.readListButton.currentTitle  isEqual: @"Tap here to Read List"] | [self.readListButton.currentTitle  isEqual: @"Tap here or say \"Read List\""])
-    {
+    if (!self.checkingStatus)
+    {   self.checkingStatus = YES;
         [self cellreloader];
-        [self.readListButton setTitle: @"Check" forState: UIControlStateNormal];
         self.currentrow = 0;
         [self readCurrent];
     }
@@ -1091,7 +1093,7 @@ CustomIOS7AlertView *alert = [[CustomIOS7AlertView alloc] init];
 
 
     
-NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n\n%C Modify this checklist to suit using icons \"+\" and \"info\".  Not intended to replace any other required checklist.\n%CMaster List is a list of lists. Deeper levels can be created to any depth.\n%CDeeper lists can be read aloud to you and checked by voice or by tap. Does not record/recall checked status after navigating between levels.\n%CFrom Master List say a list name; \nfrom there command to \"read list\"; \nrespond by saying \"affirmative\" or \"check\" or \"consider it done\"; repeating item name may work; \nsay \"return\" to go to previous level.\n%CWhen ambient noise causes unwanted results, voice commands can be disabled: tap \"Check Out Loud\".\n%CSpeech recognition accuracy depends on terms used. Sluggish response may be improved in a future version with the advanced OpenEars(R) engine.\n%CNo use (aviation, automotive, etc.) has been approved.\n%CUse wisely and at your own risk.", (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022  ];
+NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C Modify this checklist to suit using icons \"+\" and \"info\".\n%CMaster List is a list of lists. Deeper levels can be created to any depth.\n%CDeeper lists can be read aloud and checked by voice or tap.  Tap a list item always navigates to next level. Does not record/recall checked status after navigating between levels.\n%CFrom Master List say a list name; \nfrom there command to \"read list\"; \nrespond by saying \"check\" or \"affirmative\" or \"consider it done\"; repeating item name may work; \nsay \"return\" to go to previous level.\n%CWhen ambient noise causes unwanted results, voice commands can be disabled: tap \"Check Out Loud\".\n%CSpeech recognition accuracy depends on terms used. Sluggish response may be improved in a future version with the advanced OpenEars(R) engine.\n%CNot intended to replace any other required checklist. \n%CUse wisely and at your own risk.", (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022  ];
     
 [alert setContainerView:[self createAlertView:message]];
 
@@ -1140,6 +1142,7 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n\n%
 {
     if ([self.listParent isEqual: @"MASTER LIST"])
     {   self.backToParentButton.title = @"Read Me";
+        self.checkingStatus = NO;
         if (self.currentcellcount > 0)
         {
             if (self.suspendSpeechCommands == NO)
@@ -1173,12 +1176,27 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n\n%
         {
             if (self.suspendSpeechCommands == NO)
             {
-                [self.readListButton setTitle: @"Tap here or say \"Read List\"" forState: UIControlStateNormal];
                 [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
+                if (self.checkingStatus)
+                {
+                [self.readListButton setTitle: @"Tap here or say \"Check\"" forState: UIControlStateNormal];
+                }
+                else //not in checkingstatus
+                {
+                [self.readListButton setTitle: @"Tap here or say \"Read List\"" forState: UIControlStateNormal];
+                }
             }
             else
-            {[self.readListButton setTitle: @"Tap here to Read List" forState: UIControlStateNormal];
+            {
                 [self.speechCommandButton setTitle: @"Tap to check" forState: UIControlStateNormal];
+                if (self.checkingStatus)
+                {
+                    [self.readListButton setTitle: @"Tap here to Check" forState: UIControlStateNormal];
+                }
+                else //not in checkingstatus
+                {
+                    [self.readListButton setTitle: @"Tap here to Read List" forState: UIControlStateNormal];
+                }
             }
         }
         else

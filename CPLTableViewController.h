@@ -35,6 +35,7 @@ Kal *kal;
 
 @property BOOL suspendSpeechCommands;
 @property BOOL saveStateSpeechCommand;
+@property BOOL checkingStatus;
 @property (weak, nonatomic) IBOutlet UIButton *speechCommandButton;
 
 @property (strong, nonatomic) NSString *databasePath;
