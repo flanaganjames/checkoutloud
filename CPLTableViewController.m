@@ -114,7 +114,7 @@ if (self.suspendSpeechCommands == NO)
             
             if ([hypothesis  isEqual: @" READ LIST"])
             {
-                if (!self.checkingStatus)
+                if (self.currentcellcount > 0)
                 {    self.checkingStatus = YES;
                     [self cellreloader];
                     self.currentrow = 0;
@@ -1038,7 +1038,8 @@ if (self.suspendSpeechCommands == NO)
 
     
 - (IBAction)readListButton:(id)sender {
-
+if (self.currentcellcount > 0)
+{
     if (self.checkingStatus)
     {
         if (self.currentrow < [self.currentcells count] - 1)
@@ -1077,13 +1078,14 @@ if (self.suspendSpeechCommands == NO)
         }
         return;
     }//end readListButton.currentTitle  isEqual: @"Check"
-    
-    if (!self.checkingStatus)
-    {   self.checkingStatus = YES;
-        [self cellreloader];
-        self.currentrow = 0;
-        [self readCurrent];
+    else
+    {
+            self.checkingStatus = YES;
+            [self cellreloader];
+            self.currentrow = 0;
+            [self readCurrent];
     }
+}// end if currentcellcount > 0
 }
 
 -(void) showReadMe
@@ -1160,6 +1162,7 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
         else
         {
             [self.readListButton setTitle: @"Tap \"+\" to add to list" forState: UIControlStateNormal];
+            self.checkingStatus = NO;
             if (self.suspendSpeechCommands == NO)
             {
                 [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
