@@ -28,6 +28,7 @@
 @property long currentrow;
 @property NSArray *currentcells;
 @property NSArray *currentcellpaths;
+@property NSInteger currentcellcount;
 @end
 
 @implementation CPLTableViewController
@@ -102,11 +103,6 @@ if (self.suspendSpeechCommands == NO)
                 [self loadSpeechCommands];
                 [self loadLanguageSet];
                 [self changelanguageset]; //changes to the recreated language model
-                if ([self.listParent isEqual: @"MASTER LIST"])
-                {
-                    [self.readListButton setTitle: @"Tap or Say List Name" forState: UIControlStateNormal];
-                    self.backToParentButton.title = @"Read Me";
-                }
 
             }
         }
@@ -498,14 +494,6 @@ if (self.suspendSpeechCommands == NO)
     [self loadLanguageSet];
     [self changelanguageset]; //changes to the recreated language model
     [self.fliteController say:self.listParent withVoice:self.slt];
-    
-    if (self.suspendSpeechCommands == NO)
-    {
-        [self.readListButton setTitle: @"Tap here or say \"Read List\"" forState: UIControlStateNormal];
-    }
-    else
-    {[self.readListButton setTitle: @"Tap here to Read List" forState: UIControlStateNormal];
-    }
     
 }
 
@@ -992,37 +980,13 @@ if (self.suspendSpeechCommands == NO)
 
 - (IBAction)speechCommandToggle:(id)sender
 {
-    
-    if ([self.speechCommandButton.currentTitle  isEqual: @"Check Out Loud"])
-        {  self.suspendSpeechCommands = YES;
-            [self.speechCommandButton setTitle: @"Tap to Check" forState: UIControlStateNormal];
-            if ([self.listParent isEqual: @"MASTER LIST"])
-            {
-            [self.readListButton setTitle: @"Tap List Name" forState: UIControlStateNormal];
-            }
-            else
-            {
-                if (![self.readListButton.currentTitle isEqual: @"Check"])
-                {
-                [self.readListButton setTitle: @"Tap here to Read List" forState: UIControlStateNormal];
-                }
-            }
+    if (self.suspendSpeechCommands)
+        {  self.suspendSpeechCommands = NO;
         }
     else
-        { self.suspendSpeechCommands = NO;
-            [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
-            if ([self.listParent isEqual: @"MASTER LIST"])
-            {
-            [self.readListButton setTitle: @"Tap or Say List Name" forState: UIControlStateNormal];
-            }
-            else
-            {
-                if (![self.readListButton.currentTitle isEqual: @"Check"])
-                {
-                    [self.readListButton setTitle: @"Tap here or say \"Read List\"" forState: UIControlStateNormal];
-                }
-            }
+        { self.suspendSpeechCommands = YES;
         }
+    [self cellreloader];
 }
 
 - (IBAction)backToParent:(id)sender {
@@ -1148,13 +1112,10 @@ if (self.suspendSpeechCommands == NO)
     }//end readListButton.currentTitle  isEqual: @"Check"
     
     if ([self.readListButton.currentTitle  isEqual: @"Tap here to Read List"] | [self.readListButton.currentTitle  isEqual: @"Tap here or say \"Read List\""])
-    {   NSInteger cellcount = [self cellreloader];
-        if (cellcount > 0)
-        {
+    {
         [self.readListButton setTitle: @"Check" forState: UIControlStateNormal];
         self.currentrow = 0;
         [self readCurrent];
-        }
     }
 }
 
@@ -1199,14 +1160,74 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n\n%
 //                                        otherButtonTitles:nil];
 //[message show];
 
-- (NSInteger) cellreloader
+- (void) cellreloader
 {
     [self.tableView reloadData];
     self.currentrow = 0;
     self.currentcells = [self.tableView visibleCells]; //how to get array of all rows?
     self.currentcellpaths = [self.tableView indexPathsForVisibleRows];
-    NSInteger cellcount = [self.currentcells count];
-    return cellcount;
+    self.currentcellcount = [self.currentcells count];
+    [self setTitles];
+}
+
+- (void) setTitles
+{
+    if ([self.listParent isEqual: @"MASTER LIST"])
+    {   self.backToParentButton.title = @"Read Me";
+        if (self.currentcellcount > 0)
+        {
+            if (self.suspendSpeechCommands == NO)
+            {
+                [self.readListButton setTitle: @"Tap or say List Name" forState: UIControlStateNormal];
+                [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
+               
+            }
+            else
+            {
+                [self.readListButton setTitle: @"Tap List Name" forState: UIControlStateNormal];
+                [self.speechCommandButton setTitle: @"Tap to check" forState: UIControlStateNormal];
+            }
+        }
+        else
+        {
+            [self.readListButton setTitle: @"Tap \"+\" to add to list" forState: UIControlStateNormal];
+            if (self.suspendSpeechCommands == NO)
+            {
+                [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
+            }
+            else
+            {
+                [self.speechCommandButton setTitle: @"Tap to check" forState: UIControlStateNormal];
+            }
+        }
+    }
+    else
+    {
+        if (self.currentcellcount > 0)
+        {
+            if (self.suspendSpeechCommands == NO)
+            {
+                [self.readListButton setTitle: @"Tap here or say \"Read List\"" forState: UIControlStateNormal];
+                [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
+            }
+            else
+            {[self.readListButton setTitle: @"Tap here to Read List" forState: UIControlStateNormal];
+                [self.speechCommandButton setTitle: @"Tap to check" forState: UIControlStateNormal];
+            }
+        }
+        else
+        {
+            [self.readListButton setTitle: @"Tap \"+\" to add to list" forState: UIControlStateNormal];
+            if (self.suspendSpeechCommands == NO)
+            {
+                [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
+            }
+            else
+            {
+                [self.speechCommandButton setTitle: @"Tap to check" forState: UIControlStateNormal];
+            }
+        }
+    }
 }
 
 
