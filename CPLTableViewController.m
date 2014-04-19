@@ -439,7 +439,7 @@ if (self.suspendSpeechCommands == NO)
     CheckListItem *item  = self.checkListItems[row];
     
     self.backToParentButton.title = @"Return";
-    
+    self.checkingStatus = NO;
     self.listGrandParent = self.listParent;
     self.listGrandParentKey = self.listParentKey;
     self.listParent = item.itemName;
