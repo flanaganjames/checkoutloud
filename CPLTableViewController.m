@@ -1145,13 +1145,16 @@ if (self.suspendSpeechCommands == NO)
             [self.fliteController say:@"List Ended" withVoice:self.slt];
         }
         return;
-    }
+    }//end readListButton.currentTitle  isEqual: @"Check"
     
     if ([self.readListButton.currentTitle  isEqual: @"Tap here to Read List"] | [self.readListButton.currentTitle  isEqual: @"Tap here or say \"Read List\""])
-    {   [self cellreloader];
+    {   NSInteger cellcount = [self cellreloader];
+        if (cellcount > 0)
+        {
         [self.readListButton setTitle: @"Check" forState: UIControlStateNormal];
         self.currentrow = 0;
         [self readCurrent];
+        }
     }
 }
 
@@ -1196,12 +1199,14 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n\n%
 //                                        otherButtonTitles:nil];
 //[message show];
 
-- (void) cellreloader
+- (NSInteger) cellreloader
 {
     [self.tableView reloadData];
     self.currentrow = 0;
     self.currentcells = [self.tableView visibleCells]; //how to get array of all rows?
     self.currentcellpaths = [self.tableView indexPathsForVisibleRows];
+    NSInteger cellcount = [self.currentcells count];
+    return cellcount;
 }
 
 
