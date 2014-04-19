@@ -112,22 +112,12 @@ if (self.suspendSpeechCommands == NO)
             
             if ([hypothesis  isEqual: @"READ LIST"])
             {
-                [self cellreloader];
-                [self.readListButton setTitle: @"Check" forState: UIControlStateNormal];
-                self.currentrow = 0;
-                [self readCurrent];
-            }
-            
-            if ([hypothesis  isEqual: @"NEXT"] | [hypothesis  isEqual: @"OK"])
-            {
-                if (self.currentrow < [self.currentcells count] - 1)
+                if ([self.readListButton.currentTitle  isEqual: @"Tap here to Read List"] | [self.readListButton.currentTitle  isEqual: @"Tap here or say \"Read List\""])
                 {
-                    self.currentrow += 1;
-                    [self readCurrent]; // this also selects that row
-                }
-                else
-                {
-                    [self.fliteController say:@"List Ended" withVoice:self.slt];
+                    [self cellreloader];
+                    [self.readListButton setTitle: @"Check" forState: UIControlStateNormal];
+                    self.currentrow = 0;
+                    [self readCurrent];
                 }
             }
             
