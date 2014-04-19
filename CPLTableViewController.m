@@ -699,6 +699,10 @@ if (self.suspendSpeechCommands == NO)
 	cell.textLabel.text = checkItem.itemName;
     cell.accessoryType = UITableViewCellAccessoryDetailButton;
     cell.textLabel.font = [UIFont systemFontOfSize:16.0];
+    cell.textLabel.textColor = [UIColor blackColor];
+    cell.textLabel.backgroundColor = [UIColor greenColor];
+    cell.textLabel.layer.cornerRadius = 10.0;
+    cell.textLabel.layer.masksToBounds = YES;
     
     return cell;
     
