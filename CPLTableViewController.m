@@ -140,11 +140,11 @@ if (self.suspendSpeechCommands == NO)
             }
         }
         if (self.checkingStatus)
-        {   CheckListItem *item = self.checkListItems[self.currentrow];
+        {
+             UITableViewCell *cell = self.currentcells[self.currentrow];
+             NSString *text = cell.textLabel.text;
             [self.tableView selectRowAtIndexPath:self.currentcellpaths[self.currentrow ] animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
-            NSString *text = item.itemName;
-            
-            if ([hypothesis  isEqual: text] | [hypothesis  isEqual: @" CONSIDER IT DONE"] |[hypothesis  isEqual: @" CHECK"] |[hypothesis  isEqual: @" AFFIRMATIVE"])
+            if ([hypothesis  isEqual: @" CONSIDER IT DONE"] |[hypothesis  isEqual: @" CHECK"] |[hypothesis  isEqual: @" AFFIRMATIVE"])
             {
                 if (self.currentrow < [self.currentcells count] - 1)
                 {
@@ -171,7 +171,7 @@ if (self.suspendSpeechCommands == NO)
                 }
             }
             
-            if ([hypothesis  isEqual: @" NEXT"]| [hypothesis  isEqual: @" OK"] | [hypothesis  isEqual: @" DONE"])
+            if ([hypothesis  isEqual: text] | [hypothesis  isEqual: @" NEXT"]| [hypothesis  isEqual: @" OK"] | [hypothesis  isEqual: @" DONE"])
             {
                 NSString *saythis =
                  @"Please say affirmative or say check or say consider it done";
@@ -1095,7 +1095,7 @@ CustomIOS7AlertView *alert = [[CustomIOS7AlertView alloc] init];
 
 
     
-NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C Modify this checklist to suit using icons \"+\" and \"info\".\n%CMaster List is a list of lists. Deeper levels can be created to any depth.\n%CDeeper lists can be read aloud and checked by voice or tap.  Tap a list item always navigates to next level. Does not record/recall checked status after navigating between levels.\n%CFrom Master List say a list name; \nfrom there command to \"read list\"; \nrespond by saying \"check\" or \"affirmative\" or \"consider it done\"; repeating item name may work; \nsay \"return\" to go to previous level.\n%CWhen ambient noise causes unwanted results, voice commands can be disabled: tap \"Check Out Loud\".\n%CSpeech recognition accuracy depends on terms used. Sluggish response may be improved in a future version with the advanced OpenEars(R) engine.\n%CNot intended to replace any other required checklist. \n%CUse wisely and at your own risk.", (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022  ];
+NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C Modify this checklist to suit using icons \"+\" and \"info\".\n%CMaster List is a list of lists. Deeper levels can be created to any depth.\n%CDeeper lists can be read aloud and checked by voice or tap.  Tap a list item always navigates to next level. Does not record/recall checked status after navigating between levels.\n%CFrom Master List say a list name; \nfrom there command to \"read list\"; \nrespond by saying \"check\" or \"affirmative\" or \"consider it done\"; \nsay \"return\" to go to previous level.\n%CWhen ambient noise causes unwanted results, voice commands can be disabled: tap \"Check Out Loud\".\n%CSpeech recognition accuracy depends on terms used. Sluggish response may be improved in a future version with the advanced OpenEars(R) engine.\n%CNot intended to replace any other required checklist. \n%CUse wisely and at your own risk.", (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022  ];
     
 [alert setContainerView:[self createAlertView:message]];
 
