@@ -55,4 +55,7 @@
     {self.setDelete = YES;};
 }
 
+- (IBAction) textFieldReturn:(id)sender{
+    [sender resignFirstResponder];
+}
 @end

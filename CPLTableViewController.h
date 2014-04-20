@@ -52,4 +52,5 @@ Kal *kal;
 - (IBAction) loadSpeechCommands;
 - (IBAction) loadLanguageSet;
 - (IBAction) changelanguageset;
+
 @end

@@ -865,6 +865,13 @@ if (self.suspendSpeechCommands == NO)
 
 }
 
+- (IBAction)unwindCancelUpdate:(UIStoryboardSegue *)segue  sender:(id)sender
+{
+    self.suspendSpeechCommands = self.saveStateSpeechCommand;
+    [self cellreloader]; //[self.tableView reloadData];
+    
+}
+
 - (IBAction)unwindUpdateMainList:(UIStoryboardSegue *)segue  sender:(id)sender
 {
     self.suspendSpeechCommands = self.saveStateSpeechCommand;
@@ -1218,6 +1225,7 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
         }
     }
 }
+
 
 
 @end

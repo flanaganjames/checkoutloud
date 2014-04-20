@@ -15,5 +15,7 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *itemPriority;
 @property (weak, nonatomic) IBOutlet UISwitch *deleteSwitch;
+@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property BOOL *setDelete;
+-(IBAction)textFieldReturn:(id)sender;
 @end
