@@ -765,7 +765,7 @@ if (self.suspendSpeechCommands == NO)
         addViewController.openEarsEventsObserver = self.openEarsEventsObserver;
         NSInteger lastElement = [self.checkListItems count] - 1;
         CheckListItem *item = self.checkListItems[lastElement];
-        addViewController.defaultPriority = item.itemPriority;
+        addViewController.defaultPriority = item.itemPriority + 1;
     }
     
     if ([[segue identifier] isEqualToString:@"UpdateMainList"])
@@ -786,10 +786,7 @@ if (self.suspendSpeechCommands == NO)
         self.updatingItemCopied.itemParent = [self.updatingItem.itemParent copy];
         self.updatingItemCopied.itemParentKey = self.updatingItem.itemParentKey;
         
-        
         updateViewController.checkListItem = self.updatingItemCopied;
-        
-//        updateViewController.checkListItem = self.updatingItem;
         
     }
 
@@ -876,7 +873,12 @@ if (self.suspendSpeechCommands == NO)
 {
     self.suspendSpeechCommands = self.saveStateSpeechCommand;
     [self cellreloader]; //[self.tableView reloadData];
-    
+}
+
+- (IBAction)unwindCancelAdd:(UIStoryboardSegue *)segue  sender:(id)sender
+{
+    self.suspendSpeechCommands = self.saveStateSpeechCommand;
+    [self cellreloader]; //[self.tableView reloadData];
 }
 
 - (IBAction)unwindUpdateMainList:(UIStoryboardSegue *)segue  sender:(id)sender
