@@ -763,9 +763,16 @@ if (self.suspendSpeechCommands == NO)
         
         addViewController.listParent = self.listParent;
         addViewController.openEarsEventsObserver = self.openEarsEventsObserver;
-        NSInteger lastElement = [self.checkListItems count] - 1;
-        CheckListItem *item = self.checkListItems[lastElement];
-        addViewController.defaultPriority = item.itemPriority + 1;
+        if ([self.checkListItems count] > 0)
+        {
+            NSInteger lastElement = [self.checkListItems count] - 1;
+            CheckListItem *item = self.checkListItems[lastElement];
+            addViewController.defaultPriority = item.itemPriority + 1;
+        }
+        else
+        {
+            addViewController.defaultPriority = 1;
+        }
     }
     
     if ([[segue identifier] isEqualToString:@"UpdateMainList"])
