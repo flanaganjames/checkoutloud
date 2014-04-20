@@ -22,4 +22,5 @@
 @property (strong, nonatomic) OpenEarsEventsObserver *openEarsEventsObserver;
 @property NSString *listParent;
 @property NSInteger defaultPriority;
+-(IBAction)textFieldReturn:(id)sender;
 @end
