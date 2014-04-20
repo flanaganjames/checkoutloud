@@ -893,15 +893,16 @@ if (self.suspendSpeechCommands == NO)
     self.suspendSpeechCommands = self.saveStateSpeechCommand;
     CPLMUDViewController *source = [segue sourceViewController];
     CheckListItem *item = source.checkListItem;
+    CheckListItem *itemupdating = self.updatingItem;
     
     if (source.setDelete)
     {// delete task from database
-        [self.checkListItems removeObject:item];
+        [self.checkListItems removeObject:itemupdating];
         
         NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
         [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
         [self cellreloader]; //[self.tableView reloadData];
-        long aKey =  item.itemKey;
+        long aKey =  itemupdating.itemKey;
         [self findAllDescendantsbyKey:aKey];
         while ([self.descendants count] > 0) {
             long eachKey = [self.descendants[0] longValue];
@@ -913,7 +914,7 @@ if (self.suspendSpeechCommands == NO)
     } //close if delete
     else
     {
-        [self.checkListItems removeObject:self.updatingItem];
+        [self.checkListItems removeObject:itemupdating];
         [self.checkListItems addObject:item];
         
         NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
