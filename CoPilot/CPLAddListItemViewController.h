@@ -21,4 +21,5 @@
 @property (weak, nonatomic) IBOutlet UITextField *itemPriority;
 @property (strong, nonatomic) OpenEarsEventsObserver *openEarsEventsObserver;
 @property NSString *listParent;
+@property NSInteger defaultPriority;
 @end

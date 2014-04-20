@@ -54,6 +54,7 @@
 	// Do any additional setup after loading the view.
     //start openears stuff
     [self.openEarsEventsObserver setDelegate:self];
+    self.itemPriority.text = [NSString stringWithFormat:@"%d", self.defaultPriority];
 
     //end of openears stuff
 }

@@ -762,7 +762,9 @@ if (self.suspendSpeechCommands == NO)
         
         addViewController.listParent = self.listParent;
         addViewController.openEarsEventsObserver = self.openEarsEventsObserver;
-
+        NSInteger lastElement = [self.checkListItems count] - 1;
+        CheckListItem *item = self.checkListItems[lastElement];
+        addViewController.defaultPriority = item.itemPriority;
     }
     
     if ([[segue identifier] isEqualToString:@"UpdateMainList"])
@@ -1095,7 +1097,7 @@ CustomIOS7AlertView *alert = [[CustomIOS7AlertView alloc] init];
 
 
     
-NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C Modify this checklist to suit using icons \"+\" and \"info\".\n%CMaster List is a list of lists. Deeper levels can be created to any depth.\n%CDeeper lists can be read aloud and checked by voice or tap.  Tap a list item always navigates to next level. Does not record/recall checked status after navigating between levels.\n%CFrom Master List say a list name; \nfrom there command to \"read list\"; \nrespond by saying \"check\" or \"affirmative\" or \"consider it done\"; \nsay \"return\" to go to previous level.\n%CWhen ambient noise causes unwanted results, voice commands can be disabled: tap \"Check Out Loud\".\n%CSpeech recognition accuracy depends on terms used. Sluggish response may be improved in a future version with the advanced OpenEars(R) engine.\n%CNot intended to replace any other required checklist. \n%CUse wisely and at your own risk.", (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022  ];
+NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C Modify this checklist to suit using icons \"+\" and \"info\".\n%CMaster List is a list of lists. Deeper levels can be created to any depth.\n%CDeeper lists can be read aloud and checked by voice or tap.  Tap a list item always navigates to next level. Does not record/recall checked status after navigating between levels.\n%CFrom Master List say a list name; \nfrom there command to \"read list\"; \nrespond by saying \"check\" or \"affirmative\" or \"consider it done\"; \nsay \"return\" to go to previous level.\n%CWhen ambient noise causes unwanted results, voice commands can be disabled: tap \"Check Out Loud\".\n%CSpeech recognition accuracy depends on terms used. Speech recognition uses the OpenEars(R) engine.\n%CNot intended to replace any other required checklist. \n%CUse wisely and at your own risk.", (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022  ];
     
 [alert setContainerView:[self createAlertView:message]];
 
