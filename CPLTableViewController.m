@@ -16,11 +16,12 @@
 
 
 @interface CPLTableViewController ()
- @property NSMutableArray *checkListItems;
+@property NSMutableArray *checkListItems;
 @property NSMutableArray *speechCommands;
 @property NSMutableArray *descendants;
 @property NSMutableArray *unchecked_descendants;
 @property CheckListItem *updatingItem;
+
 // @property UITableView *tableView;   // for loadView which cases failure
 
 @property  NSString *lmPath;
@@ -774,15 +775,21 @@ if (self.suspendSpeechCommands == NO)
         CPLMUDViewController *updateViewController =
         [segue destinationViewController];
         
-//        NSIndexPath *myIndexPath = [self.tableView indexPathForSelectedRow];
-//        long row = [myIndexPath row];
-        
         long row = [self.tableView indexPathForCell:sender].row;
-        
-//        CheckListItem *item = self.checkListItems[row];
         self.updatingItem = self.checkListItems[row];
-
-        updateViewController.checkListItem = self.updatingItem;
+        
+        
+        self.updatingItemCopied = [[CheckListItem alloc] init];
+        self.updatingItemCopied.itemName = [self.updatingItem.itemName copy];
+        self.updatingItemCopied.itemPriority = self.updatingItem.itemPriority;
+        self.updatingItemCopied.itemKey = self.updatingItem.itemKey;
+        self.updatingItemCopied.itemParent = [self.updatingItem.itemParent copy];
+        self.updatingItemCopied.itemParentKey = self.updatingItem.itemParentKey;
+        
+        
+        updateViewController.checkListItem = self.updatingItemCopied;
+        
+//        updateViewController.checkListItem = self.updatingItem;
         
     }
 

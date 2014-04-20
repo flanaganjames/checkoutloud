@@ -16,6 +16,7 @@
 #import <Kal/Kal.h>
 #import <OpenEars/FliteController.h>
 #import "CustomIOS7AlertView.h"
+#import "CheckListItem.h"
 
 PocketsphinxController *pocketsphinxController;
 OpenEarsEventsObserver *openEarsEventsObserver;
@@ -52,5 +53,5 @@ Kal *kal;
 - (IBAction) loadSpeechCommands;
 - (IBAction) loadLanguageSet;
 - (IBAction) changelanguageset;
-
+@property CheckListItem *updatingItemCopied;
 @end
