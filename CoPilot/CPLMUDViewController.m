@@ -58,4 +58,14 @@
 - (IBAction) textFieldReturn:(id)sender{
     [sender resignFirstResponder];
 }
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    UITouch *touch = [[event allTouches] anyObject];
+    if ([_itemPriority isFirstResponder] && [touch view] != _itemPriority) {
+        [_itemPriority resignFirstResponder];
+        }
+    if ([_itemName isFirstResponder] && [touch view] != _itemName) {
+        [_itemName resignFirstResponder];
+    }
+    [super touchesBegan:touches withEvent:event];
+}
 @end
