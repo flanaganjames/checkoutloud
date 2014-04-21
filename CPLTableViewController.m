@@ -462,11 +462,11 @@ if (self.suspendSpeechCommands == NO)
 {
 //  self.listenerStatus.text = @"selected";
 //    
-//    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+//
     
     if (self.checkingStatus)
     {
-    
+        [self readListButton:self];
     }
     else
     {
@@ -1129,6 +1129,8 @@ if (self.currentcellcount > 0)
                 self.checkingStatus = NO;
             }
             
+            NSIndexPath *indexPath = self.currentcellpaths[self.currentrow];
+            [UITableView deselectRowAtIndexPath:indexPath animated:NO];
             [self.fliteController say:@"List Ended" withVoice:self.slt];
         }
         return;
