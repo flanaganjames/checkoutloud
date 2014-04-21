@@ -892,7 +892,7 @@ if (self.suspendSpeechCommands == NO)
 
 - (void) handleUpdateDelete
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Are you Sure?" message:@"Do you want to delete item and all its descendants" delegate:self cancelButtonTitle:@"No, Do NOT delete." otherButtonTitles:@"Yes, Delete now!",nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Are you Sure?" message:@"Do you want to delete item and all its descendants" delegate:self cancelButtonTitle:@"No, Do NOT Delete." otherButtonTitles:@"Yes, Delete Now!",nil];
     [alert show];
     
 }
