@@ -1107,6 +1107,8 @@ if (self.suspendSpeechCommands == NO)
 - (IBAction)readListButton:(id)sender {
 if (self.currentcellcount > 0)
 {
+if (![self.listParent isEqual: @"MASTER LIST"])
+{
     if (self.checkingStatus)
     {
         if (self.currentrow < [self.currentcells count] - 1)
@@ -1154,6 +1156,7 @@ if (self.currentcellcount > 0)
             self.currentrow = 0;
             [self readCurrent];
     }
+}// end if not Master List
 }// end if currentcellcount > 0
 }
 
