@@ -21,6 +21,8 @@
 @property NSMutableArray *descendants;
 @property NSMutableArray *unchecked_descendants;
 @property CheckListItem *updatingItem;
+@property BOOL *updatingDelete;
+
 
 // @property UITableView *tableView;   // for loadView which cases failure
 
@@ -888,15 +890,21 @@ if (self.suspendSpeechCommands == NO)
     [self cellreloader]; //[self.tableView reloadData];
 }
 
-- (IBAction)unwindUpdateMainList:(UIStoryboardSegue *)segue  sender:(id)sender
+- (void) handleUpdateDelete
 {
-    self.suspendSpeechCommands = self.saveStateSpeechCommand;
-    CPLMUDViewController *source = [segue sourceViewController];
-    CheckListItem *item = source.checkListItem;
-    CheckListItem *itemupdating = self.updatingItem;
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Are you Sure?" message:@"Do you want to delete item and all its descendants" delegate:self cancelButtonTitle:@"No, Do NOT delete." otherButtonTitles:@"Yes, Delete now!",nil];
+    [alert show];
     
-    if (source.setDelete)
-    {// delete task from database
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        NSLog(@"Do nothing");
+    }
+    else if (buttonIndex == 1) {
+        NSLog(@"OK Tapped. Delete item and descendants");
+        
+        CheckListItem *itemupdating = self.updatingItem;
         [self.checkListItems removeObject:itemupdating];
         
         NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
@@ -910,8 +918,21 @@ if (self.suspendSpeechCommands == NO)
             [self.descendants removeObject:self.descendants[0]];
         }
         [self deleteOneByKey:aKey];
-        
-    } //close if delete
+    }
+}
+
+- (IBAction)unwindUpdateMainList:(UIStoryboardSegue *)segue  sender:(id)sender
+{
+    self.suspendSpeechCommands = self.saveStateSpeechCommand;
+    CPLMUDViewController *source = [segue sourceViewController];
+    CheckListItem *item = source.checkListItem;
+    CheckListItem *itemupdating = self.updatingItem;
+    self.updatingDelete = source.setDelete;
+    
+    if (source.setDelete)
+    {// confirm delete
+        [self handleUpdateDelete];
+    }
     else
     {
         [self.checkListItems removeObject:itemupdating];
