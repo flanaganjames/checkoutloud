@@ -55,7 +55,7 @@
     //start openears stuff
     [self.openEarsEventsObserver setDelegate:self];
     self.itemPriority.text = [NSString stringWithFormat:@"%d", self.defaultPriority];
-
+    self.itemPriority.keyboardType = UIKeyboardTypeDecimalPad;
     //end of openears stuff
 }
 

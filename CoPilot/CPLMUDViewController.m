@@ -31,6 +31,7 @@
     
     _itemName.text = self.checkListItem.itemName;
     _itemPriority.text = [NSString stringWithFormat: @"%ld", self.checkListItem.itemPriority];
+    self.itemPriority.keyboardType = UIKeyboardTypeDecimalPad;
     self.deleteSwitch.on = NO;
     self.setDelete = NO;
 }

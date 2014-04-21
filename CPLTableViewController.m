@@ -765,6 +765,7 @@ if (self.suspendSpeechCommands == NO)
         
         addViewController.listParent = self.listParent;
         addViewController.openEarsEventsObserver = self.openEarsEventsObserver;
+         
         if ([self.checkListItems count] > 0)
         {
             NSInteger lastElement = [self.checkListItems count] - 1;
