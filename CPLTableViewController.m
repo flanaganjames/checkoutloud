@@ -464,7 +464,14 @@ if (self.suspendSpeechCommands == NO)
 //    
 //    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
-    [self respondSelectRow];
+    if (self.checkingStatus)
+    {
+    
+    }
+    else
+    {
+        [self respondSelectRow];
+    }
     
 
 //
