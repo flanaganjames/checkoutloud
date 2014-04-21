@@ -1130,7 +1130,7 @@ if (self.currentcellcount > 0)
             }
             
             NSIndexPath *indexPath = self.currentcellpaths[self.currentrow];
-            [UITableView deselectRowAtIndexPath:indexPath animated:NO];
+            [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
             [self.fliteController say:@"List Ended" withVoice:self.slt];
         }
         return;
