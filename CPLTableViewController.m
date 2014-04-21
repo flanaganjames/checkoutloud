@@ -170,6 +170,8 @@ if (self.suspendSpeechCommands == NO)
                     
                     [self.readListButton setTitle: @"Tap here or say \"Read List\"" forState: UIControlStateNormal];
                     self.checkingStatus = NO;
+                    NSIndexPath *indexPath = self.currentcellpaths[self.currentrow];
+                    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
                     [self.fliteController say:@"List Ended" withVoice:self.slt];
                 }
             }
