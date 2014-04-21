@@ -176,31 +176,35 @@ if (self.suspendSpeechCommands == NO)
                 }
             }
             
+            if ([hypothesis  isEqual: @" SAY AGAIN"] | [hypothesis  isEqual: @" REPEAT"])
+            {
+                [self readCurrent]; // this also selects that row
+            }
+            
             if ([hypothesis  isEqual: text] | [hypothesis  isEqual: @" NEXT"]| [hypothesis  isEqual: @" OK"] | [hypothesis  isEqual: @" DONE"])
             {
                 NSString *saythis =
                  @"Please say affirmative or say check or say consider it done";
-                
-                 // tell user that they must repeat the list item to mark it as checked
                  [self.fliteController say: saythis withVoice:self.slt];
             }
             
-            if ([hypothesis  isEqual: @" RETURN"])
-            {
-                if (![self.listParent isEqual: @"MASTER LIST"]) //
-                {
-                    self.listParent = self.listGrandParent;
-                    [self.fliteController say:self.listParent withVoice:self.slt];
-                    self.listParentKey = self.listGrandParentKey;
-                    [self getGrandParent];
-                    self.listLabel.text = self.listParent;
-                    [self loadCurrentParentList];
-                    [self cellreloader]; //[self.tableView reloadData];
-                    [self loadSpeechCommands];
-                    [self loadLanguageSet];
-                    [self changelanguageset]; //changes to the recreated language model
-                }
-            }
+// disallowing return in midst of checking - too many false positives
+//            if ([hypothesis  isEqual: @" RETURN"])
+//            {
+//                if (![self.listParent isEqual: @"MASTER LIST"]) //
+//                {
+//                    self.listParent = self.listGrandParent;
+//                    [self.fliteController say:self.listParent withVoice:self.slt];
+//                    self.listParentKey = self.listGrandParentKey;
+//                    [self getGrandParent];
+//                    self.listLabel.text = self.listParent;
+//                    [self loadCurrentParentList];
+//                    [self cellreloader]; //[self.tableView reloadData];
+//                    [self loadSpeechCommands];
+//                    [self loadLanguageSet];
+//                    [self changelanguageset]; //changes to the recreated language model
+//                }
+//            }
             
         } // end if readlistbutton is "Check"
     }// end else is not master list
@@ -393,15 +397,19 @@ if (self.suspendSpeechCommands == NO)
 // default commands
     [self.speechCommands addObject:@"RETURN"];
     [self.speechCommands addObject:@"READ LIST"];
+    [self.speechCommands addObject:@"SAY AGAIN"];
+    [self.speechCommands addObject:@"REPEAT"];
     [self.speechCommands addObject:@"CHECK"];
+    [self.speechCommands addObject:@"CONSIDER IT DONE"];
+    [self.speechCommands addObject:@"AFFIRMATIVE"];
     [self.speechCommands addObject:@"OK"];
     [self.speechCommands addObject:@"ADD"];
     [self.speechCommands addObject:@"UPDATE"];
     [self.speechCommands addObject:@"SAVE"];
     [self.speechCommands addObject:@"NEXT"];
     [self.speechCommands addObject:@"DONE"];
-    [self.speechCommands addObject:@"CONSIDER IT DONE"];
-    [self.speechCommands addObject:@"AFFIRMATIVE"];
+
+
 
 //commands for items in all checklists
     const char *dbpath = [_databasePath UTF8String];
@@ -427,13 +435,7 @@ if (self.suspendSpeechCommands == NO)
         sqlite3_close(_checklistDB);
     }
     
-//    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Loading speechCommand"
-//                                                      message:[NSString stringWithFormat: @"%d", self.speechCommands.count]
-//                                                     delegate:nil
-//                                            cancelButtonTitle:@"OK"
-//                                            otherButtonTitles:nil];
-//    
-//    [message show];
+
 }
 
 
@@ -468,7 +470,15 @@ if (self.suspendSpeechCommands == NO)
     
     if (self.checkingStatus)
     {
-        [self readListButton:self];
+        NSIndexPath *currentIndexPath = self.currentcellpaths[self.currentrow];
+        if ([indexPath isEqual:currentIndexPath])
+        {
+            [self readListButton:self];
+        }
+        else
+        {
+            [self.tableView selectRowAtIndexPath:self.currentcellpaths[self.currentrow ] animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
+        }
     }
     else
     {
@@ -1276,6 +1286,12 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
     }
 }
 
-
+//UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"REPEAT heard"
+//                                                  message:[NSString stringWithFormat: @"%@", @"should say it again"]
+//                                                 delegate:nil
+//                                        cancelButtonTitle:@"OK"
+//                                        otherButtonTitles:nil];
+//
+//[message show];
 
 @end
