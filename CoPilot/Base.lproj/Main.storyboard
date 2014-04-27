@@ -90,6 +90,7 @@
                         <outlet property="listLabel" destination="YK1-wk-4K2" id="ef1-Nc-v9g"/>
                         <outlet property="readListButton" destination="EAc-pg-uHQ" id="ebm-CY-2jM"/>
                         <outlet property="speechCommandButton" destination="3Yt-QF-NI1" id="cLg-Sh-aSV"/>
+                        <segue destination="zdP-xx-fqQ" kind="modal" identifier="slideShow" id="TD3-7t-Jbp"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7RQ-wb-c29" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -160,6 +161,12 @@
                                     <segue destination="Fof-XJ-bdC" kind="unwind" unwindAction="unwindCancelAdd:sender:" id="0MB-6R-GMS"/>
                                 </connections>
                             </button>
+                            <view opaque="NO" contentMode="scaleToFill" id="SNz-kc-8Xn">
+                                <rect key="frame" x="65" y="-375" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="tintColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -358,18 +365,11 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view opaque="NO" contentMode="scaleToFill" id="SNz-kc-8Xn">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <color key="tintColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="clickView" destination="SNz-kc-8Xn" id="3NY-F4-1Bj"/>
-                        <outlet property="listItem" destination="8Dz-l3-U0k" id="Mmn-Jw-yzF"/>
                         <outlet property="listItemName" destination="8Dz-l3-U0k" id="gg7-Dq-pg7"/>
                         <outlet property="listItemNumber" destination="ZJs-nS-W8j" id="jNI-ti-DIh"/>
                         <outlet property="listName" destination="oK5-8K-akw" id="jXj-Gz-PCa"/>
@@ -377,7 +377,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oAE-2M-pv1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1613" y="-13"/>
+            <point key="canvasLocation" x="1621" y="-13"/>
         </scene>
     </scenes>
     <resources>

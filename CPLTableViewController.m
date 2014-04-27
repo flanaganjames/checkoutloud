@@ -13,6 +13,7 @@
 //#import "CPLSecondViewController.h"
 #import "CPLAddListItemViewController.h"
 #import "CPLMUDViewController.h"
+#import "CPLSlideShowViewController.h"
 
 
 @interface CPLTableViewController ()
@@ -771,6 +772,8 @@ if (self.suspendSpeechCommands == NO)
     
     if ([[segue identifier] isEqualToString:@"slideShow"])
     {
+        CPLSlideShowViewController *slideShowViewController =
+        [segue destinationViewController];
     }
 
 }
