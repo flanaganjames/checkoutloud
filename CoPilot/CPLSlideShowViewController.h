@@ -13,5 +13,6 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *listItemNumber;
 @property (weak, nonatomic) IBOutlet UITextField *listItemName;
+@property (weak, nonatomic) IBOutlet UIView *clickView;
 
 @end

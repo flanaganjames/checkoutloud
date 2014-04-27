@@ -369,6 +369,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="clickView" destination="SNz-kc-8Xn" id="3NY-F4-1Bj"/>
                         <outlet property="listItem" destination="8Dz-l3-U0k" id="Mmn-Jw-yzF"/>
                         <outlet property="listItemName" destination="8Dz-l3-U0k" id="gg7-Dq-pg7"/>
                         <outlet property="listItemNumber" destination="ZJs-nS-W8j" id="jNI-ti-DIh"/>
