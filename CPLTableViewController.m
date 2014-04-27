@@ -1029,6 +1029,7 @@ if (self.suspendSpeechCommands == NO)
         self.listLabel.text = self.listParent;
         [self loadCurrentParentList];
         [self cellreloader]; //[self.tableView reloadData];
+        [self.fliteController say:self.listParent withVoice:self.slt];
         [self loadSpeechCommands];
         [self loadLanguageSet];
         [self changelanguageset]; //changes to the recreated language model
