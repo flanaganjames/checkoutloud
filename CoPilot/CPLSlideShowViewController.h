@@ -9,5 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface CPLSlideShowViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UITextField *listName;
+
+@property (weak, nonatomic) IBOutlet UITextField *listItemNumber;
+@property (weak, nonatomic) IBOutlet UITextField *listItemName;
 
 @end
