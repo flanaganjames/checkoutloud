@@ -1033,16 +1033,7 @@ if (self.suspendSpeechCommands == NO)
         [self loadSpeechCommands];
         [self loadLanguageSet];
         [self changelanguageset]; //changes to the recreated language model
-        if ([self.listParent isEqual: @"MASTER LIST"])
-        { self.backToParentButton.title = @"Read Me";
-            if (self.suspendSpeechCommands == NO)
-            {
-            [self.readListButton setTitle: @"Tap or Say List Name" forState: UIControlStateNormal];
-            }
-            else
-            {[self.readListButton setTitle: @"Tap List Name" forState: UIControlStateNormal];
-            }
-        }
+        [self setTitles];
     }
     else
     {[self showReadMe];}
