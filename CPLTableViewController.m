@@ -1004,6 +1004,7 @@ if (self.suspendSpeechCommands == NO)
         [self getGrandParent];
         self.listLabel.text = self.listParent;
         [self loadCurrentParentList];
+        [self.fliteController say:self.listParent withVoice:self.slt];
         [self cellreloader]; //[self.tableView reloadData];
         [self loadSpeechCommands];
         [self loadLanguageSet];
