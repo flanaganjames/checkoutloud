@@ -428,15 +428,7 @@ if (self.suspendSpeechCommands == NO)
     
     if (self.checkingStatus)
     {
-        NSIndexPath *currentIndexPath = self.currentcellpaths[self.currentrow];
-        if ([indexPath isEqual:currentIndexPath])
-        {
-            [self readListButton:self];
-        }
-        else
-        {
-            [self.tableView selectRowAtIndexPath:self.currentcellpaths[self.currentrow ] animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
-        }
+        [self performSegueWithIdentifier: @"slideShow" sender: self];
     }
     else
     {
@@ -1110,6 +1102,19 @@ if (![self.listParent isEqual: @"MASTER LIST"])
             [self readCurrent];
     }
 }// end if not Master List
+else //it is the Master List
+{// toggle checkingStatus
+    if (self.checkingStatus)
+    {
+     self.checkingStatus = NO;
+    }
+    else
+    {
+    self.checkingStatus = YES;
+    }
+}
+    
+    
 }// end if currentcellcount > 0
 }
 
