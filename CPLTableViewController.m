@@ -149,31 +149,32 @@ if (self.suspendSpeechCommands == NO)
             [self.tableView selectRowAtIndexPath:self.currentcellpaths[self.currentrow ] animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
             if ([hypothesis  isEqual: @" CONSIDER IT DONE"] |[hypothesis  isEqual: @" CHECK"] |[hypothesis  isEqual: @" AFFIRMATIVE"])
             {
-                if (self.currentrow < [self.currentcells count] - 1)
-                {
-                    //cell is selected in the readcurrent method
-                    
-                    // set checkmark on currentrow
-                    UITableViewCell *cell = self.currentcells[self.currentrow ];
-                    cell.accessoryType = UITableViewCellAccessoryCheckmark; //sets visible checkmark
-                    //also need to add a property to checklistitems indicating their checked status
-                    // then increment currentrow pointer
-                    // then read new current
-                    self.currentrow += 1;
-                    [self readCurrent]; // this also selects that row
-                }
-                else
-                {   // set checkmark on currentrow
-                    UITableViewCell *cell = self.currentcells[self.currentrow ];
-                    cell.accessoryType = UITableViewCellAccessoryCheckmark; //sets visible checkmark
-                    //also need to add a property to checklistitems indicating their checked status
-                    
-                    [self.readListButton setTitle: @"Tap here or say \"Read List\"" forState: UIControlStateNormal];
-                    self.checkingStatus = NO;
-                    NSIndexPath *indexPath = self.currentcellpaths[self.currentrow];
-                    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-                    [self.fliteController say:@"List Ended" withVoice:self.slt];
-                }
+                [self touchAnywhere];
+//                if (self.currentrow < [self.currentcells count] - 1)
+//                {
+//                    //cell is selected in the readcurrent method
+//                    
+//                    // set checkmark on currentrow
+//                    UITableViewCell *cell = self.currentcells[self.currentrow ];
+//                    cell.accessoryType = UITableViewCellAccessoryCheckmark; //sets visible checkmark
+//                    //also need to add a property to checklistitems indicating their checked status
+//                    // then increment currentrow pointer
+//                    // then read new current
+//                    self.currentrow += 1;
+//                    [self readCurrent]; // this also selects that row
+//                }
+//                else
+//                {   // set checkmark on currentrow
+//                    UITableViewCell *cell = self.currentcells[self.currentrow ];
+//                    cell.accessoryType = UITableViewCellAccessoryCheckmark; //sets visible checkmark
+//                    //also need to add a property to checklistitems indicating their checked status
+//                    
+//                    [self.readListButton setTitle: @"Tap here or say \"Read List\"" forState: UIControlStateNormal];
+//                    self.checkingStatus = NO;
+//                    NSIndexPath *indexPath = self.currentcellpaths[self.currentrow];
+//                    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+//                    [self.fliteController say:@"List Ended" withVoice:self.slt];
+//                }
             }
             
             if ([hypothesis  isEqual: @" SAY AGAIN"] | [hypothesis  isEqual: @" REPEAT"])
@@ -1075,6 +1076,10 @@ if (self.suspendSpeechCommands == NO)
     {  self.listGrandParent = @"MASTER LIST";
         self.listGrandParentKey = 0;
     }
+}
+
+- (void) touchAnywhere
+{ [self readListButton:self];
 }
 
     

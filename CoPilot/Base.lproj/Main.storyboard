@@ -94,7 +94,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7RQ-wb-c29" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="538" y="-127"/>
+            <point key="canvasLocation" x="588" y="-13"/>
         </scene>
         <!--Add List Item View Controller-->
         <scene sceneID="iU8-qi-I0A">
