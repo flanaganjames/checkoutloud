@@ -49,7 +49,6 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <segue destination="AqJ-QK-OxC" kind="modal" identifier="UpdateMainList" trigger="accessoryAction" id="oHC-jV-Xsa"/>
-                                    <segue destination="zdP-xx-fqQ" kind="modal" identifier="slideShow" id="mNX-mw-Glt"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
