@@ -188,24 +188,6 @@ if (self.suspendSpeechCommands == NO)
                  [self.fliteController say: saythis withVoice:self.slt];
             }
             
-// disallowing return in midst of checking - too many false positives
-//            if ([hypothesis  isEqual: @" RETURN"])
-//            {
-//                if (![self.listParent isEqual: @"MASTER LIST"]) //
-//                {
-//                    self.listParent = self.listGrandParent;
-//                    [self.fliteController say:self.listParent withVoice:self.slt];
-//                    self.listParentKey = self.listGrandParentKey;
-//                    [self getGrandParent];
-//                    self.listLabel.text = self.listParent;
-//                    [self loadCurrentParentList];
-//                    [self cellreloader]; //[self.tableView reloadData];
-//                    [self loadSpeechCommands];
-//                    [self loadLanguageSet];
-//                    [self changelanguageset]; //changes to the recreated language model
-//                }
-//            }
-            
         } // end if readlistbutton is "Check"
     }// end else is not master list
 
