@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "CheckListItem.h"
+#import <OpenEars/OpenEarsEventsObserver.h>
+#import <OpenEars/FliteController.h>
+#import <Slt/Slt.h>
 
 @interface CPLSlideShowViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UITextField *listName;
@@ -19,4 +22,6 @@
 @property CheckListItem *currentCheckListItem;
 @property NSMutableArray *checkListItems;
 @property long currentrow;
+@property FliteController *fliteController;
+@property (strong, nonatomic) Slt *slt;
 @end

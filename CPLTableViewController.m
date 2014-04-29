@@ -557,7 +557,8 @@ if (self.suspendSpeechCommands == NO)
     [self findAllDescendantItemsbyKey:aKey];
     if ([self.descendantItems count] > 0)
     {
-    [self.fliteController say:item.itemName withVoice:self.slt];
+        NSString *sayThis = [NSString stringWithFormat: @"Checking All Descendants of %@", item.itemName];
+    [self.fliteController say:sayThis withVoice:self.slt];
     [self performSegueWithIdentifier: @"slideShow" sender: self];
     }
 }
@@ -922,6 +923,8 @@ if (self.suspendSpeechCommands == NO)
         slideShowViewController.checkListItems = self.descendantItems;
         
         slideShowViewController.listParent = self.checkingItem.itemName;
+        slideShowViewController.fliteController = self.fliteController;
+        slideShowViewController.slt = self.slt;
     }
 
 }

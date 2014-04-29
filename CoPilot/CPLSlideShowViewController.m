@@ -33,6 +33,7 @@
     _listName.text = self.listParent;
     _listItemName.text = self.currentCheckListItem.itemName;
     _listItemNumber.text = [NSString stringWithFormat: @"%ld", self.currentCheckListItem.itemPriority];
+    [self.fliteController say:self.currentCheckListItem.itemName withVoice:self.slt];
 }
 
 - (void) nextSlide
@@ -42,6 +43,7 @@
         self.currentCheckListItem = self.checkListItems[self.currentrow];
         _listItemName.text = self.currentCheckListItem.itemName;
         _listItemNumber.text = [NSString stringWithFormat: @"%ld", self.currentCheckListItem.itemPriority];
+        [self.fliteController say:self.currentCheckListItem.itemName withVoice:self.slt];
     }
 }
 
