@@ -19,9 +19,12 @@
 @interface CPLTableViewController ()
 @property NSMutableArray *checkListItems;
 @property NSMutableArray *speechCommands;
-@property NSMutableArray *descendants;
-@property NSMutableArray *unchecked_descendants;
+@property NSMutableArray *descendantKeys;
+@property NSMutableArray *descendantItems;
+@property NSMutableArray *unchecked_descendantKeys;
+@property NSMutableArray *unchecked_descendantItems;
 @property CheckListItem *updatingItem;
+@property CheckListItem *checkingItem;
 @property BOOL *updatingDelete;
 
 
@@ -289,12 +292,132 @@ if (self.suspendSpeechCommands == NO)
     }
 }
 
+- (void) getOneByKey:(long) aKey
+{
+    sqlite3_stmt    *statement;
+    const char *dbpath = [_databasePath UTF8String];
+    if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
+    {
+        NSString *updateSQL = [NSString stringWithFormat:
+                @"SELECT * FROM CHECKLISTSBYKEY WHERE ID=\'%ld\'", aKey];
+        const char *update_stmt = [updateSQL UTF8String];
+        
+        sqlite3_prepare_v2(_checklistDB, update_stmt,
+                           -1, &statement, NULL);
+        while (sqlite3_step(statement) == SQLITE_ROW)
+        {   CheckListItem *item = [[CheckListItem alloc] init];
+            NSString *taskname =
+            [[NSString alloc] initWithUTF8String:
+             (const char *) sqlite3_column_text(statement, 1)];
+            int taskpriority = sqlite3_column_int(statement, 2);
+            long taskparentkey = sqlite3_column_int(statement, 3);
+            long taskkey = sqlite3_column_int(statement, 0);
 
+            item.itemName = taskname;
+            item.itemKey = *(&(taskkey));
+            item.itemPriority = *(&(taskpriority));
+            item.itemParent = self.listParent;
+            item.itemParentKey = *(&(taskparentkey));
+            [self.descendantItems addObject:item];
+            
+    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Item Name"
+        message:[NSString stringWithFormat: @"%@", taskname]
+                                delegate:nil
+                                                    cancelButtonTitle:@"OK"
+                                                    otherButtonTitles:nil];
+            [message show];
+            
+        }
+        sqlite3_finalize(statement);
+        sqlite3_close(_checklistDB);
+    }
+}
 
-- (void) findAllDescendantsbyKey:(long) parentKey {
+- (void) findAllDescendantItemsbyKey:(long) parentKey
+{
+    [self.descendantItems removeAllObjects];
+    [self.unchecked_descendantItems removeAllObjects];
     
-    [self.descendants removeAllObjects];
+    const char *dbpath = [_databasePath UTF8String];
+    sqlite3_stmt    *statement;
     
+    if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTSBYKEY WHERE PARENTKEY=\'%ld\'",parentKey];
+        const char *query_stmt = [querySQL UTF8String];
+        
+        if (sqlite3_prepare_v2(_checklistDB,
+                               query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            while (sqlite3_step(statement) == SQLITE_ROW)
+            {CheckListItem *item = [[CheckListItem alloc] init];
+                NSString *taskname =
+                [[NSString alloc] initWithUTF8String:
+                 (const char *) sqlite3_column_text(statement, 1)];
+                int taskpriority = sqlite3_column_int(statement, 2);
+                long taskparentkey = sqlite3_column_int(statement, 3);
+                long taskkey = sqlite3_column_int(statement, 0);
+                
+                item.itemName = taskname;
+                item.itemKey = *(&(taskkey));
+                item.itemPriority = *(&(taskpriority));
+                item.itemParent = self.listParent;
+                item.itemParentKey = *(&(taskparentkey));
+                [self.unchecked_descendantItems addObject:item];
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(_checklistDB);
+    }
+    
+    while ([self.unchecked_descendantItems count] > 0)
+    {   CheckListItem *item = self.unchecked_descendantItems[0];
+        long aKey = item.itemKey;
+        
+        const char *dbpath = [_databasePath UTF8String];
+        sqlite3_stmt    *statement;
+        
+        if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
+        {
+            NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTSBYKEY WHERE PARENTKEY=\'%ld\'",aKey];
+            const char *query_stmt = [querySQL UTF8String];
+            
+            if (sqlite3_prepare_v2(_checklistDB,
+                                   query_stmt, -1, &statement, NULL) == SQLITE_OK)
+            {
+                while (sqlite3_step(statement) == SQLITE_ROW)
+                {CheckListItem *item = [[CheckListItem alloc] init];
+                    NSString *taskname =
+                    [[NSString alloc] initWithUTF8String:
+                     (const char *) sqlite3_column_text(statement, 1)];
+                    int taskpriority = sqlite3_column_int(statement, 2);
+                    long taskparentkey = sqlite3_column_int(statement, 3);
+                    long taskkey = sqlite3_column_int(statement, 0);
+                    
+                    item.itemName = taskname;
+                    item.itemKey = *(&(taskkey));
+                    item.itemPriority = *(&(taskpriority));
+                    item.itemParent = self.listParent;
+                    item.itemParentKey = *(&(taskparentkey));
+                    [self.unchecked_descendantItems addObject:item];
+                }
+                sqlite3_finalize(statement);
+            }
+            sqlite3_close(_checklistDB);
+        }
+        
+        [self.descendantItems addObject: self.unchecked_descendantItems[0]]; // place the 0th item in descendants list; this is just the key as a NSNumber
+        
+        [self.unchecked_descendantItems removeObject: self.unchecked_descendantItems[0]]; // remove the 0th item from unchecked list
+    }
+    
+}
+
+- (void) findAllDescendantKeysbyKey:(long) parentKey {
+    
+    [self.descendantKeys removeAllObjects];
+    [self.unchecked_descendantKeys removeAllObjects];
+
     const char *dbpath = [_databasePath UTF8String];
     sqlite3_stmt    *statement;
     
@@ -310,15 +433,16 @@ if (self.suspendSpeechCommands == NO)
             {
                 long taskkey = sqlite3_column_int(statement, 0);
 
-            [self.unchecked_descendants addObject:[NSNumber numberWithInt:(taskkey)]];
+            [self.unchecked_descendantKeys addObject:[NSNumber numberWithInt:(taskkey)]];
             }
             sqlite3_finalize(statement);
         }
         sqlite3_close(_checklistDB);
     }
     
-    while ([self.unchecked_descendants count] > 0) {
-    long aKey = [self.unchecked_descendants[0] longValue];
+    while ([self.unchecked_descendantKeys count] > 0)
+    {
+    long aKey = [self.unchecked_descendantKeys[0] longValue];
         
         const char *dbpath = [_databasePath UTF8String];
         sqlite3_stmt    *statement;
@@ -335,16 +459,18 @@ if (self.suspendSpeechCommands == NO)
                 {
                     long taskkey = sqlite3_column_int(statement, 0);
                     NSNumber *aNumber = [NSNumber numberWithInt:(taskkey)];
-                    [self.unchecked_descendants addObject:aNumber]; // add desc of 0th item to unchecked list
+                    [self.unchecked_descendantKeys addObject:aNumber]; // add desc of 0th item to unchecked list
                 }
                 sqlite3_finalize(statement);
             }
             sqlite3_close(_checklistDB);
         }
         
-        [self.descendants addObject: self.unchecked_descendants[0]]; // place the 0th item in descendants list
-        [self.unchecked_descendants removeObject: self.unchecked_descendants[0]]; // remove the 0th item from unchecked list
+        [self.descendantKeys addObject: self.unchecked_descendantKeys[0]]; // place the 0th item in descendants list; this is just the key as a NSNumber
+        
+        [self.unchecked_descendantKeys removeObject: self.unchecked_descendantKeys[0]]; // remove the 0th item from unchecked list
     }
+    
 }
 
 
@@ -420,6 +546,23 @@ if (self.suspendSpeechCommands == NO)
     
 }
 
+- (void) slideShowForSelectRow
+{
+    NSIndexPath *myIndexPath = [self.tableView
+                                indexPathForSelectedRow];
+    long row = [myIndexPath row];
+    CheckListItem *item  = self.checkListItems[row];
+    self.checkingItem = item;
+    long aKey =  item.itemKey;
+    [self findAllDescendantItemsbyKey:aKey];
+    if ([self.descendantItems count] > 0)
+    {
+    [self.fliteController say:item.itemName withVoice:self.slt];
+    [self performSegueWithIdentifier: @"slideShow" sender: self];
+    }
+}
+
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -429,7 +572,7 @@ if (self.suspendSpeechCommands == NO)
     
     if (self.checkingStatus)
     {
-        [self performSegueWithIdentifier: @"slideShow" sender: self];
+        [self slideShowForSelectRow];
     }
     else
     {
@@ -517,9 +660,10 @@ if (self.suspendSpeechCommands == NO)
 
     self.checkListItems = [[NSMutableArray alloc] init];
     self.speechCommands = [[NSMutableArray alloc] init];
-    self.descendants = [[NSMutableArray alloc] init];
-    self.unchecked_descendants = [[NSMutableArray alloc] init];
-    
+    self.descendantKeys = [[NSMutableArray alloc] init];
+    self.descendantItems = [[NSMutableArray alloc] init];
+    self.unchecked_descendantKeys = [[NSMutableArray alloc] init];
+    self.unchecked_descendantItems = [[NSMutableArray alloc] init];
     NSString *docsDir;
     
     NSArray *dirPaths;
@@ -774,6 +918,10 @@ if (self.suspendSpeechCommands == NO)
     {
         CPLSlideShowViewController *slideShowViewController =
         [segue destinationViewController];
+
+        slideShowViewController.checkListItems = self.descendantItems;
+        
+        slideShowViewController.listParent = self.checkingItem.itemName;
     }
 
 }
@@ -888,11 +1036,11 @@ if (self.suspendSpeechCommands == NO)
         [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
         [self cellreloader]; //[self.tableView reloadData];
         long aKey =  itemupdating.itemKey;
-        [self findAllDescendantsbyKey:aKey];
-        while ([self.descendants count] > 0) {
-            long eachKey = [self.descendants[0] longValue];
+        [self findAllDescendantKeysbyKey:aKey];
+        while ([self.descendantKeys count] > 0) {
+            long eachKey = [self.descendantKeys[0] longValue];
             [self deleteOneByKey:eachKey];
-            [self.descendants removeObject:self.descendants[0]];
+            [self.descendantKeys removeObject:self.descendantKeys[0]];
         }
         [self deleteOneByKey:aKey];
     }
@@ -1250,12 +1398,6 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
     }
 }
 
-//UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"REPEAT heard"
-//                                                  message:[NSString stringWithFormat: @"%@", @"should say it again"]
-//                                                 delegate:nil
-//                                        cancelButtonTitle:@"OK"
-//                                        otherButtonTitles:nil];
-//
-//[message show];
+
 
 @end

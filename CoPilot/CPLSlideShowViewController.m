@@ -26,7 +26,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    self.currentrow = 0;
+    self.currentCheckListItem = [[CheckListItem alloc] init];
+    self.currentCheckListItem = self.checkListItems[self.currentrow];
+    
+    _listName.text = self.listParent;
+    _listItemName.text = self.currentCheckListItem.itemName;
+    _listItemNumber.text = [NSString stringWithFormat: @"%ld", self.currentCheckListItem.itemPriority];
 }
 
 - (void)didReceiveMemoryWarning

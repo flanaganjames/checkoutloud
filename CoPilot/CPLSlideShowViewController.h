@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CheckListItem.h"
 
 @interface CPLSlideShowViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UITextField *listName;
@@ -14,5 +15,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *listItemNumber;
 @property (weak, nonatomic) IBOutlet UITextField *listItemName;
 @property (weak, nonatomic) IBOutlet UIView *clickView;
-
+@property NSString *listParent;
+@property CheckListItem *currentCheckListItem;
+@property NSMutableArray *checkListItems;
+@property long currentrow;
 @end
