@@ -11,6 +11,9 @@
 #import <OpenEars/OpenEarsEventsObserver.h>
 #import <OpenEars/FliteController.h>
 #import <Slt/Slt.h>
+#import <OpenEars/OpenEarsLogging.h>
+#import <OpenEars/PocketsphinxController.h>
+#import "CPLTableViewController.h"
 
 @interface CPLSlideShowViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UITextField *listName;
@@ -23,5 +26,8 @@
 @property NSMutableArray *checkListItems;
 @property long currentrow;
 @property FliteController *fliteController;
+@property (strong, nonatomic) PocketsphinxController *pocketsphinxController;
+@property (strong, nonatomic) OpenEarsEventsObserver *openEarsEventsObserver;
 @property (strong, nonatomic) Slt *slt;
+@property (strong, nonatomic) CPLTableViewController *sendingController;
 @end
