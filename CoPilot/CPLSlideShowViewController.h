@@ -15,7 +15,7 @@
 #import <OpenEars/PocketsphinxController.h>
 #import "CPLTableViewController.h"
 
-@interface CPLSlideShowViewController : UIViewController
+@interface CPLSlideShowViewController : UIViewController  <OpenEarsEventsObserverDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *listName;
 
 @property (weak, nonatomic) IBOutlet UITextField *listItemNumber;
@@ -30,4 +30,6 @@
 @property (strong, nonatomic) OpenEarsEventsObserver *openEarsEventsObserver;
 @property (strong, nonatomic) Slt *slt;
 @property (strong, nonatomic) CPLTableViewController *sendingController;
+- (IBAction)handleLeftSwipe:(UISwipeGestureRecognizer *)recognizerleft;
+- (IBAction)handleRightSwipe:(UISwipeGestureRecognizer *)recognizerright;
 @end

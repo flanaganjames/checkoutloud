@@ -20,6 +20,14 @@
     
     if ([hypothesis  isEqual: @" CONSIDER IT DONE"] |[hypothesis  isEqual: @" CHECK"] |[hypothesis  isEqual: @" AFFIRMATIVE"])
     {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"heard check Name"
+        message:[NSString stringWithFormat: @"%@", @"no message"]
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        [message show];
+        
+        
         [self nextSlide];
     }
     
@@ -27,7 +35,6 @@
     {
         
     }
-    
     
 }
 //end openears stuff
@@ -51,11 +58,10 @@
     _listName.text = self.listParent;
     _listItemName.text = self.currentCheckListItem.itemName;
     _listItemNumber.text = [NSString stringWithFormat: @"%ld", self.currentCheckListItem.itemPriority];
-    NSString *sayThis = [NSString stringWithFormat: @"Checking  Descendants of %@, first item  %@", self.listParent, self.currentCheckListItem.itemName ];
+    NSString *sayThis = [NSString stringWithFormat: @"%@, item  %@", self.listParent, self.currentCheckListItem.itemName ];
     [self.fliteController say:sayThis withVoice:self.slt];
     //start openears stuff
     [self.openEarsEventsObserver setDelegate:self];
-    
     //end of openears stuff
 }
 
@@ -75,15 +81,36 @@
     }
 }
 
+- (void) previousSlide
+{  if (self.currentrow > 0)
+{
+    self.currentrow -= 1;
+    self.currentCheckListItem = self.checkListItems[self.currentrow];
+    _listItemName.text = self.currentCheckListItem.itemName;
+    _listItemNumber.text = [NSString stringWithFormat: @"%ld", self.currentCheckListItem.itemPriority];
+    [self.fliteController say:self.currentCheckListItem.itemName withVoice:self.slt];
+}
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+//- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+//    [self nextSlide];
+//    [super touchesBegan:touches withEvent:event];
+//}
+
+- (IBAction)handleLeftSwipe:(UISwipeGestureRecognizer *)recognizerleft
+{
+    [self previousSlide];
+}
+
+- (IBAction)handleRightSwipe:(UISwipeGestureRecognizer *)recognizerright
+{
     [self nextSlide];
-    [super touchesBegan:touches withEvent:event];
 }
 
 /*

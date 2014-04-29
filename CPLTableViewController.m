@@ -924,7 +924,7 @@ if (self.suspendSpeechCommands == NO)
         slideShowViewController.fliteController = self.fliteController;
         slideShowViewController.slt = self.slt;
         slideShowViewController.openEarsEventsObserver = self.openEarsEventsObserver;
-        slideShowViewController.sendingController = [segue sourceViewController];
+//        slideShowViewController.sendingController = [segue sourceViewController];
     }
 
 }
