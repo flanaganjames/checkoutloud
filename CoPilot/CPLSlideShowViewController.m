@@ -35,10 +35,25 @@
     _listItemNumber.text = [NSString stringWithFormat: @"%ld", self.currentCheckListItem.itemPriority];
 }
 
+- (void) nextSlide
+{  if (self.currentrow < [self.checkListItems count] - 1)
+    {
+        self.currentrow += 1;
+        self.currentCheckListItem = self.checkListItems[self.currentrow];
+        _listItemName.text = self.currentCheckListItem.itemName;
+        _listItemNumber.text = [NSString stringWithFormat: @"%ld", self.currentCheckListItem.itemPriority];
+    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self nextSlide];
+    [super touchesBegan:touches withEvent:event];
 }
 
 /*
