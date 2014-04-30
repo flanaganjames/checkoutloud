@@ -58,17 +58,21 @@
     _listName.text = self.listParent;
     _listItemName.text = self.currentCheckListItem.itemName;
     _listItemNumber.text = [NSString stringWithFormat: @"%ld", self.currentCheckListItem.itemPriority];
-    NSString *sayThis = [NSString stringWithFormat: @"%@, item  %@", self.listParent, self.currentCheckListItem.itemName ];
+    NSString *sayThis = [NSString stringWithFormat: @"%@, %@", self.listParent, self.currentCheckListItem.itemName ];
     [self.fliteController say:sayThis withVoice:self.slt];
     //start openears stuff
     [self.openEarsEventsObserver setDelegate:self];
     //end of openears stuff
     self.leftSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipes:)];
     self.rightSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipes:)];
+//    self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    
     self.leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
     self.rightSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+    
     [self.view addGestureRecognizer:self.leftSwipeGestureRecognizer];
     [self.view addGestureRecognizer:self.rightSwipeGestureRecognizer];
+//    [self.view addGestureRecognizer:self.tapGestureRecognizer];
 }
 
 - (void) nextSlide
@@ -107,6 +111,11 @@
 //- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
 //    [self nextSlide];
 //    [super touchesBegan:touches withEvent:event];
+//}
+
+//- (void) handleTap:(UITapGestureRecognizer *)sender
+//{
+//    [self nextSlide];
 //}
 
 - (void) handleSwipes:(UISwipeGestureRecognizer *)sender

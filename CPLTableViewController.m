@@ -1261,10 +1261,12 @@ else //it is the Master List
     if (self.checkingStatus)
     {
      self.checkingStatus = NO;
+        [self setTitles];
     }
     else
     {
     self.checkingStatus = YES;
+        [self setTitles];
     }
 }
     
@@ -1328,13 +1330,21 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
 {
     if ([self.listParent isEqual: @"MASTER LIST"])
     {   self.backToParentButton.title = @"Read Me";
-        self.checkingStatus = NO;
+        // self.checkingStatus = NO;
         if (self.currentcellcount > 0)
         {
             if (self.suspendSpeechCommands == NO)
             {
-                [self.readListButton setTitle: @"Tap or say List Name" forState: UIControlStateNormal];
-                [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
+                if (self.checkingStatus)
+                {
+                    [self.readListButton setTitle: @"Tap or say List Name to Check" forState: UIControlStateNormal];
+                    [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
+                }
+                else
+                {
+                    [self.readListButton setTitle: @"Tap or say List Name to Navigate" forState: UIControlStateNormal];
+                    [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
+                }
                
             }
             else
@@ -1357,7 +1367,7 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
             }
         }
     }
-    else
+    else // is not Master List
     {
         if (self.currentcellcount > 0)
         {
