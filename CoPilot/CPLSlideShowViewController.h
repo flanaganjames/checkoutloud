@@ -30,6 +30,6 @@
 @property (strong, nonatomic) OpenEarsEventsObserver *openEarsEventsObserver;
 @property (strong, nonatomic) Slt *slt;
 @property (strong, nonatomic) CPLTableViewController *sendingController;
-- (IBAction)handleLeftSwipe:(UISwipeGestureRecognizer *)recognizerleft;
-- (IBAction)handleRightSwipe:(UISwipeGestureRecognizer *)recognizerright;
+@property (nonatomic, strong) UISwipeGestureRecognizer *leftSwipeGestureRecognizer;
+@property (nonatomic, strong) UISwipeGestureRecognizer *rightSwipeGestureRecognizer;
 @end

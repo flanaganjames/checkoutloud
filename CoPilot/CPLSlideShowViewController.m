@@ -51,7 +51,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.currentrow = 0;
+    self.currentrow = 3;
     self.currentCheckListItem = [[CheckListItem alloc] init];
     self.currentCheckListItem = self.checkListItems[self.currentrow];
     
@@ -63,6 +63,12 @@
     //start openears stuff
     [self.openEarsEventsObserver setDelegate:self];
     //end of openears stuff
+    self.leftSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipes:)];
+    self.rightSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipes:)];
+    self.leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+    self.rightSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+    [self.view addGestureRecognizer:self.leftSwipeGestureRecognizer];
+    [self.view addGestureRecognizer:self.rightSwipeGestureRecognizer];
 }
 
 - (void) nextSlide
@@ -103,14 +109,19 @@
 //    [super touchesBegan:touches withEvent:event];
 //}
 
-- (IBAction)handleLeftSwipe:(UISwipeGestureRecognizer *)recognizerleft
+- (void) handleSwipes:(UISwipeGestureRecognizer *)sender
 {
-    [self previousSlide];
-}
-
-- (IBAction)handleRightSwipe:(UISwipeGestureRecognizer *)recognizerright
-{
-    [self nextSlide];
+    if (sender.direction == UISwipeGestureRecognizerDirectionLeft)
+    {
+        
+        [self nextSlide];
+    }
+    
+    
+    if (sender.direction == UISwipeGestureRecognizerDirectionRight)
+    {
+        [self previousSlide];
+    }
 }
 
 /*
