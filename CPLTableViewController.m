@@ -653,6 +653,10 @@ if (self.suspendSpeechCommands == NO)
 {
     [super viewDidLoad];
     
+    self.readListButton.layer.borderWidth = 2;
+    self.readListButton.layer.cornerRadius = 10.0;
+    self.readListButton.layer.borderColor = [UIColor blueColor].CGColor;
+    
     self.suspendSpeechCommands = NO;
     self.checkingStatus = NO;
     self.backToParentButton.title = @"Read Me";
