@@ -31,6 +31,8 @@
 		17249D1218CCD48D00A6C5EF /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249D1118CCD48D00A6C5EF /* AudioToolbox.framework */; };
 		172CD32E18CFDD8800427D63 /* Kal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 172CD32D18CFDD8800427D63 /* Kal.framework */; };
 		172CD39518D228B900427D63 /* CPLAddListItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 172CD39418D228B900427D63 /* CPLAddListItemViewController.m */; };
+		1730F5D11911AD8000FEAAF9 /* CustomSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 1730F5D01911AD8000FEAAF9 /* CustomSegue.m */; };
+		1730F5D41911ADCB00FEAAF9 /* CustomUnwindSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 1730F5D31911ADCB00FEAAF9 /* CustomUnwindSegue.m */; };
 		174CC80718F5EF7300D8D8A1 /* CPLTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 174CC80618F5EF7300D8D8A1 /* CPLTableViewCell.m */; };
 		178A982F190D885C00E2E357 /* CPLSlideShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 178A982E190D885C00E2E357 /* CPLSlideShowViewController.m */; };
 		17B782B518F75999009FC64C /* check-Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 17B782B418F75999009FC64C /* check-Icon-Small.png */; };
@@ -85,6 +87,10 @@
 		172CD32D18CFDD8800427D63 /* Kal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kal.framework; path = ../OpenEarsDistribution/OpenEarsExtras/openearsextras/FliteVoices/Kal.framework; sourceTree = "<group>"; };
 		172CD39318D228B900427D63 /* CPLAddListItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLAddListItemViewController.h; sourceTree = "<group>"; };
 		172CD39418D228B900427D63 /* CPLAddListItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLAddListItemViewController.m; sourceTree = "<group>"; };
+		1730F5CF1911AD8000FEAAF9 /* CustomSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomSegue.h; path = "../../CustomIOSAlertView/ios-custom-alertview/CustomIOS7AlertView/CustomIOS7AlertView/View/CustomSegue.h"; sourceTree = "<group>"; };
+		1730F5D01911AD8000FEAAF9 /* CustomSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomSegue.m; path = "../../CustomIOSAlertView/ios-custom-alertview/CustomIOS7AlertView/CustomIOS7AlertView/View/CustomSegue.m"; sourceTree = "<group>"; };
+		1730F5D21911ADCB00FEAAF9 /* CustomUnwindSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomUnwindSegue.h; path = "../../CustomIOSAlertView/ios-custom-alertview/CustomIOS7AlertView/CustomIOS7AlertView/View/CustomUnwindSegue.h"; sourceTree = "<group>"; };
+		1730F5D31911ADCB00FEAAF9 /* CustomUnwindSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomUnwindSegue.m; path = "../../CustomIOSAlertView/ios-custom-alertview/CustomIOS7AlertView/CustomIOS7AlertView/View/CustomUnwindSegue.m"; sourceTree = "<group>"; };
 		174CC80518F5EF7300D8D8A1 /* CPLTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLTableViewCell.h; sourceTree = "<group>"; };
 		174CC80618F5EF7300D8D8A1 /* CPLTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLTableViewCell.m; sourceTree = "<group>"; };
 		178A982D190D885C00E2E357 /* CPLSlideShowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CPLSlideShowViewController.h; path = CoPilot/CPLSlideShowViewController.h; sourceTree = SOURCE_ROOT; };
@@ -170,11 +176,15 @@
 		17249CC818CC30E600A6C5EF /* CoPilot */ = {
 			isa = PBXGroup;
 			children = (
-				178A982D190D885C00E2E357 /* CPLSlideShowViewController.h */,
-				178A982E190D885C00E2E357 /* CPLSlideShowViewController.m */,
 				17DA605818FB1A6C005D2F85 /* View */,
 				17249CFA18CC346100A6C5EF /* CPLTableViewController.h */,
 				17249CFB18CC346100A6C5EF /* CPLTableViewController.m */,
+				1730F5CF1911AD8000FEAAF9 /* CustomSegue.h */,
+				1730F5D01911AD8000FEAAF9 /* CustomSegue.m */,
+				1730F5D21911ADCB00FEAAF9 /* CustomUnwindSegue.h */,
+				1730F5D31911ADCB00FEAAF9 /* CustomUnwindSegue.m */,
+				178A982D190D885C00E2E357 /* CPLSlideShowViewController.h */,
+				178A982E190D885C00E2E357 /* CPLSlideShowViewController.m */,
 				172CD39318D228B900427D63 /* CPLAddListItemViewController.h */,
 				172CD39418D228B900427D63 /* CPLAddListItemViewController.m */,
 				17D5714818D5474300663FAE /* CPLMUDViewController.h */,
@@ -361,10 +371,12 @@
 				17249CD318CC30E600A6C5EF /* CPLAppDelegate.m in Sources */,
 				17249CFC18CC346100A6C5EF /* CPLTableViewController.m in Sources */,
 				17249CCF18CC30E600A6C5EF /* main.m in Sources */,
+				1730F5D11911AD8000FEAAF9 /* CustomSegue.m in Sources */,
 				17249D0C18CCC29A00A6C5EF /* CheckListItem.m in Sources */,
 				17D5714A18D5474300663FAE /* CPLMUDViewController.m in Sources */,
 				172CD39518D228B900427D63 /* CPLAddListItemViewController.m in Sources */,
 				178A982F190D885C00E2E357 /* CPLSlideShowViewController.m in Sources */,
+				1730F5D41911ADCB00FEAAF9 /* CustomUnwindSegue.m in Sources */,
 				174CC80718F5EF7300D8D8A1 /* CPLTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

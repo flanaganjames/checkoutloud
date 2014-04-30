@@ -14,6 +14,8 @@
 #import "CPLAddListItemViewController.h"
 #import "CPLMUDViewController.h"
 #import "CPLSlideShowViewController.h"
+#import "CustomSegue.h"
+#import "CustomUnwindSegue.h"
 
 
 @interface CPLTableViewController ()
@@ -873,6 +875,11 @@ if (self.suspendSpeechCommands == NO)
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    if([segue isKindOfClass:[CustomSegue class]]) {
+        // Set the start point for the animation to center of the button for the animation
+        ((CustomSegue *)segue).originatingPoint = self.tableView.center;
+    }
+    
     if ([[segue identifier] isEqualToString:@"AddToRoot"])
     {
         self.saveStateSpeechCommand = self.suspendSpeechCommands;
