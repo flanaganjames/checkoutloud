@@ -51,7 +51,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.currentrow = 3;
+    self.currentrow = 0;
     self.currentCheckListItem = [[CheckListItem alloc] init];
     self.currentCheckListItem = self.checkListItems[self.currentrow];
     

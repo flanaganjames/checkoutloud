@@ -292,47 +292,47 @@ if (self.suspendSpeechCommands == NO)
     }
 }
 
-- (void) getOneByKey:(long) aKey
-{
-    sqlite3_stmt    *statement;
-    const char *dbpath = [_databasePath UTF8String];
-    if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
-    {
-        NSString *updateSQL = [NSString stringWithFormat:
-                @"SELECT * FROM CHECKLISTSBYKEY WHERE ID=\'%ld\'", aKey];
-        const char *update_stmt = [updateSQL UTF8String];
-        
-        sqlite3_prepare_v2(_checklistDB, update_stmt,
-                           -1, &statement, NULL);
-        while (sqlite3_step(statement) == SQLITE_ROW)
-        {   CheckListItem *item = [[CheckListItem alloc] init];
-            NSString *taskname =
-            [[NSString alloc] initWithUTF8String:
-             (const char *) sqlite3_column_text(statement, 1)];
-            int taskpriority = sqlite3_column_int(statement, 2);
-            long taskparentkey = sqlite3_column_int(statement, 3);
-            long taskkey = sqlite3_column_int(statement, 0);
-
-            item.itemName = taskname;
-            item.itemKey = *(&(taskkey));
-            item.itemPriority = *(&(taskpriority));
-            item.itemParent = self.listParent;
-            item.itemParentKey = *(&(taskparentkey));
-            [self.descendantItems addObject:item];
-            
-    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Item Name"
-        message:[NSString stringWithFormat: @"%@", taskname]
-                                delegate:nil
-                                                    cancelButtonTitle:@"OK"
-                                                    otherButtonTitles:nil];
-            [message show];
-            
-        }
-        sqlite3_finalize(statement);
-        sqlite3_close(_checklistDB);
-    }
-}
-
+//- (void) getOneByKey:(long) aKey
+//{
+//    sqlite3_stmt    *statement;
+//    const char *dbpath = [_databasePath UTF8String];
+//    if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
+//    {
+//        NSString *updateSQL = [NSString stringWithFormat:
+//                @"SELECT * FROM CHECKLISTSBYKEY WHERE ID=\'%ld\'", aKey];
+//        const char *update_stmt = [updateSQL UTF8String];
+//        
+//        sqlite3_prepare_v2(_checklistDB, update_stmt,
+//                           -1, &statement, NULL);
+//        while (sqlite3_step(statement) == SQLITE_ROW)
+//        {   CheckListItem *item = [[CheckListItem alloc] init];
+//            NSString *taskname =
+//            [[NSString alloc] initWithUTF8String:
+//             (const char *) sqlite3_column_text(statement, 1)];
+//            int taskpriority = sqlite3_column_int(statement, 2);
+//            long taskparentkey = sqlite3_column_int(statement, 3);
+//            long taskkey = sqlite3_column_int(statement, 0);
+//
+//            item.itemName = taskname;
+//            item.itemKey = *(&(taskkey));
+//            item.itemPriority = *(&(taskpriority));
+//            item.itemParent = self.listParent;
+//            item.itemParentKey = *(&(taskparentkey));
+//            [self.descendantItems addObject:item];
+//            
+//    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Item Name"
+//        message:[NSString stringWithFormat: @"%@", taskname]
+//                                delegate:nil
+//                                                    cancelButtonTitle:@"OK"
+//                                                    otherButtonTitles:nil];
+//            [message show];
+//            
+//        }
+//        sqlite3_finalize(statement);
+//        sqlite3_close(_checklistDB);
+//    }
+//}
+//
 - (void) findAllDescendantItemsbyKey:(long) parentKey
 {
     [self.descendantItems removeAllObjects];

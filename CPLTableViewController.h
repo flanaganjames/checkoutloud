@@ -33,7 +33,7 @@ Kal *kal;
 - (IBAction)speechCommandToggle:(id)sender;
 
 - (IBAction)backToParent:(id)sender;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *backToParentButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *ƒ;
 
 @property BOOL suspendSpeechCommands;
 @property BOOL saveStateSpeechCommand;
