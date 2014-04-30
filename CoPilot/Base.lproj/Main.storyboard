@@ -90,7 +90,7 @@
                         <outlet property="listLabel" destination="YK1-wk-4K2" id="ef1-Nc-v9g"/>
                         <outlet property="readListButton" destination="EAc-pg-uHQ" id="ebm-CY-2jM"/>
                         <outlet property="speechCommandButton" destination="3Yt-QF-NI1" id="cLg-Sh-aSV"/>
-                        <segue destination="zdP-xx-fqQ" kind="modal" identifier="slideShow" id="TD3-7t-Jbp"/>
+                        <segue destination="zdP-xx-fqQ" kind="custom" identifier="slideShow" customClass="CustomSegue" id="vVf-P9-Wtn"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7RQ-wb-c29" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -379,7 +379,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oAE-2M-pv1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1621" y="-13"/>
+            <point key="canvasLocation" x="1585" y="0.0"/>
         </scene>
     </scenes>
     <resources>
