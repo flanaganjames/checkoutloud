@@ -18,6 +18,7 @@
 #import "CustomIOS7AlertView.h"
 #import "CheckListItem.h"
 
+
 PocketsphinxController *pocketsphinxController;
 OpenEarsEventsObserver *openEarsEventsObserver;
 FliteController *fliteController;

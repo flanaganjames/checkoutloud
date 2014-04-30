@@ -13,14 +13,18 @@
 //#import "CPLSecondViewController.h"
 #import "CPLAddListItemViewController.h"
 #import "CPLMUDViewController.h"
+#import "CPLSlideShowViewController.h"
 
 
 @interface CPLTableViewController ()
 @property NSMutableArray *checkListItems;
 @property NSMutableArray *speechCommands;
-@property NSMutableArray *descendants;
-@property NSMutableArray *unchecked_descendants;
+@property NSMutableArray *descendantKeys;
+@property NSMutableArray *descendantItems;
+@property NSMutableArray *unchecked_descendantKeys;
+@property NSMutableArray *unchecked_descendantItems;
 @property CheckListItem *updatingItem;
+@property CheckListItem *checkingItem;
 @property BOOL *updatingDelete;
 
 
@@ -164,24 +168,6 @@ if (self.suspendSpeechCommands == NO)
                  [self.fliteController say: saythis withVoice:self.slt];
             }
             
-// disallowing return in midst of checking - too many false positives
-//            if ([hypothesis  isEqual: @" RETURN"])
-//            {
-//                if (![self.listParent isEqual: @"MASTER LIST"]) //
-//                {
-//                    self.listParent = self.listGrandParent;
-//                    [self.fliteController say:self.listParent withVoice:self.slt];
-//                    self.listParentKey = self.listGrandParentKey;
-//                    [self getGrandParent];
-//                    self.listLabel.text = self.listParent;
-//                    [self loadCurrentParentList];
-//                    [self cellreloader]; //[self.tableView reloadData];
-//                    [self loadSpeechCommands];
-//                    [self loadLanguageSet];
-//                    [self changelanguageset]; //changes to the recreated language model
-//                }
-//            }
-            
         } // end if readlistbutton is "Check"
     }// end else is not master list
 
@@ -306,12 +292,132 @@ if (self.suspendSpeechCommands == NO)
     }
 }
 
-
-
-- (void) findAllDescendantsbyKey:(long) parentKey {
+//- (void) getOneByKey:(long) aKey
+//{
+//    sqlite3_stmt    *statement;
+//    const char *dbpath = [_databasePath UTF8String];
+//    if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
+//    {
+//        NSString *updateSQL = [NSString stringWithFormat:
+//                @"SELECT * FROM CHECKLISTSBYKEY WHERE ID=\'%ld\'", aKey];
+//        const char *update_stmt = [updateSQL UTF8String];
+//        
+//        sqlite3_prepare_v2(_checklistDB, update_stmt,
+//                           -1, &statement, NULL);
+//        while (sqlite3_step(statement) == SQLITE_ROW)
+//        {   CheckListItem *item = [[CheckListItem alloc] init];
+//            NSString *taskname =
+//            [[NSString alloc] initWithUTF8String:
+//             (const char *) sqlite3_column_text(statement, 1)];
+//            int taskpriority = sqlite3_column_int(statement, 2);
+//            long taskparentkey = sqlite3_column_int(statement, 3);
+//            long taskkey = sqlite3_column_int(statement, 0);
+//
+//            item.itemName = taskname;
+//            item.itemKey = *(&(taskkey));
+//            item.itemPriority = *(&(taskpriority));
+//            item.itemParent = self.listParent;
+//            item.itemParentKey = *(&(taskparentkey));
+//            [self.descendantItems addObject:item];
+//            
+//    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Item Name"
+//        message:[NSString stringWithFormat: @"%@", taskname]
+//                                delegate:nil
+//                                                    cancelButtonTitle:@"OK"
+//                                                    otherButtonTitles:nil];
+//            [message show];
+//            
+//        }
+//        sqlite3_finalize(statement);
+//        sqlite3_close(_checklistDB);
+//    }
+//}
+//
+- (void) findAllDescendantItemsbyKey:(long) parentKey
+{
+    [self.descendantItems removeAllObjects];
+    [self.unchecked_descendantItems removeAllObjects];
     
-    [self.descendants removeAllObjects];
+    const char *dbpath = [_databasePath UTF8String];
+    sqlite3_stmt    *statement;
     
+    if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTSBYKEY WHERE PARENTKEY=\'%ld\'",parentKey];
+        const char *query_stmt = [querySQL UTF8String];
+        
+        if (sqlite3_prepare_v2(_checklistDB,
+                               query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            while (sqlite3_step(statement) == SQLITE_ROW)
+            {CheckListItem *item = [[CheckListItem alloc] init];
+                NSString *taskname =
+                [[NSString alloc] initWithUTF8String:
+                 (const char *) sqlite3_column_text(statement, 1)];
+                int taskpriority = sqlite3_column_int(statement, 2);
+                long taskparentkey = sqlite3_column_int(statement, 3);
+                long taskkey = sqlite3_column_int(statement, 0);
+                
+                item.itemName = taskname;
+                item.itemKey = *(&(taskkey));
+                item.itemPriority = *(&(taskpriority));
+                item.itemParent = self.listParent;
+                item.itemParentKey = *(&(taskparentkey));
+                [self.unchecked_descendantItems addObject:item];
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(_checklistDB);
+    }
+    
+    while ([self.unchecked_descendantItems count] > 0)
+    {   CheckListItem *item = self.unchecked_descendantItems[0];
+        long aKey = item.itemKey;
+        
+        const char *dbpath = [_databasePath UTF8String];
+        sqlite3_stmt    *statement;
+        
+        if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
+        {
+            NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTSBYKEY WHERE PARENTKEY=\'%ld\'",aKey];
+            const char *query_stmt = [querySQL UTF8String];
+            
+            if (sqlite3_prepare_v2(_checklistDB,
+                                   query_stmt, -1, &statement, NULL) == SQLITE_OK)
+            {
+                while (sqlite3_step(statement) == SQLITE_ROW)
+                {CheckListItem *item = [[CheckListItem alloc] init];
+                    NSString *taskname =
+                    [[NSString alloc] initWithUTF8String:
+                     (const char *) sqlite3_column_text(statement, 1)];
+                    int taskpriority = sqlite3_column_int(statement, 2);
+                    long taskparentkey = sqlite3_column_int(statement, 3);
+                    long taskkey = sqlite3_column_int(statement, 0);
+                    
+                    item.itemName = taskname;
+                    item.itemKey = *(&(taskkey));
+                    item.itemPriority = *(&(taskpriority));
+                    item.itemParent = self.listParent;
+                    item.itemParentKey = *(&(taskparentkey));
+                    [self.unchecked_descendantItems addObject:item];
+                }
+                sqlite3_finalize(statement);
+            }
+            sqlite3_close(_checklistDB);
+        }
+        
+        [self.descendantItems addObject: self.unchecked_descendantItems[0]]; // place the 0th item in descendants list; this is just the key as a NSNumber
+        
+        [self.unchecked_descendantItems removeObject: self.unchecked_descendantItems[0]]; // remove the 0th item from unchecked list
+    }
+    
+}
+
+- (void) findAllDescendantKeysbyKey:(long) parentKey {
+    
+    [self.descendantKeys removeAllObjects];
+    [self.unchecked_descendantKeys removeAllObjects];
+
     const char *dbpath = [_databasePath UTF8String];
     sqlite3_stmt    *statement;
     
@@ -327,15 +433,16 @@ if (self.suspendSpeechCommands == NO)
             {
                 long taskkey = sqlite3_column_int(statement, 0);
 
-            [self.unchecked_descendants addObject:[NSNumber numberWithInt:(taskkey)]];
+            [self.unchecked_descendantKeys addObject:[NSNumber numberWithInt:(taskkey)]];
             }
             sqlite3_finalize(statement);
         }
         sqlite3_close(_checklistDB);
     }
     
-    while ([self.unchecked_descendants count] > 0) {
-    long aKey = [self.unchecked_descendants[0] longValue];
+    while ([self.unchecked_descendantKeys count] > 0)
+    {
+    long aKey = [self.unchecked_descendantKeys[0] longValue];
         
         const char *dbpath = [_databasePath UTF8String];
         sqlite3_stmt    *statement;
@@ -352,16 +459,18 @@ if (self.suspendSpeechCommands == NO)
                 {
                     long taskkey = sqlite3_column_int(statement, 0);
                     NSNumber *aNumber = [NSNumber numberWithInt:(taskkey)];
-                    [self.unchecked_descendants addObject:aNumber]; // add desc of 0th item to unchecked list
+                    [self.unchecked_descendantKeys addObject:aNumber]; // add desc of 0th item to unchecked list
                 }
                 sqlite3_finalize(statement);
             }
             sqlite3_close(_checklistDB);
         }
         
-        [self.descendants addObject: self.unchecked_descendants[0]]; // place the 0th item in descendants list
-        [self.unchecked_descendants removeObject: self.unchecked_descendants[0]]; // remove the 0th item from unchecked list
+        [self.descendantKeys addObject: self.unchecked_descendantKeys[0]]; // place the 0th item in descendants list; this is just the key as a NSNumber
+        
+        [self.unchecked_descendantKeys removeObject: self.unchecked_descendantKeys[0]]; // remove the 0th item from unchecked list
     }
+    
 }
 
 
@@ -437,6 +546,22 @@ if (self.suspendSpeechCommands == NO)
     
 }
 
+- (void) slideShowForSelectRow
+{
+    NSIndexPath *myIndexPath = [self.tableView
+                                indexPathForSelectedRow];
+    long row = [myIndexPath row];
+    CheckListItem *item  = self.checkListItems[row];
+    self.checkingItem = item;
+    long aKey =  item.itemKey;
+    [self findAllDescendantItemsbyKey:aKey];
+    if ([self.descendantItems count] > 0)
+    {
+    [self performSegueWithIdentifier: @"slideShow" sender: self];
+    }
+}
+
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -446,15 +571,7 @@ if (self.suspendSpeechCommands == NO)
     
     if (self.checkingStatus)
     {
-        NSIndexPath *currentIndexPath = self.currentcellpaths[self.currentrow];
-        if ([indexPath isEqual:currentIndexPath])
-        {
-            [self readListButton:self];
-        }
-        else
-        {
-            [self.tableView selectRowAtIndexPath:self.currentcellpaths[self.currentrow ] animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
-        }
+        [self slideShowForSelectRow];
     }
     else
     {
@@ -536,15 +653,20 @@ if (self.suspendSpeechCommands == NO)
 {
     [super viewDidLoad];
     
+    self.readListButton.layer.borderWidth = 2;
+    self.readListButton.layer.cornerRadius = 10.0;
+    self.readListButton.layer.borderColor = [UIColor blueColor].CGColor;
+    
     self.suspendSpeechCommands = NO;
     self.checkingStatus = NO;
     self.backToParentButton.title = @"Read Me";
 
     self.checkListItems = [[NSMutableArray alloc] init];
     self.speechCommands = [[NSMutableArray alloc] init];
-    self.descendants = [[NSMutableArray alloc] init];
-    self.unchecked_descendants = [[NSMutableArray alloc] init];
-    
+    self.descendantKeys = [[NSMutableArray alloc] init];
+    self.descendantItems = [[NSMutableArray alloc] init];
+    self.unchecked_descendantKeys = [[NSMutableArray alloc] init];
+    self.unchecked_descendantItems = [[NSMutableArray alloc] init];
     NSString *docsDir;
     
     NSArray *dirPaths;
@@ -794,6 +916,20 @@ if (self.suspendSpeechCommands == NO)
         updateViewController.checkListItem = self.updatingItemCopied;
         
     }
+    
+    if ([[segue identifier] isEqualToString:@"slideShow"])
+    {
+        CPLSlideShowViewController *slideShowViewController =
+        [segue destinationViewController];
+
+        slideShowViewController.checkListItems = self.descendantItems;
+        
+        slideShowViewController.listParent = self.checkingItem.itemName;
+        slideShowViewController.fliteController = self.fliteController;
+        slideShowViewController.slt = self.slt;
+        slideShowViewController.openEarsEventsObserver = self.openEarsEventsObserver;
+//        slideShowViewController.sendingController = [segue sourceViewController];
+    }
 
 }
 
@@ -907,11 +1043,11 @@ if (self.suspendSpeechCommands == NO)
         [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
         [self cellreloader]; //[self.tableView reloadData];
         long aKey =  itemupdating.itemKey;
-        [self findAllDescendantsbyKey:aKey];
-        while ([self.descendants count] > 0) {
-            long eachKey = [self.descendants[0] longValue];
+        [self findAllDescendantKeysbyKey:aKey];
+        while ([self.descendantKeys count] > 0) {
+            long eachKey = [self.descendantKeys[0] longValue];
             [self deleteOneByKey:eachKey];
-            [self.descendants removeObject:self.descendants[0]];
+            [self.descendantKeys removeObject:self.descendantKeys[0]];
         }
         [self deleteOneByKey:aKey];
     }
@@ -1006,19 +1142,11 @@ if (self.suspendSpeechCommands == NO)
         [self loadCurrentParentList];
         [self.fliteController say:self.listParent withVoice:self.slt];
         [self cellreloader]; //[self.tableView reloadData];
+        [self.fliteController say:self.listParent withVoice:self.slt];
         [self loadSpeechCommands];
         [self loadLanguageSet];
         [self changelanguageset]; //changes to the recreated language model
-        if ([self.listParent isEqual: @"MASTER LIST"])
-        { self.backToParentButton.title = @"Read Me";
-            if (self.suspendSpeechCommands == NO)
-            {
-            [self.readListButton setTitle: @"Tap or Say List Name" forState: UIControlStateNormal];
-            }
-            else
-            {[self.readListButton setTitle: @"Tap List Name" forState: UIControlStateNormal];
-            }
-        }
+        [self setTitles];
     }
     else
     {[self showReadMe];}
@@ -1079,7 +1207,6 @@ if (self.suspendSpeechCommands == NO)
         self.listGrandParentKey = 0;
     }
 }
-
     
 - (IBAction)readListButton:(id)sender {
 if (self.currentcellcount > 0)
@@ -1134,6 +1261,21 @@ if (![self.listParent isEqual: @"MASTER LIST"])
             [self readCurrent];
     }
 }// end if not Master List
+else //it is the Master List
+{// toggle checkingStatus
+    if (self.checkingStatus)
+    {
+     self.checkingStatus = NO;
+        [self setTitles];
+    }
+    else
+    {
+    self.checkingStatus = YES;
+        [self setTitles];
+    }
+}
+    
+    
 }// end if currentcellcount > 0
 }
 
@@ -1193,13 +1335,21 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
 {
     if ([self.listParent isEqual: @"MASTER LIST"])
     {   self.backToParentButton.title = @"Read Me";
-        self.checkingStatus = NO;
+        // self.checkingStatus = NO;
         if (self.currentcellcount > 0)
         {
             if (self.suspendSpeechCommands == NO)
             {
-                [self.readListButton setTitle: @"Tap or say List Name" forState: UIControlStateNormal];
-                [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
+                if (self.checkingStatus)
+                {
+                    [self.readListButton setTitle: @"Tap or say List Name to Check" forState: UIControlStateNormal];
+                    [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
+                }
+                else
+                {
+                    [self.readListButton setTitle: @"Tap or say List Name to Navigate" forState: UIControlStateNormal];
+                    [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
+                }
                
             }
             else
@@ -1222,7 +1372,7 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
             }
         }
     }
-    else
+    else // is not Master List
     {
         if (self.currentcellcount > 0)
         {
@@ -1266,12 +1416,6 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
     }
 }
 
-//UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"REPEAT heard"
-//                                                  message:[NSString stringWithFormat: @"%@", @"should say it again"]
-//                                                 delegate:nil
-//                                        cancelButtonTitle:@"OK"
-//                                        otherButtonTitles:nil];
-//
-//[message show];
+
 
 @end
