@@ -58,7 +58,7 @@
     _listName.text = self.listParent;
     _listItemName.text = self.currentCheckListItem.itemName;
     _listItemNumber.text = [NSString stringWithFormat: @"%ld", self.currentCheckListItem.itemPriority];
-    NSString *sayThis = [NSString stringWithFormat: @"%@, %@", self.listParent, self.currentCheckListItem.itemName ];
+    NSString *sayThis = [NSString stringWithFormat: @"item %ld is %@", self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
     [self.fliteController say:sayThis withVoice:self.slt];
     //start openears stuff
     [self.openEarsEventsObserver setDelegate:self];
@@ -82,7 +82,8 @@
         self.currentCheckListItem = self.checkListItems[self.currentrow];
         _listItemName.text = self.currentCheckListItem.itemName;
         _listItemNumber.text = [NSString stringWithFormat: @"%ld", self.currentCheckListItem.itemPriority];
-        [self.fliteController say:self.currentCheckListItem.itemName withVoice:self.slt];
+        NSString *sayThis = [NSString stringWithFormat: @"item %ld is %@", self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
+        [self.fliteController say:sayThis withVoice:self.slt];
     }
     else
     {
@@ -98,7 +99,8 @@
     self.currentCheckListItem = self.checkListItems[self.currentrow];
     _listItemName.text = self.currentCheckListItem.itemName;
     _listItemNumber.text = [NSString stringWithFormat: @"%ld", self.currentCheckListItem.itemPriority];
-    [self.fliteController say:self.currentCheckListItem.itemName withVoice:self.slt];
+    NSString *sayThis = [NSString stringWithFormat: @"item %ld is %@", self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
+    [self.fliteController say:sayThis withVoice:self.slt];
 }
 }
 
