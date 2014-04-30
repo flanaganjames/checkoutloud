@@ -552,7 +552,11 @@ if (self.suspendSpeechCommands == NO)
 {
     NSIndexPath *myIndexPath = [self.tableView
                                 indexPathForSelectedRow];
+  
     long row = [myIndexPath row];
+    UITableViewCell *cell = self.currentcells[row];
+    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    
     CheckListItem *item  = self.checkListItems[row];
     self.checkingItem = item;
     long aKey =  item.itemKey;
