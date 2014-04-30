@@ -877,7 +877,15 @@ if (self.suspendSpeechCommands == NO)
 {
     if([segue isKindOfClass:[CustomSegue class]]) {
         // Set the start point for the animation to center of the button for the animation
-        ((CustomSegue *)segue).originatingPoint = self.tableView.center;
+        
+        NSIndexPath *myIndexPath = [self.tableView
+                                    indexPathForSelectedRow];
+        
+        CGRect myRect = [self.tableView rectForRowAtIndexPath:myIndexPath];
+        
+        CGPoint mypoint = CGPointMake(myRect.origin.x + (myRect.size.width / 2), myRect.origin.y + (myRect.size.height / 2));
+        
+        ((CustomSegue *)segue).originatingPoint = mypoint;
     }
     
     if ([[segue identifier] isEqualToString:@"AddToRoot"])
