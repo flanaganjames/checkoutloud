@@ -32,5 +32,5 @@
 @property (strong, nonatomic) CPLTableViewController *sendingController;
 @property (nonatomic, strong) UISwipeGestureRecognizer *leftSwipeGestureRecognizer;
 @property (nonatomic, strong) UISwipeGestureRecognizer *rightSwipeGestureRecognizer;
-//@property (nonatomic, strong) UITapGestureRecognizer * tapGestureRecognizer;
+@property (nonatomic, strong) UITapGestureRecognizer * tapGestureRecognizer;
 @end

@@ -65,14 +65,14 @@
     //end of openears stuff
     self.leftSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipes:)];
     self.rightSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipes:)];
-//    self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     
     self.leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
     self.rightSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
     
     [self.view addGestureRecognizer:self.leftSwipeGestureRecognizer];
     [self.view addGestureRecognizer:self.rightSwipeGestureRecognizer];
-//    [self.view addGestureRecognizer:self.tapGestureRecognizer];
+    [self.view addGestureRecognizer:self.tapGestureRecognizer];
 }
 
 - (void) nextSlide
@@ -115,10 +115,10 @@
 //    [super touchesBegan:touches withEvent:event];
 //}
 
-//- (void) handleTap:(UITapGestureRecognizer *)sender
-//{
-//    [self nextSlide];
-//}
+- (void) handleTap:(UITapGestureRecognizer *)sender
+{
+    [self nextSlide];
+}
 
 - (void) handleSwipes:(UISwipeGestureRecognizer *)sender
 {
