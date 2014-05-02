@@ -55,4 +55,9 @@ Kal *kal;
 - (IBAction) loadLanguageSet;
 - (IBAction) changelanguageset;
 @property CheckListItem *updatingItemCopied;
+@property (nonatomic, strong) UISwipeGestureRecognizer *leftSwipeGestureRecognizer;
+@property (nonatomic, strong) UISwipeGestureRecognizer *rightSwipeGestureRecognizer;
+@property (nonatomic, strong) UISwipeGestureRecognizer *upSwipeGestureRecognizer;
+@property (nonatomic, strong) UISwipeGestureRecognizer *downSwipeGestureRecognizer;
+@property (nonatomic, strong) UITapGestureRecognizer * tapGestureRecognizer;
 @end

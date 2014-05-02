@@ -65,13 +65,16 @@
     //end of openears stuff
     self.leftSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipes:)];
     self.rightSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipes:)];
+    self.upSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipes:)];
     self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     
     self.leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
     self.rightSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+    self.upSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
     
     [self.view addGestureRecognizer:self.leftSwipeGestureRecognizer];
     [self.view addGestureRecognizer:self.rightSwipeGestureRecognizer];
+    [self.view addGestureRecognizer:self.upSwipeGestureRecognizer];
     [self.view addGestureRecognizer:self.tapGestureRecognizer];
 }
 
@@ -124,14 +127,21 @@
 {
     if (sender.direction == UISwipeGestureRecognizerDirectionLeft)
     {
-        
-        [self nextSlide];
+        [self previousSlide];
+        //[self nextSlide];
     }
     
     
     if (sender.direction == UISwipeGestureRecognizerDirectionRight)
     {
-        [self previousSlide];
+       // [self previousSlide];
+        [self nextSlide];
+    }
+    
+    if (sender.direction == UISwipeGestureRecognizerDirectionUp)
+    {
+        //perform unwind programmatically
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
