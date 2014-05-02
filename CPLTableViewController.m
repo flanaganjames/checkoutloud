@@ -23,6 +23,8 @@
 @property NSMutableArray *speechCommands;
 @property NSMutableArray *descendantKeys;
 @property NSMutableArray *descendantItems;
+@property NSMutableArray *listOfLists;
+@property NSMutableArray *listOfListNames;
 @property NSMutableArray *unchecked_descendantKeys;
 @property NSMutableArray *unchecked_descendantItems;
 @property CheckListItem *updatingItem;
@@ -283,9 +285,8 @@
 //
 - (void) findAllDescendantItemsbyKey:(long) parentKey
 {
-    [self.descendantItems removeAllObjects];
     [self.unchecked_descendantItems removeAllObjects];
-    
+    [self.descendantItems removeAllObjects];
     const char *dbpath = [_databasePath UTF8String];
     sqlite3_stmt    *statement;
     
@@ -493,10 +494,36 @@
     
 }
 
+- (void) slideShowForEntireList
+{
+    self.currentrow = 0;
+    NSInteger *theCount = 0;
+    [self.listOfLists removeAllObjects];
+    [self.listOfListNames removeAllObjects];
+    while (self.currentrow < [self.currentcells count] -1)
+    {
+        CheckListItem *item  = self.checkListItems[self.currentrow];
+        self.checkingItem = item;
+        long aKey =  item.itemKey;
+        [self findAllDescendantItemsbyKey:aKey];
+        [self.listOfLists addObject:self.descendantItems];
+        [self.listOfListNames addObject:item.itemName];
+        UITableViewCell *cell = self.currentcells[self.currentrow];
+        cell.accessoryType = UITableViewCellAccessoryCheckmark; //sets visible checkmark
+        self.currentrow += 1;
+        theCount = theCount + [self.descendantItems count];
+    }
+    if (theCount > 0)
+    {
+        [self performSegueWithIdentifier: @"slideShow" sender: self];
+    }
+}
+
 - (void) slideShowForSelectRow: (NSIndexPath *) myIndexPath
 {
 //    NSIndexPath *myIndexPath = [self.tableView indexPathForSelectedRow];
-  
+    [self.listOfLists removeAllObjects];
+    [self.listOfListNames removeAllObjects];
     long row = [myIndexPath row];
 //    UITableViewCell *cell = self.currentcells[row];
     UITableViewCell *cell  = [self.tableView cellForRowAtIndexPath:myIndexPath];
@@ -508,6 +535,8 @@
     [self findAllDescendantItemsbyKey:aKey];
     if ([self.descendantItems count] > 0)
     {
+    [self.listOfLists addObject:self.descendantItems];
+    [self.listOfListNames addObject:item.itemName];
     [self performSegueWithIdentifier: @"slideShow" sender: self];
     }
 }
@@ -868,10 +897,12 @@
     {
         CPLSlideShowViewController *slideShowViewController =
         [segue destinationViewController];
-
-        slideShowViewController.checkListItems = self.descendantItems;
+        slideShowViewController.listOfLists = self.listOfLists;
+        slideShowViewController.listOfListNames = self.listOfListNames;
         
-        slideShowViewController.listParent = self.checkingItem.itemName;
+//        slideShowViewController.checkListItems = self.descendantItems;
+//        slideShowViewController.listParent = self.checkingItem.itemName;
+        
         slideShowViewController.fliteController = self.fliteController;
         slideShowViewController.slt = self.slt;
         slideShowViewController.openEarsEventsObserver = self.openEarsEventsObserver;
@@ -1158,20 +1189,7 @@
 {
 if (self.currentcellcount > 0)
 {
-    self.currentrow = 0;
-
-    while (self.currentrow < [self.currentcells count] -1)
-    {
-        NSIndexPath *myIndexPath = self.currentcellpaths[self.currentrow];
-        [self slideShowForSelectRow:myIndexPath];
-        UITableViewCell *cell = self.currentcells[self.currentrow ];
-        cell.accessoryType = UITableViewCellAccessoryCheckmark; //sets visible checkmark
-        self.currentrow += 1;
-    }
-//            NSIndexPath *indexPath = self.currentcellpaths[self.currentrow];
-//            [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-    [self.fliteController say:@"List Ended" withVoice:self.slt];
-    return;
+    [self slideShowForEntireList];
 
 }// end if currentcellcount > 0
 }
