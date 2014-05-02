@@ -93,7 +93,7 @@ if (self.suspendSpeechCommands == NO)
                  NSIndexPath* index = visible[idx];
                  
                  [self.tableView selectRowAtIndexPath:index animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
-                [self respondSelectRow];
+                 [self respondSelectRow:index];
              }
          }];
         
@@ -116,7 +116,7 @@ if (self.suspendSpeechCommands == NO)
                      
                      [self.tableView selectRowAtIndexPath:index animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
                      
-                     [self respondSelectRow];
+                     [self respondSelectRow:index];
                      
                  }
              }];
@@ -526,9 +526,9 @@ if (self.suspendSpeechCommands == NO)
 }
 
 
-- (void) respondSelectRow {
-    NSIndexPath *myIndexPath = [self.tableView
-                                indexPathForSelectedRow];
+- (void) respondSelectRow: (NSIndexPath *) myIndexPath
+{
+    //NSIndexPath *myIndexPath = [self.tableView indexPathForSelectedRow];
     long row = [myIndexPath row];
     CheckListItem *item  = self.checkListItems[row];
     
@@ -581,7 +581,7 @@ if (self.suspendSpeechCommands == NO)
     }
     else
     {
-        [self respondSelectRow];
+//        [self respondSelectRow];
     }
     
 
@@ -1454,7 +1454,11 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
 - (void) handleTap:(UITapGestureRecognizer *)sender
 {
    // edit current selected element
-    [self respondSelectRow];
+    
+    CGPoint location = [sender locationInView:self.tableView];
+    NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
+    
+    [self respondSelectRow:swipedIndexPath];
 }
 
 - (void) handleSwipes:(UISwipeGestureRecognizer *)sender

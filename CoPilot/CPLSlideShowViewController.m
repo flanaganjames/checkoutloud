@@ -127,14 +127,15 @@
 {
     if (sender.direction == UISwipeGestureRecognizerDirectionLeft)
     {
-        
-        [self nextSlide];
+        [self previousSlide];
+        //[self nextSlide];
     }
     
     
     if (sender.direction == UISwipeGestureRecognizerDirectionRight)
     {
-        [self previousSlide];
+       // [self previousSlide];
+        [self nextSlide];
     }
     
     if (sender.direction == UISwipeGestureRecognizerDirectionUp)
