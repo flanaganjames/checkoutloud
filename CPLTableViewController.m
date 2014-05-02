@@ -548,13 +548,13 @@ if (self.suspendSpeechCommands == NO)
     
 }
 
-- (void) slideShowForSelectRow
+- (void) slideShowForSelectRow: (NSIndexPath *) myIndexPath
 {
-    NSIndexPath *myIndexPath = [self.tableView
-                                indexPathForSelectedRow];
+//    NSIndexPath *myIndexPath = [self.tableView indexPathForSelectedRow];
   
     long row = [myIndexPath row];
-    UITableViewCell *cell = self.currentcells[row];
+//    UITableViewCell *cell = self.currentcells[row];
+    UITableViewCell *cell  = [self.tableView cellForRowAtIndexPath:myIndexPath];
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
     
     CheckListItem *item  = self.checkListItems[row];
@@ -577,7 +577,7 @@ if (self.suspendSpeechCommands == NO)
     
     if (self.checkingStatus)
     {
-        [self slideShowForSelectRow];
+//        [self slideShowForSelectRow];
     }
     else
     {
@@ -777,6 +777,23 @@ if (self.suspendSpeechCommands == NO)
 
 // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
 // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    self.leftSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipes:)];
+    self.rightSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipes:)];
+    self.upSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipes:)];
+    self.downSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipes:)];
+    self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    
+    self.leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+    self.rightSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+    self.upSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
+    self.downSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionDown;
+    
+    [self.view addGestureRecognizer:self.leftSwipeGestureRecognizer];
+    [self.view addGestureRecognizer:self.rightSwipeGestureRecognizer];
+    [self.view addGestureRecognizer:self.upSwipeGestureRecognizer];
+    [self.view addGestureRecognizer:self.downSwipeGestureRecognizer];
+    [self.view addGestureRecognizer:self.tapGestureRecognizer];
 }
 
 
@@ -1434,6 +1451,40 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
     }
 }
 
+- (void) handleTap:(UITapGestureRecognizer *)sender
+{
+   // edit current selected element
+    [self respondSelectRow];
+}
+
+- (void) handleSwipes:(UISwipeGestureRecognizer *)sender
+{
+    if (sender.direction == UISwipeGestureRecognizerDirectionLeft)
+    {
+        //edit current selected element?
+    }
+    
+    
+    if (sender.direction == UISwipeGestureRecognizerDirectionRight)
+    {
+       //check the current selected element and its descendants
+        
+        CGPoint location = [sender locationInView:self.tableView];
+        NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
+
+        [self slideShowForSelectRow:swipedIndexPath];
+    }
+    
+    if (sender.direction == UISwipeGestureRecognizerDirectionUp)
+    {
+        // navigate up one level
+    }
+    
+    if (sender.direction == UISwipeGestureRecognizerDirectionDown)
+    {
+        //check the entire list and their descendants
+    }
+}
 
 
 @end
