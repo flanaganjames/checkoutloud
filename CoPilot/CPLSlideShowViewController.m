@@ -33,7 +33,7 @@
     
     if ([hypothesis  isEqual: @" SAY AGAIN"] | [hypothesis  isEqual: @" REPEAT"])
     {
-        
+        [self previousSlide];
     }
     
 }
@@ -140,7 +140,22 @@
     
     if (sender.direction == UISwipeGestureRecognizerDirectionUp)
     {
-        //perform unwind programmatically
+        [self handleQuitConfirm];
+    }
+}
+
+- (void) handleQuitConfirm
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Are you Sure?" message:@"Do you want to quit checking this list?" delegate:self cancelButtonTitle:@"No, Do NOT quit." otherButtonTitles:@"Yes, Quit Now!",nil];
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        NSLog(@"Do nothing");
+    }
+    else if (buttonIndex == 1) {
+        NSLog(@"OK Tapped. Quit checking this list");
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
