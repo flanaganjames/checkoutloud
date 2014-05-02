@@ -118,23 +118,6 @@
                     [self changelanguageset]; //changes to the recreated language model
                 }
             }
-//        if (self.checkingStatus)
-//        { // this should not happen
-//             UITableViewCell *cell = self.currentcells[self.currentrow];
-//             NSString *text = cell.textLabel.text;
-//            [self.tableView selectRowAtIndexPath:self.currentcellpaths[self.currentrow ] animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
-//            if ([hypothesis  isEqual: @" CONSIDER IT DONE"] |[hypothesis  isEqual: @" CHECK"] |[hypothesis  isEqual: @" AFFIRMATIVE"])
-//            {
-//                [self readListButton:self];
-//            }
-//            else
-//            {
-//                NSString *saythis =
-//                 @"Please say affirmative or say check or say consider it done";
-//                 [self.fliteController say: saythis withVoice:self.slt];
-//            }
-            
-//        } // end if self.checkStatus = YES
         
     }// end if (self.suspendSpeechCommands == NO)
 }//end pocketsphinxDidReceiveHypothesis
@@ -491,13 +474,11 @@
 
 - (void) respondSelectRow: (NSIndexPath *) myIndexPath
 {
-    self.checkingStatus = NO;
     //NSIndexPath *myIndexPath = [self.tableView indexPathForSelectedRow];
     long row = [myIndexPath row];
     CheckListItem *item  = self.checkListItems[row];
     
     self.backToParentButton.title = @"Return";
-    self.checkingStatus = NO;
     self.listGrandParent = self.listParent;
     self.listGrandParentKey = self.listParentKey;
     self.listParent = item.itemName;
@@ -535,21 +516,8 @@
 //this method should npt get called - see handleTap gesture
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//  self.listenerStatus.text = @"selected";
-//    
-//
-    
-    if (self.checkingStatus)
-    {
-//        [self slideShowForSelectRow];
-    }
-    else
-    {
-//        [self respondSelectRow];
-    }
-    
 
-//
+
 }
 
 
@@ -608,7 +576,6 @@
     self.readListButton.layer.borderColor = [UIColor blueColor].CGColor;
     
     self.suspendSpeechCommands = NO;
-    self.checkingStatus = NO;
     self.backToParentButton.title = @"Read Me";
 
     self.checkListItems = [[NSMutableArray alloc] init];
@@ -1102,7 +1069,7 @@
 }
 
 - (IBAction)speechCommandToggle:(id)sender
-{   self.checkingStatus= NO;
+{
     if (self.suspendSpeechCommands)
         {  self.suspendSpeechCommands = NO;
         }
@@ -1192,7 +1159,7 @@
 if (self.currentcellcount > 0)
 {
     self.currentrow = 0;
-    self.checkingStatus = YES;
+
     while (self.currentrow < [self.currentcells count] -1)
     {
         NSIndexPath *myIndexPath = self.currentcellpaths[self.currentrow];
@@ -1205,7 +1172,7 @@ if (self.currentcellcount > 0)
 //            [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
     [self.fliteController say:@"List Ended" withVoice:self.slt];
     return;
-    self.checkingStatus = NO;
+
 }// end if currentcellcount > 0
 }
 
@@ -1265,7 +1232,7 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
 {
     if ([self.listParent isEqual: @"MASTER LIST"])
     {   self.backToParentButton.title = @"Read Me";
-        // self.checkingStatus = NO;
+
         if (self.currentcellcount > 0)
         {
             if (self.suspendSpeechCommands == NO)
@@ -1282,7 +1249,7 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
         else
         {
             [self.readListButton setTitle: @"Tap \"+\" to add to list" forState: UIControlStateNormal];
-            self.checkingStatus = NO;
+
             if (self.suspendSpeechCommands == NO)
             {
                 [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
@@ -1347,9 +1314,9 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
         
         CGPoint location = [sender locationInView:self.tableView];
         NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
-        self.checkingStatus = YES;
+
         [self slideShowForSelectRow:swipedIndexPath];
-        self.checkingStatus = NO;
+
     }
     
     if (sender.direction == UISwipeGestureRecognizerDirectionUp)
