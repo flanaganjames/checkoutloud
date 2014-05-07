@@ -1323,6 +1323,11 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
     if (sender.direction == UISwipeGestureRecognizerDirectionLeft)
     {
         //edit current selected element?
+        CGPoint location = [sender locationInView:self.tableView];
+        NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
+        UITableViewCell *cell  = [self.tableView cellForRowAtIndexPath:swipedIndexPath];
+        
+        [self performSegueWithIdentifier: @"UpdateMainList" sender: cell];
     }
     
     
@@ -1340,6 +1345,7 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
     if (sender.direction == UISwipeGestureRecognizerDirectionUp)
     {
         // navigate up one level
+        [self backToParent:self];
     }
     
     if (sender.direction == UISwipeGestureRecognizerDirectionDown)
