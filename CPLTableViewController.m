@@ -319,8 +319,11 @@
         sqlite3_close(_checklistDB);
     }
     
+    NSMutableArray *tempArray = [[NSMutableArray alloc] init];
+    
     while ([self.unchecked_descendantItems count] > 0)
-    {   CheckListItem *item = self.unchecked_descendantItems[0];
+    {   [tempArray removeAllObjects];
+        CheckListItem *item = self.unchecked_descendantItems[0];
         long aKey = item.itemKey;
         
         const char *dbpath = [_databasePath UTF8String];
@@ -348,15 +351,38 @@
                     item.itemPriority = *(&(taskpriority));
                     item.itemParent = self.listParent;
                     item.itemParentKey = *(&(taskparentkey));
-                    [self.unchecked_descendantItems addObject:item];
+                    [tempArray addObject:item];
                 }
                 sqlite3_finalize(statement);
             }
             sqlite3_close(_checklistDB);
         }
         
-        [self.descendantItems addObject: self.unchecked_descendantItems[0]]; // place the 0th item in descendants list; this is just the key as a NSNumber
+        if ([tempArray count] > 0) // if the 0th item has descendants
+        {
+            //then make a copy of the item with a itemPriority of "0"
+            // this will signal the slide show that items following this item have this item as a parent
+            CheckListItem *copyItem = [[CheckListItem alloc] init];
+            copyItem = self.unchecked_descendantItems[0];
+            copyItem.itemPriority = 0;
+            //and add the copied item to the descendentitems array
+            [self.descendantItems addObject: copyItem]; // place the 0th item in descendants list;
+            
+            // then only add the descendants to the unchecked descendentitems array
+            int aCounter = 0;
+            while (aCounter < [tempArray count])
+            {
+                CheckListItem *tempitem = tempArray[aCounter];
+                [self.unchecked_descendantItems addObject:tempitem];
+                aCounter += 1;
+            }
+        }
+        else //if the 0th item does not have descendents
+        { //then add the item itself to the descendentitems array
+            [self.descendantItems addObject: self.unchecked_descendantItems[0]]; // place the 0th item in descendants list;
+        }
         
+        // either way remove the 0th item from unchecked
         [self.unchecked_descendantItems removeObject: self.unchecked_descendantItems[0]]; // remove the 0th item from unchecked list
     }
     
