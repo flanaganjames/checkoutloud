@@ -102,10 +102,22 @@
         self.currentCheckListItem = self.checkListItems[self.currentrow];
         _listItemName.text = self.currentCheckListItem.itemName;
         _listItemNumber.text = [NSString stringWithFormat: @"%ld", self.currentCheckListItem.itemPriority];
-        NSString *sayThis = [NSString stringWithFormat: @"item %ld is %@", self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
+        NSString *sayThis = @"";
+        if (self.currentCheckListItem.itemPriority == 0)
+        {
+        sayThis = [NSString stringWithFormat: @"item %@ has children ",  self.currentCheckListItem.itemName ];
+        }
+        else if (self.currentCheckListItem.itemPriority == -1)
+        {
+         sayThis = [NSString stringWithFormat: @"end of children of item %@",  self.currentCheckListItem.itemName ];   
+        }
+        else
+        {
+        sayThis = [NSString stringWithFormat: @"item %ld is %@", self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
+        }
         [self.fliteController say:sayThis withVoice:self.slt];
     }
-    else
+    else // go to the next list
     {
         if (self.currentlist < [self.listOfLists count] - 1)
         {

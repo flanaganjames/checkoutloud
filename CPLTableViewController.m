@@ -324,7 +324,7 @@
     while ([self.unchecked_descendantItems count] > 0)
     {   [tempArray removeAllObjects];
         CheckListItem *item = self.unchecked_descendantItems[0];
-        if (item.itemPriority == 0)
+        if (item.itemPriority == 0 | item.itemPriority == -1 )
             // this is a parent item in the unchecked list that has already been checked and has children and just needs to be put into the descendentitems list immediately before its children
             {
                 [self.descendantItems addObject: self.unchecked_descendantItems[0]]; // place the 0th item in descendants list;
@@ -371,10 +371,13 @@
                 //then make a copy of the item with a itemPriority of "0"
                 // this will signal the slide show that items following this item have this item as a parent
                 CheckListItem *copyItem = [[CheckListItem alloc] init];
+                CheckListItem *endcopyItem = [[CheckListItem alloc] init];
                 CheckListItem *originalItem = [[CheckListItem alloc] init];
                 originalItem = self.unchecked_descendantItems[0];
                 copyItem.itemName = [originalItem.itemName copy];
                 copyItem.itemPriority = 0;//being used as a signal
+                endcopyItem.itemName = [originalItem.itemName copy];
+                endcopyItem.itemPriority = -1;
                 //and add the copied item to the descendentitems array
                 [self.unchecked_descendantItems addObject: copyItem]; // place the copied item in unchecked descendants list immediately before its children
                 
@@ -386,6 +389,8 @@
                     [self.unchecked_descendantItems addObject:tempitem];
                     aCounter += 1;
                 }
+                
+                [self.unchecked_descendantItems addObject: endcopyItem]; // place the endcopied item in unchecked descendants list immediately after its children
             }
             else //if the 0th item does not have descendents
             { //then add the item itself to the descendentitems array
