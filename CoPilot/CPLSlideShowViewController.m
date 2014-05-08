@@ -33,7 +33,7 @@
     
     if ([hypothesis  isEqual: @" SAY AGAIN"] | [hypothesis  isEqual: @" REPEAT"])
     {
-        
+        [self previousSlide];
     }
     
 }
@@ -48,18 +48,23 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    self.currentrow = 0;
-    self.currentCheckListItem = [[CheckListItem alloc] init];
-    self.currentCheckListItem = self.checkListItems[self.currentrow];
+- (void) startOneList
+{     self.currentrow = 0;
     
     _listName.text = self.listParent;
     _listItemName.text = self.currentCheckListItem.itemName;
     _listItemNumber.text = [NSString stringWithFormat: @"%ld", self.currentCheckListItem.itemPriority];
-    NSString *sayThis = [NSString stringWithFormat: @"item %ld is %@", self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
+    NSString *sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listName.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
     [self.fliteController say:sayThis withVoice:self.slt];
+}
+
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+
+    self.currentCheckListItem = [[CheckListItem alloc] init];
     //start openears stuff
     [self.openEarsEventsObserver setDelegate:self];
     //end of openears stuff
@@ -76,6 +81,18 @@
     [self.view addGestureRecognizer:self.rightSwipeGestureRecognizer];
     [self.view addGestureRecognizer:self.upSwipeGestureRecognizer];
     [self.view addGestureRecognizer:self.tapGestureRecognizer];
+    self.currentlist = 0;
+    self.currentrow = 0;
+    
+    self.checkListItems = self.listOfLists[self.currentlist];
+    self.currentCheckListItem = self.checkListItems[self.currentrow];
+    self.listParent = self.listOfListNames[self.currentlist];
+    _listName.text = self.listParent;
+    CheckListItem *item = self.currentCheckListItem;
+    _listItemName.text = item.itemName;
+    _listItemNumber.text = [NSString stringWithFormat: @"%ld", item.itemPriority];
+    NSString *sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listName.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
+    [self.fliteController say:sayThis withVoice:self.slt];
 }
 
 - (void) nextSlide
@@ -90,21 +107,54 @@
     }
     else
     {
+        if (self.currentlist < [self.listOfLists count] - 1)
+        {
+            self.currentlist += 1;
+            self.currentrow = 0;
+            self.checkListItems = self.listOfLists[self.currentlist];
+            self.listParent = self.listOfListNames[self.currentlist];
+            _listName.text = self.listParent;
+            CheckListItem *item = self.checkListItems[self.currentrow];
+            _listItemName.text = item.itemName;
+            _listItemNumber.text = [NSString stringWithFormat: @"%ld", item.itemPriority];
+            NSString *sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listName.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
+            [self.fliteController say:sayThis withVoice:self.slt];
+        }
+        else
+        {
         //perform unwind programmatically
+        [self.fliteController say:@"check list completed" withVoice:self.slt];
         [self dismissViewControllerAnimated:YES completion:nil];
+        }
     }
 }
 
 - (void) previousSlide
 {  if (self.currentrow > 0)
-{
-    self.currentrow -= 1;
-    self.currentCheckListItem = self.checkListItems[self.currentrow];
-    _listItemName.text = self.currentCheckListItem.itemName;
-    _listItemNumber.text = [NSString stringWithFormat: @"%ld", self.currentCheckListItem.itemPriority];
-    NSString *sayThis = [NSString stringWithFormat: @"item %ld is %@", self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
-    [self.fliteController say:sayThis withVoice:self.slt];
-}
+    {
+        self.currentrow -= 1;
+        self.currentCheckListItem = self.checkListItems[self.currentrow];
+        _listItemName.text = self.currentCheckListItem.itemName;
+        _listItemNumber.text = [NSString stringWithFormat: @"%ld", self.currentCheckListItem.itemPriority];
+        NSString *sayThis = [NSString stringWithFormat: @"item %ld is %@", self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
+        [self.fliteController say:sayThis withVoice:self.slt];
+    }
+    else
+    {
+        if (self.currentlist > 0)
+        {
+             self.currentlist -= 1;
+            self.currentrow = 0;
+            self.checkListItems = self.listOfLists[self.currentlist];
+            self.listParent = self.listOfListNames[self.currentlist];
+            _listName.text = self.listParent;
+            CheckListItem *item = self.checkListItems[self.currentrow];
+            _listItemName.text = item.itemName;
+            _listItemNumber.text = [NSString stringWithFormat: @"%ld", item.itemPriority];
+            NSString *sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listName.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
+            [self.fliteController say:sayThis withVoice:self.slt];
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -140,7 +190,22 @@
     
     if (sender.direction == UISwipeGestureRecognizerDirectionUp)
     {
-        //perform unwind programmatically
+        [self handleQuitConfirm];
+    }
+}
+
+- (void) handleQuitConfirm
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Are you Sure?" message:@"Do you want to quit checking this list?" delegate:self cancelButtonTitle:@"No, Do NOT quit." otherButtonTitles:@"Yes, Quit Now!",nil];
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        NSLog(@"Do nothing");
+    }
+    else if (buttonIndex == 1) {
+        NSLog(@"OK Tapped. Quit checking this list");
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }

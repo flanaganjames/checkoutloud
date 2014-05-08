@@ -24,7 +24,10 @@
 @property NSString *listParent;
 @property CheckListItem *currentCheckListItem;
 @property NSMutableArray *checkListItems;
+@property NSMutableArray *listOfLists;
+@property NSMutableArray *listOfListNames;
 @property long currentrow;
+@property long currentlist;
 @property FliteController *fliteController;
 @property (strong, nonatomic) PocketsphinxController *pocketsphinxController;
 @property (strong, nonatomic) OpenEarsEventsObserver *openEarsEventsObserver;

@@ -23,6 +23,8 @@
 @property NSMutableArray *speechCommands;
 @property NSMutableArray *descendantKeys;
 @property NSMutableArray *descendantItems;
+@property NSMutableArray *listOfLists;
+@property NSMutableArray *listOfListNames;
 @property NSMutableArray *unchecked_descendantKeys;
 @property NSMutableArray *unchecked_descendantItems;
 @property CheckListItem *updatingItem;
@@ -75,33 +77,9 @@
 {
 	NSLog(@"The received hypothesis is %@ with a score of %@ and an ID of %@", rawhypothesis, recognitionScore, utteranceID);
     
-NSString *hypothesis = [NSString stringWithFormat: @" %@", rawhypothesis];
-
-if (self.suspendSpeechCommands == NO)
-{
-    if ([self.listParent isEqual: @"MASTER LIST"])
-    {// in this mode reading a list member's name drills down to its children,, if any
-        NSArray *cells = self.currentcells;
-        NSArray *visible = self.currentcellpaths;
-        
-        [cells enumerateObjectsUsingBlock:^(UITableViewCell *cell,
-                                            NSUInteger idx,
-                                            BOOL *stop)
-         {
-             if ([hypothesis  isEqual: cell.textLabel.text])
-             {
-                 NSIndexPath* index = visible[idx];
-                 
-                 [self.tableView selectRowAtIndexPath:index animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
-                 [self respondSelectRow:index];
-             }
-         }];
-        
-    }// end if ([self.listParent isEqual: @"MASTER LIST"])
-    else
+    NSString *hypothesis = [NSString stringWithFormat: @" %@", rawhypothesis];
+    if (self.suspendSpeechCommands == NO)
     {
-        if (!self.checkingStatus)
-        {
             NSArray *cells = self.currentcells;
             NSArray *visible = self.currentcellpaths;
             
@@ -123,12 +101,7 @@ if (self.suspendSpeechCommands == NO)
             
             if ([hypothesis  isEqual: @" READ LIST"])
             {
-                if (self.currentcellcount > 0)
-                {    self.checkingStatus = YES;
-                    [self cellreloader];
-                    self.currentrow = 0;
-                    [self readCurrent];
-                }
+                [self readListButton];
             }
             
             if ([hypothesis  isEqual: @" RETURN"])
@@ -147,33 +120,8 @@ if (self.suspendSpeechCommands == NO)
                     [self changelanguageset]; //changes to the recreated language model
                 }
             }
-        }
-        if (self.checkingStatus)
-        {
-             UITableViewCell *cell = self.currentcells[self.currentrow];
-             NSString *text = cell.textLabel.text;
-            [self.tableView selectRowAtIndexPath:self.currentcellpaths[self.currentrow ] animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
-            if ([hypothesis  isEqual: @" CONSIDER IT DONE"] |[hypothesis  isEqual: @" CHECK"] |[hypothesis  isEqual: @" AFFIRMATIVE"])
-            {
-                [self readListButton:self];
-            }
-            
-            if ([hypothesis  isEqual: @" SAY AGAIN"] | [hypothesis  isEqual: @" REPEAT"])
-            {
-                [self readCurrent]; // this also selects that row
-            }
-            
-            if ([hypothesis  isEqual: text] | [hypothesis  isEqual: @" NEXT"]| [hypothesis  isEqual: @" OK"] | [hypothesis  isEqual: @" DONE"])
-            {
-                NSString *saythis =
-                 @"Please say affirmative or say check or say consider it done";
-                 [self.fliteController say: saythis withVoice:self.slt];
-            }
-            
-        } // end if readlistbutton is "Check"
-    }// end else is not master list
-
-}// end if (self.suspendSpeechCommands == NO)
+        
+    }// end if (self.suspendSpeechCommands == NO)
 }//end pocketsphinxDidReceiveHypothesis
 
 - (void) pocketsphinxDidStartCalibration {
@@ -337,9 +285,8 @@ if (self.suspendSpeechCommands == NO)
 //
 - (void) findAllDescendantItemsbyKey:(long) parentKey
 {
-    [self.descendantItems removeAllObjects];
     [self.unchecked_descendantItems removeAllObjects];
-    
+    [self.descendantItems removeAllObjects];
     const char *dbpath = [_databasePath UTF8String];
     sqlite3_stmt    *statement;
     
@@ -533,7 +480,6 @@ if (self.suspendSpeechCommands == NO)
     CheckListItem *item  = self.checkListItems[row];
     
     self.backToParentButton.title = @"Return";
-    self.checkingStatus = NO;
     self.listGrandParent = self.listParent;
     self.listGrandParentKey = self.listParentKey;
     self.listParent = item.itemName;
@@ -548,10 +494,36 @@ if (self.suspendSpeechCommands == NO)
     
 }
 
+- (void) slideShowForEntireList
+{
+    self.currentrow = 0;
+    NSInteger *theCount = 0;
+    [self.listOfLists removeAllObjects];
+    [self.listOfListNames removeAllObjects];
+    while (self.currentrow < [self.currentcells count] -1)
+    {
+        CheckListItem *item  = self.checkListItems[self.currentrow];
+        self.checkingItem = item;
+        long aKey =  item.itemKey;
+        [self findAllDescendantItemsbyKey:aKey];
+        [self.listOfLists addObject:self.descendantItems];
+        [self.listOfListNames addObject:item.itemName];
+        UITableViewCell *cell = self.currentcells[self.currentrow];
+        cell.accessoryType = UITableViewCellAccessoryCheckmark; //sets visible checkmark
+        self.currentrow += 1;
+        theCount = theCount + [self.descendantItems count];
+    }
+    if (theCount > 0)
+    {
+        [self performSegueWithIdentifier: @"slideShow" sender: self];
+    }
+}
+
 - (void) slideShowForSelectRow: (NSIndexPath *) myIndexPath
 {
 //    NSIndexPath *myIndexPath = [self.tableView indexPathForSelectedRow];
-  
+    [self.listOfLists removeAllObjects];
+    [self.listOfListNames removeAllObjects];
     long row = [myIndexPath row];
 //    UITableViewCell *cell = self.currentcells[row];
     UITableViewCell *cell  = [self.tableView cellForRowAtIndexPath:myIndexPath];
@@ -563,50 +535,19 @@ if (self.suspendSpeechCommands == NO)
     [self findAllDescendantItemsbyKey:aKey];
     if ([self.descendantItems count] > 0)
     {
+    [self.listOfLists addObject:self.descendantItems];
+    [self.listOfListNames addObject:item.itemName];
     [self performSegueWithIdentifier: @"slideShow" sender: self];
     }
 }
 
 
-
+//this method should npt get called - see handleTap gesture
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//  self.listenerStatus.text = @"selected";
-//    
-//
-    
-    if (self.checkingStatus)
-    {
-//        [self slideShowForSelectRow];
-    }
-    else
-    {
-//        [self respondSelectRow];
-    }
-    
 
-//
+
 }
-
-
-
-//- (void)loadView
-//{
-//    self.tableView = [[UITableView alloc]
-//                 initWithFrame:  [[UIScreen mainScreen] applicationFrame]
-//                 style:          UITableViewStylePlain
-//                 ];
-//    
-//    self.tableView.autoresizingMask =
-//    UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-//    
-//    self.tableView.delegate = self;
-//    self.tableView.dataSource = self;
-//    [self.tableView reloadData];
-//    self.view = self.tableView;
-////    [self.tableView release];
-//}
-
 
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -664,13 +605,14 @@ if (self.suspendSpeechCommands == NO)
     self.readListButton.layer.borderColor = [UIColor blueColor].CGColor;
     
     self.suspendSpeechCommands = NO;
-    self.checkingStatus = NO;
     self.backToParentButton.title = @"Read Me";
 
     self.checkListItems = [[NSMutableArray alloc] init];
     self.speechCommands = [[NSMutableArray alloc] init];
     self.descendantKeys = [[NSMutableArray alloc] init];
     self.descendantItems = [[NSMutableArray alloc] init];
+    self.listOfLists = [[NSMutableArray alloc] init];
+    self.listOfListNames = [[NSMutableArray alloc] init];
     self.unchecked_descendantKeys = [[NSMutableArray alloc] init];
     self.unchecked_descendantItems = [[NSMutableArray alloc] init];
     NSString *docsDir;
@@ -957,10 +899,12 @@ if (self.suspendSpeechCommands == NO)
     {
         CPLSlideShowViewController *slideShowViewController =
         [segue destinationViewController];
-
-        slideShowViewController.checkListItems = self.descendantItems;
+        slideShowViewController.listOfLists = self.listOfLists;
+        slideShowViewController.listOfListNames = self.listOfListNames;
         
-        slideShowViewController.listParent = self.checkingItem.itemName;
+//        slideShowViewController.checkListItems = self.descendantItems;
+//        slideShowViewController.listParent = self.checkingItem.itemName;
+        
         slideShowViewController.fliteController = self.fliteController;
         slideShowViewController.slt = self.slt;
         slideShowViewController.openEarsEventsObserver = self.openEarsEventsObserver;
@@ -1158,7 +1102,7 @@ if (self.suspendSpeechCommands == NO)
 }
 
 - (IBAction)speechCommandToggle:(id)sender
-{   self.checkingStatus= NO;
+{
     if (self.suspendSpeechCommands)
         {  self.suspendSpeechCommands = NO;
         }
@@ -1244,74 +1188,12 @@ if (self.suspendSpeechCommands == NO)
     }
 }
     
-- (IBAction)readListButton:(id)sender {
+- (IBAction)readListButton:(id)sender
+{
 if (self.currentcellcount > 0)
 {
-if (![self.listParent isEqual: @"MASTER LIST"])
-{
-    if (self.checkingStatus)
-    {
-        if (self.currentrow < [self.currentcells count] - 1)
-        {
-            //cell is selected in the readcurrent method
-            
-            // set checkmark on currentrow
-            UITableViewCell *cell = self.currentcells[self.currentrow ];
-            cell.accessoryType = UITableViewCellAccessoryCheckmark; //sets visible checkmark
-            //also need to add a property to checklistitems indicating their checked status
-            // then increment currentrow pointer
-            // then read new current
-            self.currentrow += 1;
-            [self readCurrent]; // this also selects that row
-        }
-        else
-        {
-            // set checkmark on currentrow
-            UITableViewCell *cell = self.currentcells[self.currentrow ];
-            cell.accessoryType = UITableViewCellAccessoryCheckmark; //sets visible checkmark
-            //also need to add a property to checklistitems indicating their checked status
-            
-            if (self.suspendSpeechCommands == NO)
-            {
-                [self.readListButton setTitle: @"Tap here or say \"Read List\"" forState: UIControlStateNormal];
-                self.checkingStatus = NO;
+    [self slideShowForEntireList];
 
-            }
-            else
-            {
-                [self.readListButton setTitle: @"Tap here to Read List" forState: UIControlStateNormal];
-                self.checkingStatus = NO;
-            }
-            
-            NSIndexPath *indexPath = self.currentcellpaths[self.currentrow];
-            [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-            [self.fliteController say:@"List Ended" withVoice:self.slt];
-        }
-        return;
-    }//end readListButton.currentTitle  isEqual: @"Check"
-    else
-    {
-            self.checkingStatus = YES;
-            [self cellreloader];
-            self.currentrow = 0;
-            [self readCurrent];
-    }
-}// end if not Master List
-else //it is the Master List
-{// toggle checkingStatus
-    if (self.checkingStatus)
-    {
-     self.checkingStatus = NO;
-        [self setTitles];
-    }
-    else
-    {
-    self.checkingStatus = YES;
-        [self setTitles];
-    }
-}
-    
-    
 }// end if currentcellcount > 0
 }
 
@@ -1371,33 +1253,24 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
 {
     if ([self.listParent isEqual: @"MASTER LIST"])
     {   self.backToParentButton.title = @"Read Me";
-        // self.checkingStatus = NO;
+
         if (self.currentcellcount > 0)
         {
             if (self.suspendSpeechCommands == NO)
             {
-                if (self.checkingStatus)
-                {
-                    [self.readListButton setTitle: @"Tap or say List Name to Check" forState: UIControlStateNormal];
+                    [self.readListButton setTitle: @"Check Entire List" forState: UIControlStateNormal];
                     [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
-                }
-                else
-                {
-                    [self.readListButton setTitle: @"Tap or say List Name to Navigate" forState: UIControlStateNormal];
-                    [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
-                }
-               
             }
             else
             {
-                [self.readListButton setTitle: @"Tap List Name" forState: UIControlStateNormal];
+                [self.readListButton setTitle: @"Check Entire List" forState: UIControlStateNormal];
                 [self.speechCommandButton setTitle: @"Tap to check" forState: UIControlStateNormal];
             }
         }
         else
         {
             [self.readListButton setTitle: @"Tap \"+\" to add to list" forState: UIControlStateNormal];
-            self.checkingStatus = NO;
+
             if (self.suspendSpeechCommands == NO)
             {
                 [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
@@ -1415,26 +1288,12 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
             if (self.suspendSpeechCommands == NO)
             {
                 [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
-                if (self.checkingStatus)
-                {
-                [self.readListButton setTitle: @"Tap here or say \"Check\"" forState: UIControlStateNormal];
-                }
-                else //not in checkingstatus
-                {
-                [self.readListButton setTitle: @"Tap here or say \"Read List\"" forState: UIControlStateNormal];
-                }
+                [self.readListButton setTitle: @"Check Entire List" forState: UIControlStateNormal];
             }
             else
             {
                 [self.speechCommandButton setTitle: @"Tap to check" forState: UIControlStateNormal];
-                if (self.checkingStatus)
-                {
-                    [self.readListButton setTitle: @"Tap here to Check" forState: UIControlStateNormal];
-                }
-                else //not in checkingstatus
-                {
-                    [self.readListButton setTitle: @"Tap here to Read List" forState: UIControlStateNormal];
-                }
+                [self.readListButton setTitle: @"Check Entire List" forState: UIControlStateNormal];
             }
         }
         else
@@ -1467,6 +1326,11 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
     if (sender.direction == UISwipeGestureRecognizerDirectionLeft)
     {
         //edit current selected element?
+        CGPoint location = [sender locationInView:self.tableView];
+        NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
+        UITableViewCell *cell  = [self.tableView cellForRowAtIndexPath:swipedIndexPath];
+        
+        [self performSegueWithIdentifier: @"UpdateMainList" sender: cell];
     }
     
     
@@ -1478,11 +1342,13 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
         NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
 
         [self slideShowForSelectRow:swipedIndexPath];
+
     }
     
     if (sender.direction == UISwipeGestureRecognizerDirectionUp)
     {
         // navigate up one level
+        [self backToParent:self];
     }
     
     if (sender.direction == UISwipeGestureRecognizerDirectionDown)
