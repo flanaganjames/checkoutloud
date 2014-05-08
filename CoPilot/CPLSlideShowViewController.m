@@ -96,7 +96,7 @@
 }
 
 - (void) nextSlide
-{  if (self.currentrow < [self.checkListItems count])
+{  if (self.currentrow < [self.checkListItems count] - 1)
     {
         self.currentrow += 1;
         self.currentCheckListItem = self.checkListItems[self.currentrow];
@@ -107,7 +107,7 @@
     }
     else
     {
-        if (self.currentlist < [self.listOfLists count])
+        if (self.currentlist < [self.listOfLists count] - 1)
         {
             self.currentlist += 1;
             self.currentrow = 0;
@@ -123,6 +123,7 @@
         else
         {
         //perform unwind programmatically
+        [self.fliteController say:@"check list completed" withVoice:self.slt];
         [self dismissViewControllerAnimated:YES completion:nil];
         }
     }
