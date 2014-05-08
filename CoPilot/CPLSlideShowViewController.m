@@ -112,12 +112,13 @@
             self.currentlist += 1;
             self.currentrow = 0;
             self.checkListItems = self.listOfLists[self.currentlist];
+            self.currentCheckListItem = self.checkListItems[self.currentrow];
             self.listParent = self.listOfListNames[self.currentlist];
             _listName.text = self.listParent;
-            CheckListItem *item = self.checkListItems[self.currentrow];
+            CheckListItem *item = self.currentCheckListItem;
             _listItemName.text = item.itemName;
             _listItemNumber.text = [NSString stringWithFormat: @"%ld", item.itemPriority];
-            NSString *sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listName.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
+            NSString *sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listName.text, item.itemPriority, item.itemName ];
             [self.fliteController say:sayThis withVoice:self.slt];
         }
         else
@@ -146,12 +147,13 @@
              self.currentlist -= 1;
             self.currentrow = 0;
             self.checkListItems = self.listOfLists[self.currentlist];
+            self.currentCheckListItem = self.checkListItems[self.currentrow];
             self.listParent = self.listOfListNames[self.currentlist];
             _listName.text = self.listParent;
-            CheckListItem *item = self.checkListItems[self.currentrow];
+            CheckListItem *item = self.currentCheckListItem;
             _listItemName.text = item.itemName;
             _listItemNumber.text = [NSString stringWithFormat: @"%ld", item.itemPriority];
-            NSString *sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listName.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
+            NSString *sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listName.text, item.itemPriority, item.itemName ];
             [self.fliteController say:sayThis withVoice:self.slt];
         }
     }

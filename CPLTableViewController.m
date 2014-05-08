@@ -506,7 +506,7 @@
         self.checkingItem = item;
         long aKey =  item.itemKey;
         [self findAllDescendantItemsbyKey:aKey];
-        [self.listOfLists addObject:self.descendantItems];
+        [self.listOfLists addObject:[self.descendantItems copy]];
         [self.listOfListNames addObject:item.itemName];
         UITableViewCell *cell = self.currentcells[self.currentrow];
         cell.accessoryType = UITableViewCellAccessoryCheckmark; //sets visible checkmark
