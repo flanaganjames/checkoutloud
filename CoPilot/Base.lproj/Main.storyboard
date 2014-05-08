@@ -22,7 +22,7 @@
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="EAc-pg-uHQ">
                             <rect key="frame" x="0.0" y="174" width="320" height="29"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="Check Entire List" image="Icon-Small.png">
+                            <state key="normal" title="Check All Lists" image="Icon-Small.png">
                                 <color key="titleColor" red="0.47450980390000003" green="0.050889933259999999" blue="0.13224602790000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
