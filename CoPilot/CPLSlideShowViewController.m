@@ -91,7 +91,17 @@
     CheckListItem *item = self.currentCheckListItem;
     _listItemName.text = item.itemName;
     _listItemNumber.text = [NSString stringWithFormat: @"%ld", item.itemPriority];
-    NSString *sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listName.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
+
+    NSString *sayThis = @"";
+    if (self.currentCheckListItem.itemPriority == 0)
+    {
+        sayThis = [NSString stringWithFormat: @" Checking list named \'%@\'.  item %@ has children ", self.listName.text, self.currentCheckListItem.itemName ];
+        _listItemNumber.text =  @"Begin children of ...";
+    }
+    else
+    {
+        sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listName.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
+    }
     [self.fliteController say:sayThis withVoice:self.slt];
 }
 
@@ -106,10 +116,12 @@
         if (self.currentCheckListItem.itemPriority == 0)
         {
         sayThis = [NSString stringWithFormat: @"item %@ has children ",  self.currentCheckListItem.itemName ];
+        _listItemNumber.text =  @"Begin children of ...";
         }
         else if (self.currentCheckListItem.itemPriority == -1)
         {
-         sayThis = [NSString stringWithFormat: @"end of children of item %@",  self.currentCheckListItem.itemName ];   
+         sayThis = [NSString stringWithFormat: @"end of children of item %@",  self.currentCheckListItem.itemName ];
+        _listItemNumber.text =  @"End children of ...";
         }
         else
         {
