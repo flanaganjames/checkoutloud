@@ -324,66 +324,78 @@
     while ([self.unchecked_descendantItems count] > 0)
     {   [tempArray removeAllObjects];
         CheckListItem *item = self.unchecked_descendantItems[0];
-        long aKey = item.itemKey;
-        
-        const char *dbpath = [_databasePath UTF8String];
-        sqlite3_stmt    *statement;
-        
-        if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
-        {
-            NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTSBYKEY WHERE PARENTKEY=\'%ld\'",aKey];
-            const char *query_stmt = [querySQL UTF8String];
-            
-            if (sqlite3_prepare_v2(_checklistDB,
-                                   query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        if (item.itemPriority == 0)
+            // this is a parent item in the unchecked list that has already been checked and has children and just needs to be put into the descendentitems list immediately before its children
             {
-                while (sqlite3_step(statement) == SQLITE_ROW)
-                {CheckListItem *item = [[CheckListItem alloc] init];
-                    NSString *taskname =
-                    [[NSString alloc] initWithUTF8String:
-                     (const char *) sqlite3_column_text(statement, 1)];
-                    int taskpriority = sqlite3_column_int(statement, 2);
-                    long taskparentkey = sqlite3_column_int(statement, 3);
-                    long taskkey = sqlite3_column_int(statement, 0);
-                    
-                    item.itemName = taskname;
-                    item.itemKey = *(&(taskkey));
-                    item.itemPriority = *(&(taskpriority));
-                    item.itemParent = self.listParent;
-                    item.itemParentKey = *(&(taskparentkey));
-                    [tempArray addObject:item];
+                [self.descendantItems addObject: self.unchecked_descendantItems[0]]; // place the 0th item in descendants list;
+                [self.unchecked_descendantItems removeObject: self.unchecked_descendantItems[0]]; // remove the 0th item from unchecked list
+            }
+        else
+        {
+            long aKey = item.itemKey;
+            
+            const char *dbpath = [_databasePath UTF8String];
+            sqlite3_stmt    *statement;
+            
+            if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
+            {
+                NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTSBYKEY WHERE PARENTKEY=\'%ld\'",aKey];
+                const char *query_stmt = [querySQL UTF8String];
+                
+                if (sqlite3_prepare_v2(_checklistDB,
+                                       query_stmt, -1, &statement, NULL) == SQLITE_OK)
+                {
+                    while (sqlite3_step(statement) == SQLITE_ROW)
+                    {CheckListItem *item = [[CheckListItem alloc] init];
+                        NSString *taskname =
+                        [[NSString alloc] initWithUTF8String:
+                         (const char *) sqlite3_column_text(statement, 1)];
+                        int taskpriority = sqlite3_column_int(statement, 2);
+                        long taskparentkey = sqlite3_column_int(statement, 3);
+                        long taskkey = sqlite3_column_int(statement, 0);
+                        
+                        item.itemName = taskname;
+                        item.itemKey = *(&(taskkey));
+                        item.itemPriority = *(&(taskpriority));
+                        item.itemParent = self.listParent;
+                        item.itemParentKey = *(&(taskparentkey));
+                        [tempArray addObject:item];
+                    }
+                    sqlite3_finalize(statement);
                 }
-                sqlite3_finalize(statement);
+                sqlite3_close(_checklistDB);
             }
-            sqlite3_close(_checklistDB);
-        }
-        
-        if ([tempArray count] > 0) // if the 0th item has descendants
-        {
-            //then make a copy of the item with a itemPriority of "0"
-            // this will signal the slide show that items following this item have this item as a parent
-            CheckListItem *copyItem = [[CheckListItem alloc] init];
-            copyItem = self.unchecked_descendantItems[0];
-            copyItem.itemPriority = 0;
-            //and add the copied item to the descendentitems array
-            [self.descendantItems addObject: copyItem]; // place the 0th item in descendants list;
             
-            // then only add the descendants to the unchecked descendentitems array
-            int aCounter = 0;
-            while (aCounter < [tempArray count])
+            if ([tempArray count] > 0) // if the 0th item has descendants
             {
-                CheckListItem *tempitem = tempArray[aCounter];
-                [self.unchecked_descendantItems addObject:tempitem];
-                aCounter += 1;
+                //then make a copy of the item with a itemPriority of "0"
+                // this will signal the slide show that items following this item have this item as a parent
+                CheckListItem *copyItem = [[CheckListItem alloc] init];
+                CheckListItem *originalItem = [[CheckListItem alloc] init];
+                originalItem = self.unchecked_descendantItems[0];
+                copyItem.itemName = [originalItem.itemName copy];
+                copyItem.itemPriority = 0;//being used as a signal
+                //and add the copied item to the descendentitems array
+                [self.unchecked_descendantItems addObject: copyItem]; // place the copied item in unchecked descendants list immediately before its children
+                
+                // then add the descendants to the unchecked descendentitems array
+                int aCounter = 0;
+                while (aCounter < [tempArray count])
+                {
+                    CheckListItem *tempitem = tempArray[aCounter];
+                    [self.unchecked_descendantItems addObject:tempitem];
+                    aCounter += 1;
+                }
             }
-        }
-        else //if the 0th item does not have descendents
-        { //then add the item itself to the descendentitems array
-            [self.descendantItems addObject: self.unchecked_descendantItems[0]]; // place the 0th item in descendants list;
-        }
-        
-        // either way remove the 0th item from unchecked
-        [self.unchecked_descendantItems removeObject: self.unchecked_descendantItems[0]]; // remove the 0th item from unchecked list
+            else //if the 0th item does not have descendents
+            { //then add the item itself to the descendentitems array
+                [self.descendantItems addObject: self.unchecked_descendantItems[0]]; // place the 0th item in descendants list;
+            }
+            
+            // either way remove the 0th item from unchecked
+            [self.unchecked_descendantItems removeObject: self.unchecked_descendantItems[0]]; // remove the 0th item from unchecked list
+        } // end if item.itemPriority > 0
+
     }
     
 }
