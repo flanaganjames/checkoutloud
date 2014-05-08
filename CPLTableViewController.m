@@ -611,6 +611,8 @@
     self.speechCommands = [[NSMutableArray alloc] init];
     self.descendantKeys = [[NSMutableArray alloc] init];
     self.descendantItems = [[NSMutableArray alloc] init];
+    self.listOfLists = [[NSMutableArray alloc] init];
+    self.listOfListNames = [[NSMutableArray alloc] init];
     self.unchecked_descendantKeys = [[NSMutableArray alloc] init];
     self.unchecked_descendantItems = [[NSMutableArray alloc] init];
     NSString *docsDir;
