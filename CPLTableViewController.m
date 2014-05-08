@@ -500,7 +500,7 @@
     NSInteger *theCount = 0;
     [self.listOfLists removeAllObjects];
     [self.listOfListNames removeAllObjects];
-    while (self.currentrow < [self.currentcells count] -1)
+    while (self.currentrow < [self.currentcells count])
     {
         CheckListItem *item  = self.checkListItems[self.currentrow];
         self.checkingItem = item;
