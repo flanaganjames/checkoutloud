@@ -94,7 +94,8 @@
                      
                      [self.tableView selectRowAtIndexPath:index animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
                      
-                     [self respondSelectRow:index];
+                    // [self respondSelectRow:index];
+                    [self slideShowForSelectRow:index];//speek name lof list starts checking
                      
                  }
              }];
@@ -494,7 +495,8 @@
     
     if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTS"];
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTSBYKEY WHERE PARENTKEY=0"];
+        // this change means only the master list names can be accessed by voice
         const char *query_stmt = [querySQL UTF8String];
         
         if (sqlite3_prepare_v2(_checklistDB,
