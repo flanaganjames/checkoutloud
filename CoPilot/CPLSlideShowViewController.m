@@ -15,17 +15,21 @@
 @implementation CPLSlideShowViewController
 
 //start openears stuff
-- (void) pocketsphinxDidReceiveHypothesis:(NSString *)hypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID {
-	NSLog(@"The received hypothesis is %@ with a score of %@ and an ID of %@", hypothesis, recognitionScore, utteranceID);
+- (void) pocketsphinxDidReceiveHypothesis:(NSString *)rawhypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID
+
+{
+	NSLog(@"The received hypothesis is %@ with a score of %@ and an ID of %@", rawhypothesis, recognitionScore, utteranceID);
+    
+    NSString *hypothesis = [NSString stringWithFormat: @" %@", rawhypothesis];
     
     if ([hypothesis  isEqual: @" CONSIDER IT DONE"] |[hypothesis  isEqual: @" CHECK"] |[hypothesis  isEqual: @" AFFIRMATIVE"])
     {
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"heard check Name"
-        message:[NSString stringWithFormat: @"%@", @"no message"]
-                                                         delegate:nil
-                                                cancelButtonTitle:@"OK"
-                                                otherButtonTitles:nil];
-        [message show];
+//        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"heard check Name"
+//        message:[NSString stringWithFormat: @"%@", @"no message"]
+//                                                         delegate:nil
+//                                                cancelButtonTitle:@"OK"
+//                                                otherButtonTitles:nil];
+//        [message show];
         
         
         [self nextSlide];
@@ -161,7 +165,21 @@
         self.currentCheckListItem = self.checkListItems[self.currentrow];
         _listItemName.text = self.currentCheckListItem.itemName;
         _listItemNumber.text = [NSString stringWithFormat: @"%ld", self.currentCheckListItem.itemPriority];
-        NSString *sayThis = [NSString stringWithFormat: @"item %ld is %@", self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
+        NSString *sayThis = @"";
+        if (self.currentCheckListItem.itemPriority == 0)
+        {
+            sayThis = [NSString stringWithFormat: @"item %@ has children ",  self.currentCheckListItem.itemName ];
+            _listItemNumber.text =  @"Begin children of ...";
+        }
+        else if (self.currentCheckListItem.itemPriority == -1)
+        {
+            sayThis = [NSString stringWithFormat: @"end of children of item %@",  self.currentCheckListItem.itemName ];
+            _listItemNumber.text =  @"End children of ...";
+        }
+        else
+        {
+            sayThis = [NSString stringWithFormat: @"item %ld is %@", self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
+        }
         [self.fliteController say:sayThis withVoice:self.slt];
     }
     else
