@@ -100,7 +100,7 @@
                  }
              }];
             
-            if ([hypothesis  isEqual: @" READ LIST"])
+            if ([hypothesis  isEqual: @" CHECK ALL"])
             {
                 [self readListButton];
             }
@@ -474,7 +474,7 @@
     [self.speechCommands removeAllObjects];
 // default commands
     [self.speechCommands addObject:@"RETURN"];
-    [self.speechCommands addObject:@"READ LIST"];
+    [self.speechCommands addObject:@"CHECK ALL"];
     [self.speechCommands addObject:@"SAY AGAIN"];
     [self.speechCommands addObject:@"REPEAT"];
     [self.speechCommands addObject:@"CHECK"];
