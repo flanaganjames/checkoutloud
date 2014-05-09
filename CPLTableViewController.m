@@ -100,9 +100,9 @@
                  }
              }];
             
-            if ([hypothesis  isEqual: @" CHECK ALL"])
+            if ([hypothesis  isEqual: @" READ LIST"] | [hypothesis  isEqual: @" CHECK ENTIRE LIST"])
             {
-                [self readListButton];
+                [self readListButton:self];
             }
             
             if ([hypothesis  isEqual: @" RETURN"])
@@ -474,7 +474,8 @@
     [self.speechCommands removeAllObjects];
 // default commands
     [self.speechCommands addObject:@"RETURN"];
-    [self.speechCommands addObject:@"CHECK ALL"];
+    [self.speechCommands addObject:@"READ LIST"];
+    [self.speechCommands addObject:@"CHECK ENTIRE LIST"];
     [self.speechCommands addObject:@"SAY AGAIN"];
     [self.speechCommands addObject:@"REPEAT"];
     [self.speechCommands addObject:@"CHECK"];
