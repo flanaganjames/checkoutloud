@@ -100,7 +100,7 @@
                  }
              }];
             
-            if ([hypothesis  isEqual: @" READ LIST"] | [hypothesis  isEqual: @" CHECK ENTIRE LIST"])
+            if ([hypothesis  isEqual: @" READ LIST"] | [hypothesis  isEqual: @" CHECK ALL LISTS"])
             {
                 [self readListButton:self];
             }
@@ -475,7 +475,7 @@
 // default commands
     [self.speechCommands addObject:@"RETURN"];
     [self.speechCommands addObject:@"READ LIST"];
-    [self.speechCommands addObject:@"CHECK ENTIRE LIST"];
+    [self.speechCommands addObject:@"CHECK ALL LISTS"];
     [self.speechCommands addObject:@"SAY AGAIN"];
     [self.speechCommands addObject:@"REPEAT"];
     [self.speechCommands addObject:@"CHECK"];
@@ -1151,9 +1151,11 @@
 {
     if (self.suspendSpeechCommands)
         {  self.suspendSpeechCommands = NO;
+            [self.pocketsphinxController resumeRecognition ];
         }
     else
         { self.suspendSpeechCommands = YES;
+            [self.pocketsphinxController suspendRecognition ];
         }
     [self cellreloader];
 }
@@ -1304,13 +1306,13 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
         {
             if (self.suspendSpeechCommands == NO)
             {
-                    [self.readListButton setTitle: @"Check Entire List" forState: UIControlStateNormal];
+                    [self.readListButton setTitle: @"Check All Lists" forState: UIControlStateNormal];
                     [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
             }
             else
             {
-                [self.readListButton setTitle: @"Check Entire List" forState: UIControlStateNormal];
-                [self.speechCommandButton setTitle: @"Tap to check" forState: UIControlStateNormal];
+                [self.readListButton setTitle: @"Check All Lists" forState: UIControlStateNormal];
+                [self.speechCommandButton setTitle: @"Swipe to check" forState: UIControlStateNormal];
             }
         }
         else
@@ -1323,7 +1325,7 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
             }
             else
             {
-                [self.speechCommandButton setTitle: @"Tap to check" forState: UIControlStateNormal];
+                [self.speechCommandButton setTitle: @"Swipe to check" forState: UIControlStateNormal];
             }
         }
     }
@@ -1334,12 +1336,12 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
             if (self.suspendSpeechCommands == NO)
             {
                 [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
-                [self.readListButton setTitle: @"Check Entire List" forState: UIControlStateNormal];
+                [self.readListButton setTitle: @"Check All Lists" forState: UIControlStateNormal];
             }
             else
             {
-                [self.speechCommandButton setTitle: @"Tap to check" forState: UIControlStateNormal];
-                [self.readListButton setTitle: @"Check Entire List" forState: UIControlStateNormal];
+                [self.speechCommandButton setTitle: @"Swipe to check" forState: UIControlStateNormal];
+                [self.readListButton setTitle: @"Check All Lists" forState: UIControlStateNormal];
             }
         }
         else
@@ -1351,7 +1353,7 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
             }
             else
             {
-                [self.speechCommandButton setTitle: @"Tap to check" forState: UIControlStateNormal];
+                [self.speechCommandButton setTitle: @"Swipe to check" forState: UIControlStateNormal];
             }
         }
     }
