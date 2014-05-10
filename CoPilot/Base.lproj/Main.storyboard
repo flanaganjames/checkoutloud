@@ -57,9 +57,7 @@
                             <outlet property="delegate" destination="TBr-cB-YTL" id="Nee-7D-mur"/>
                         </connections>
                     </tableView>
-                    <toolbarItems>
-                        <barButtonItem id="GtO-ff-q2p"/>
-                    </toolbarItems>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" id="caR-z7-ZvS">
                         <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" title="Return" id="2Xg-su-ogu">
