@@ -298,11 +298,11 @@
 - (void) setParentHierarchyText
 {
     
-    _listParentHierarchy.text = [NSString stringWithFormat: @"\'%@\'", self.parentHierarchy[0] ];
+    _listParentHierarchy.text = [NSString stringWithFormat: @"%@", self.parentHierarchy[0] ];
     int aCounter = 1;
     while (aCounter < [self.parentHierarchy count])
     {
-        _listParentHierarchy.text = [NSString stringWithFormat: @"\'%@\'\n\'%@\'", _listParentHierarchy.text, self.parentHierarchy[aCounter] ];
+        _listParentHierarchy.text = [NSString stringWithFormat: @"%@\n%@", _listParentHierarchy.text, self.parentHierarchy[aCounter] ];
         aCounter += 1;
     }
     
