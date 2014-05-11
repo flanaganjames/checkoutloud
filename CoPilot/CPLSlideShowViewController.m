@@ -9,7 +9,7 @@
 #import "CPLSlideShowViewController.h"
 
 @interface CPLSlideShowViewController ()
-
+@property NSMutableArray *parentHierarchy;
 @end
 
 @implementation CPLSlideShowViewController
@@ -24,12 +24,7 @@
     
     if ([hypothesis  isEqual: @" CONSIDER IT DONE"] |[hypothesis  isEqual: @" CHECK"] |[hypothesis  isEqual: @" AFFIRMATIVE"])
     {
-//        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"heard check Name"
-//        message:[NSString stringWithFormat: @"%@", @"no message"]
-//                                                         delegate:nil
-//                                                cancelButtonTitle:@"OK"
-//                                                otherButtonTitles:nil];
-//        [message show];
+
         
         
         [self nextSlide];
@@ -55,10 +50,11 @@
 - (void) startOneList
 {     self.currentrow = 0;
     
-    _listName.text = self.listParent;
+    [self setParentHierarchyText];
+    //_listParentHierarchy.text = self.listParent;
     _listItemName.text = self.currentCheckListItem.itemName;
     _listItemNumber.text = [NSString stringWithFormat: @"%ld", self.currentCheckListItem.itemPriority];
-    NSString *sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listName.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
+    NSString *sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listParentHierarchy.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
     [self.fliteController say:sayThis withVoice:self.slt];
 }
 
@@ -67,7 +63,7 @@
 {
     [super viewDidLoad];
     
-
+    self.parentHierarchy = [[NSMutableArray alloc] init];
     self.currentCheckListItem = [[CheckListItem alloc] init];
     //start openears stuff
     [self.openEarsEventsObserver setDelegate:self];
@@ -91,7 +87,10 @@
     self.checkListItems = self.listOfLists[self.currentlist];
     self.currentCheckListItem = self.checkListItems[self.currentrow];
     self.listParent = self.listOfListNames[self.currentlist];
-    _listName.text = self.listParent;
+    [self.parentHierarchy removeAllObjects];
+    [self.parentHierarchy addObject:self.listParent];
+    [self setParentHierarchyText];
+   // _listParentHierarchy.text = self.listParent;
     CheckListItem *item = self.currentCheckListItem;
     _listItemName.text = item.itemName;
     _listItemNumber.text = [NSString stringWithFormat: @"%ld", item.itemPriority];
@@ -99,12 +98,14 @@
     NSString *sayThis = @"";
     if (self.currentCheckListItem.itemPriority == 0)
     {
-        sayThis = [NSString stringWithFormat: @" Checking list named \'%@\'.  item %@ has children ", self.listName.text, self.currentCheckListItem.itemName ];
+        sayThis = [NSString stringWithFormat: @" Checking list named \'%@\'.  item %@ has children ", self.listParentHierarchy.text, self.currentCheckListItem.itemName ];
+        [self.parentHierarchy addObject:self.currentCheckListItem.itemName];
+        [self setParentHierarchyText];
         _listItemNumber.text =  @"Begin children of ...";
     }
     else
     {
-        sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listName.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
+        sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listParentHierarchy.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
     }
     [self.fliteController say:sayThis withVoice:self.slt];
 }
@@ -120,11 +121,15 @@
         if (self.currentCheckListItem.itemPriority == 0)
         {
         sayThis = [NSString stringWithFormat: @"item %@ has children ",  self.currentCheckListItem.itemName ];
+        [self.parentHierarchy addObject:self.currentCheckListItem.itemName];
+        [self setParentHierarchyText];
         _listItemNumber.text =  @"Begin children of ...";
         }
         else if (self.currentCheckListItem.itemPriority == -1)
         {
          sayThis = [NSString stringWithFormat: @"end of children of item %@",  self.currentCheckListItem.itemName ];
+        [self.parentHierarchy removeObject:self.currentCheckListItem.itemName];
+        [self setParentHierarchyText];
         _listItemNumber.text =  @"End children of ...";
         }
         else
@@ -142,19 +147,24 @@
             self.checkListItems = self.listOfLists[self.currentlist];
             self.currentCheckListItem = self.checkListItems[self.currentrow];
             self.listParent = self.listOfListNames[self.currentlist];
-            _listName.text = self.listParent;
+            [self.parentHierarchy removeAllObjects];
+            [self.parentHierarchy addObject:self.listParent];
+            [self setParentHierarchyText];
+            //_listParentHierarchy.text = self.listParent;
             CheckListItem *item = self.currentCheckListItem;
             _listItemName.text = item.itemName;
             _listItemNumber.text = [NSString stringWithFormat: @"%ld", item.itemPriority];
             NSString *sayThis = @"";
             if (self.currentCheckListItem.itemPriority == 0)
             {
-                sayThis = [NSString stringWithFormat: @" Checking list named \'%@\'.  item %@ has children ", self.listName.text, self.currentCheckListItem.itemName ];
+                sayThis = [NSString stringWithFormat: @" Checking list named \'%@\'.  item %@ has children ", self.listParentHierarchy.text, self.currentCheckListItem.itemName ];
+                [self.parentHierarchy addObject:self.currentCheckListItem.itemName];
+                [self setParentHierarchyText];
                 _listItemNumber.text =  @"Begin children of ...";
             }
             else
             {
-                sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listName.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
+                sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listParentHierarchy.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
             }
 
             [self.fliteController say:sayThis withVoice:self.slt];
@@ -179,11 +189,17 @@
         if (self.currentCheckListItem.itemPriority == 0)
         {
             sayThis = [NSString stringWithFormat: @"item %@ has children ",  self.currentCheckListItem.itemName ];
+           // [self.parentHierarchy addObject:self.currentCheckListItem.itemName];
+           // [self setParentHierarchyText];
             _listItemNumber.text =  @"Begin children of ...";
         }
         else if (self.currentCheckListItem.itemPriority == -1)
         {
             sayThis = [NSString stringWithFormat: @"end of children of item %@",  self.currentCheckListItem.itemName ];
+            CheckListItem *anItem = self.checkListItems[self.currentrow + 1];
+            [self.parentHierarchy removeObject:anItem.itemName];
+            [self.parentHierarchy addObject:self.currentCheckListItem.itemName];
+            [self setParentHierarchyText];
             _listItemNumber.text =  @"End children of ...";
         }
         else
@@ -201,19 +217,24 @@
             self.checkListItems = self.listOfLists[self.currentlist];
             self.currentCheckListItem = self.checkListItems[self.currentrow];
             self.listParent = self.listOfListNames[self.currentlist];
-            _listName.text = self.listParent;
+            [self.parentHierarchy removeAllObjects];
+            [self.parentHierarchy addObject:self.listParent];
+            [self setParentHierarchyText];
+           // _listParentHierarchy.text = self.listParent;
             CheckListItem *item = self.currentCheckListItem;
             _listItemName.text = item.itemName;
             _listItemNumber.text = [NSString stringWithFormat: @"%ld", item.itemPriority];
             NSString *sayThis = @"";
             if (self.currentCheckListItem.itemPriority == 0)
             {
-                sayThis = [NSString stringWithFormat: @" Checking list named \'%@\'.  item %@ has children ", self.listName.text, self.currentCheckListItem.itemName ];
+                sayThis = [NSString stringWithFormat: @" Checking list named \'%@\'.  item %@ has children ", self.listParentHierarchy.text, self.currentCheckListItem.itemName ];
+                [self.parentHierarchy addObject:self.currentCheckListItem.itemName];
+                [self setParentHierarchyText];
                 _listItemNumber.text =  @"Begin children of ...";
             }
             else
             {
-                sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listName.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
+                sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listParentHierarchy.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
             }
 
             [self.fliteController say:sayThis withVoice:self.slt];
@@ -272,6 +293,19 @@
         NSLog(@"OK Tapped. Quit checking this list");
         [self dismissViewControllerAnimated:YES completion:nil];
     }
+}
+
+- (void) setParentHierarchyText
+{
+    
+    _listParentHierarchy.text = [NSString stringWithFormat: @"\'%@\'", self.parentHierarchy[0] ];
+    int aCounter = 1;
+    while (aCounter < [self.parentHierarchy count])
+    {
+        _listParentHierarchy.text = [NSString stringWithFormat: @"\'%@\'\n\'%@\'", _listParentHierarchy.text, self.parentHierarchy[aCounter] ];
+        aCounter += 1;
+    }
+    
 }
 
 /*

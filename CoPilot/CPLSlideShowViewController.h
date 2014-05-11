@@ -16,7 +16,8 @@
 #import "CPLTableViewController.h"
 
 @interface CPLSlideShowViewController : UIViewController  <OpenEarsEventsObserverDelegate>
-@property (weak, nonatomic) IBOutlet UITextField *listName;
+
+@property (weak, nonatomic) IBOutlet UITextView *listParentHierarchy;
 
 @property (weak, nonatomic) IBOutlet UITextField *listItemNumber;
 @property (weak, nonatomic) IBOutlet UITextField *listItemName;
