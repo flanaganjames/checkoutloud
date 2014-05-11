@@ -369,6 +369,10 @@
             
             if ([tempArray count] > 0) // if the 0th item has descendants
             {
+             // sort the temArray so the children are in the correct priority order
+                NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
+                [tempArray sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
+                
                 //then make a copy of the item with a itemPriority of "0"
                 // this will signal the slide show that items following this item have this item as a parent
                 CheckListItem *copyItem = [[CheckListItem alloc] init];
@@ -552,6 +556,7 @@
         self.checkingItem = item;
         long aKey =  item.itemKey;
         [self findAllDescendantItemsbyKey:aKey];
+        
         [self.listOfLists addObject:[self.descendantItems copy]];
         [self.listOfListNames addObject:item.itemName];
         UITableViewCell *cell = self.currentcells[self.currentrow];
@@ -581,9 +586,9 @@
     [self findAllDescendantItemsbyKey:aKey];
     if ([self.descendantItems count] > 0)
     {
-    [self.listOfLists addObject:self.descendantItems];
-    [self.listOfListNames addObject:item.itemName];
-    [self performSegueWithIdentifier: @"slideShow" sender: self];
+        [self.listOfLists addObject:self.descendantItems];
+        [self.listOfListNames addObject:item.itemName];
+        [self performSegueWithIdentifier: @"slideShow" sender: self];
     }
 }
 

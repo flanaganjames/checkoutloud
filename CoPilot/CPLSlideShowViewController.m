@@ -10,6 +10,7 @@
 
 @interface CPLSlideShowViewController ()
 @property NSMutableArray *parentHierarchy;
+@property NSString *removingParent;
 @end
 
 @implementation CPLSlideShowViewController
@@ -62,6 +63,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.removingParent = @"";
     
     self.parentHierarchy = [[NSMutableArray alloc] init];
     self.currentCheckListItem = [[CheckListItem alloc] init];
@@ -113,6 +115,14 @@
 - (void) nextSlide
 {  if (self.currentrow < [self.checkListItems count] - 1)
     {
+        CheckListItem *anItem = self.checkListItems[self.currentrow];
+        if (anItem.itemPriority == -1) //if item from which came is a "0"
+        {
+            [self.parentHierarchy removeObject:anItem.itemName];
+            self.removingParent = @"";
+        }
+        [self setParentHierarchyText];
+        
         self.currentrow += 1;
         self.currentCheckListItem = self.checkListItems[self.currentrow];
         _listItemName.text = self.currentCheckListItem.itemName;
@@ -121,6 +131,7 @@
         if (self.currentCheckListItem.itemPriority == 0)
         {
         sayThis = [NSString stringWithFormat: @"item %@ has children ",  self.currentCheckListItem.itemName ];
+
         [self.parentHierarchy addObject:self.currentCheckListItem.itemName];
         [self setParentHierarchyText];
         _listItemNumber.text =  @"Begin children of ...";
@@ -128,7 +139,7 @@
         else if (self.currentCheckListItem.itemPriority == -1)
         {
          sayThis = [NSString stringWithFormat: @"end of children of item %@",  self.currentCheckListItem.itemName ];
-        [self.parentHierarchy removeObject:self.currentCheckListItem.itemName];
+        self.removingParent = self.currentCheckListItem.itemName;
         [self setParentHierarchyText];
         _listItemNumber.text =  @"End children of ...";
         }
@@ -179,8 +190,18 @@
 }
 
 - (void) previousSlide
-{  if (self.currentrow > 0)
+{
+    
+    if (self.currentrow > 0)
     {
+        CheckListItem *anItem = self.checkListItems[self.currentrow];
+        if (anItem.itemPriority == 0) //if item from which came is a "0"
+        {
+            [self.parentHierarchy removeObject:anItem.itemName];
+            self.removingParent = @"";
+        }
+        [self setParentHierarchyText];
+        
         self.currentrow -= 1;
         self.currentCheckListItem = self.checkListItems[self.currentrow];
         _listItemName.text = self.currentCheckListItem.itemName;
@@ -189,16 +210,14 @@
         if (self.currentCheckListItem.itemPriority == 0)
         {
             sayThis = [NSString stringWithFormat: @"item %@ has children ",  self.currentCheckListItem.itemName ];
-           // [self.parentHierarchy addObject:self.currentCheckListItem.itemName];
-           // [self setParentHierarchyText];
             _listItemNumber.text =  @"Begin children of ...";
         }
         else if (self.currentCheckListItem.itemPriority == -1)
         {
             sayThis = [NSString stringWithFormat: @"end of children of item %@",  self.currentCheckListItem.itemName ];
-            CheckListItem *anItem = self.checkListItems[self.currentrow + 1];
-            [self.parentHierarchy removeObject:anItem.itemName];
+            
             [self.parentHierarchy addObject:self.currentCheckListItem.itemName];
+
             [self setParentHierarchyText];
             _listItemNumber.text =  @"End children of ...";
         }
@@ -228,6 +247,7 @@
             if (self.currentCheckListItem.itemPriority == 0)
             {
                 sayThis = [NSString stringWithFormat: @" Checking list named \'%@\'.  item %@ has children ", self.listParentHierarchy.text, self.currentCheckListItem.itemName ];
+                
                 [self.parentHierarchy addObject:self.currentCheckListItem.itemName];
                 [self setParentHierarchyText];
                 _listItemNumber.text =  @"Begin children of ...";
