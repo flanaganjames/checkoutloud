@@ -91,6 +91,9 @@
     self.listParent = self.listOfListNames[self.currentlist];
     [self.parentHierarchy removeAllObjects];
     [self.parentHierarchy addObject:self.listParent];
+    
+    _listParentHierarchy.font = [UIFont systemFontOfSize:20.0];
+    
     [self setParentHierarchyText];
    // _listParentHierarchy.text = self.listParent;
     CheckListItem *item = self.currentCheckListItem;
@@ -320,9 +323,14 @@
     
     _listParentHierarchy.text = [NSString stringWithFormat: @"%@", self.parentHierarchy[0] ];
     int aCounter = 1;
+    NSString *tabCounter = @"";
+    NSString *aTabChar = @"\t";
+    
     while (aCounter < [self.parentHierarchy count])
     {
-        _listParentHierarchy.text = [NSString stringWithFormat: @"%@\n%@", _listParentHierarchy.text, self.parentHierarchy[aCounter] ];
+        tabCounter = [NSString stringWithFormat: @"%@%@", tabCounter, aTabChar];
+        
+        _listParentHierarchy.text = [NSString stringWithFormat: @"%@\n%@%@", _listParentHierarchy.text, tabCounter, self.parentHierarchy[aCounter] ];
         aCounter += 1;
     }
     
@@ -339,4 +347,7 @@
 }
 */
 
+- (IBAction)quitChecking:(id)sender {
+    [self handleQuitConfirm];
+}
 @end

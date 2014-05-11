@@ -703,12 +703,6 @@
             if([filemgr copyItemAtPath:distributedDB toPath:_databasePath error:&error])
             {
                 NSLog(@"%@", @"file copied");
-//                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"file copied"
-//                    message:  [NSString stringWithFormat: @"%@", _databasePath]
-//                                                               delegate:self
-//                                                      cancelButtonTitle:@"OK"
-//                                                      otherButtonTitles:nil];
-//                [alert show];
             }
             else
             {
@@ -1300,6 +1294,17 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
     self.currentcellpaths = [self.tableView indexPathsForVisibleRows];
     self.currentcellcount = [self.currentcells count];
     [self setTitles];
+    
+//    int *aCount = [self.checkListItems count];
+//    
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"self.currentcellcount and self.checkListItems count"
+//    message:  [NSString stringWithFormat: @"%d,%d", self.currentcellcount, aCount]
+//                                                   delegate:self
+//                                          cancelButtonTitle:@"OK"
+//                                          otherButtonTitles:nil];
+//    [alert show];
+
+    
 }
 
 - (void) setTitles

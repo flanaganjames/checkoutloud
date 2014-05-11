@@ -16,6 +16,7 @@
 #import "CPLTableViewController.h"
 
 @interface CPLSlideShowViewController : UIViewController  <OpenEarsEventsObserverDelegate>
+- (IBAction)quitChecking:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UITextView *listParentHierarchy;
 
