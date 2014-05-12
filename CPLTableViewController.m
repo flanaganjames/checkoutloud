@@ -284,13 +284,12 @@
 //    }
 //}
 //
-- (void) findAllDescendantItemsbyKey:(long) parentKey
+
+- (NSMutableArray *) findImmediateDescendantsbyKey:(long) parentKey
 {
-    [self.unchecked_descendantItems removeAllObjects];
-    [self.descendantItems removeAllObjects];
+    NSMutableArray *tempArray = [[NSMutableArray alloc] init];
     const char *dbpath = [_databasePath UTF8String];
     sqlite3_stmt    *statement;
-    
     if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTSBYKEY WHERE PARENTKEY=\'%ld\'",parentKey];
@@ -313,101 +312,92 @@
                 item.itemPriority = *(&(taskpriority));
                 item.itemParent = self.listParent;
                 item.itemParentKey = *(&(taskparentkey));
-                [self.unchecked_descendantItems addObject:item];
+                [tempArray addObject:item];
             }
             sqlite3_finalize(statement);
         }
         sqlite3_close(_checklistDB);
+        
+        //sort immediate descendents so they are in proper order
+        NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
+        [tempArray sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
+        
     }
-    
+    return tempArray;
+}
+
+
+- (void) findAllDescendantItemsbyKey:(long) parentKey
+{
+    [self.descendantItems removeAllObjects];
+    int currentGeneration = 0;
     NSMutableArray *tempArray = [[NSMutableArray alloc] init];
+    NSMutableArray *workingArray = [[NSMutableArray alloc] init];
+    NSMutableArray *tempLists = [[NSMutableArray alloc] init];
     
-    while ([self.unchecked_descendantItems count] > 0)
-    {   [tempArray removeAllObjects];
-        CheckListItem *item = self.unchecked_descendantItems[0];
-        if (item.itemPriority == 0 | item.itemPriority == -1 )
-            // this is a parent item in the unchecked list that has already been checked and has children and just needs to be put into the descendentitems list immediately before its children
-            {
-                [self.descendantItems addObject: self.unchecked_descendantItems[0]]; // place the 0th item in descendants list;
-                [self.unchecked_descendantItems removeObject: self.unchecked_descendantItems[0]]; // remove the 0th item from unchecked list
-            }
+    //start with immediate descendants in workingArray, work the workingArray: work the 0th item, as item is found that has no descendants, move 0th item to the self.descendantItems.  As 0th item descendants are discovered (in tempArray), create the 0-copy and put into self.descendantItems, change 0th item to the -1-copy, push the workingArray to the next item of tempLists, increment currentGeneration by 1, put the elements of tempArray into workingArray; when workingArray is empty if current Generation = 0 DONE, if currentGeneration > 0 pop the mostrecent (highest)list of tempLists into workingArray, decrement currentGeneration by 1, upon reaching a -1-copy put it in self.descendantItems
+    
+    //first get the immediate descendents and put into the unchecked list
+    tempArray = [self findImmediateDescendantsbyKey: parentKey];
+    int aCounter = 0;
+    while (aCounter < [tempArray count])
+    {
+        [workingArray addObject: tempArray[aCounter]];
+        aCounter += 1;
+    }
+    while (currentGeneration > -1)
+    {
+    while ([workingArray count] > 0)
+    {
+        CheckListItem *item = [[CheckListItem alloc] init];
+        item = workingArray[0];
+        if (item.itemPriority == -1)
+        {
+            [self.descendantItems addObject: item];
+            [workingArray removeObject: item];
+        }
         else
         {
-            long aKey = item.itemKey;
-            
-            const char *dbpath = [_databasePath UTF8String];
-            sqlite3_stmt    *statement;
-            
-            if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
+            tempArray = [self findImmediateDescendantsbyKey: item.itemKey];
+            if ([tempArray count] > 0)
             {
-                NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM CHECKLISTSBYKEY WHERE PARENTKEY=\'%ld\'",aKey];
-                const char *query_stmt = [querySQL UTF8String];
-                
-                if (sqlite3_prepare_v2(_checklistDB,
-                                       query_stmt, -1, &statement, NULL) == SQLITE_OK)
-                {
-                    while (sqlite3_step(statement) == SQLITE_ROW)
-                    {CheckListItem *item = [[CheckListItem alloc] init];
-                        NSString *taskname =
-                        [[NSString alloc] initWithUTF8String:
-                         (const char *) sqlite3_column_text(statement, 1)];
-                        int taskpriority = sqlite3_column_int(statement, 2);
-                        long taskparentkey = sqlite3_column_int(statement, 3);
-                        long taskkey = sqlite3_column_int(statement, 0);
-                        
-                        item.itemName = taskname;
-                        item.itemKey = *(&(taskkey));
-                        item.itemPriority = *(&(taskpriority));
-                        item.itemParent = self.listParent;
-                        item.itemParentKey = *(&(taskparentkey));
-                        [tempArray addObject:item];
-                    }
-                    sqlite3_finalize(statement);
-                }
-                sqlite3_close(_checklistDB);
-            }
-            
-            if ([tempArray count] > 0) // if the 0th item has descendants
-            {
-             // sort the temArray so the children are in the correct priority order
-                NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
-                [tempArray sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
-                
-                //then make a copy of the item with a itemPriority of "0"
-                // this will signal the slide show that items following this item have this item as a parent
-                CheckListItem *copyItem = [[CheckListItem alloc] init];
-                CheckListItem *endcopyItem = [[CheckListItem alloc] init];
-                CheckListItem *originalItem = [[CheckListItem alloc] init];
-                originalItem = self.unchecked_descendantItems[0];
-                copyItem.itemName = [originalItem.itemName copy];
-                copyItem.itemPriority = 0;//being used as a signal
-                endcopyItem.itemName = [originalItem.itemName copy];
-                endcopyItem.itemPriority = -1;
-                //and add the copied item to the descendentitems array
-                [self.unchecked_descendantItems addObject: copyItem]; // place the copied item in unchecked descendants list immediately before its children
-                
-                // then add the descendants to the unchecked descendentitems array
+                CheckListItem *anotherItem = [[CheckListItem alloc] init];
+                anotherItem.itemName = item.itemName;
+                anotherItem.itemPriority = 0;
+                [self.descendantItems addObject: anotherItem];
+                item.itemPriority = -1; // this should change the 0th item itemPriority
+                //push the currentworkingArray into tempLists
+                [tempLists addObject:[workingArray copy]];
+                [workingArray removeAllObjects];
                 int aCounter = 0;
                 while (aCounter < [tempArray count])
                 {
-                    CheckListItem *tempitem = tempArray[aCounter];
-                    [self.unchecked_descendantItems addObject:tempitem];
+                    [workingArray addObject: tempArray[aCounter]];
                     aCounter += 1;
                 }
-                
-                [self.unchecked_descendantItems addObject: endcopyItem]; // place the endcopied item in unchecked descendants list immediately after its children
+                currentGeneration += 1;
             }
-            else //if the 0th item does not have descendents
-            { //then add the item itself to the descendentitems array
-                [self.descendantItems addObject: self.unchecked_descendantItems[0]]; // place the 0th item in descendants list;
+            else // item has no descendants
+            {
+                [self.descendantItems addObject: item];
+                [workingArray removeObject: item];
             }
-            
-            // either way remove the 0th item from unchecked
-            [self.unchecked_descendantItems removeObject: self.unchecked_descendantItems[0]]; // remove the 0th item from unchecked list
-        } // end if item.itemPriority > 0
-
+        }
     }
-    
+        if (currentGeneration > 0) //pop a list of tempLists into workArray
+        {
+            [workingArray removeAllObjects];
+            NSMutableArray *anArray = tempLists[currentGeneration - 1];
+            int aCounter = 0;
+            while (aCounter < [anArray count])
+            {
+                [workingArray addObject: anArray[aCounter]];
+                aCounter += 1;
+            }
+            [tempLists removeObject: anArray];
+        }
+        currentGeneration -= 1;
+    }
 }
 
 - (void) findAllDescendantKeysbyKey:(long) parentKey {
@@ -582,6 +572,8 @@
 //    }
 
     //    NSIndexPath *myIndexPath = [self.tableView indexPathForSelectedRow];
+    
+//this new approach simplifies slideshow so that there will never be more than one list in lists of lists;  need to remove logic that handles that
     [self.listOfLists removeAllObjects];
     [self.listOfListNames removeAllObjects];
     
