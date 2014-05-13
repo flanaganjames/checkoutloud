@@ -116,16 +116,22 @@
 }
 
 - (void) nextSlide
-{  if (self.currentrow < [self.checkListItems count] - 1)
+{
+    CheckListItem *anItem = self.checkListItems[self.currentrow];
+    
+    NSNumber *aKeyNumber = [NSNumber numberWithLong:anItem.itemKey];
+    [self.checkedItemKeys addObject: aKeyNumber];
+    
+    if (anItem.itemPriority == -1) //if item from which came is a "0"
     {
-        CheckListItem *anItem = self.checkListItems[self.currentrow];
-        if (anItem.itemPriority == -1) //if item from which came is a "0"
-        {
-            [self.parentHierarchy removeObject:anItem.itemName];
-            self.removingParent = @"";
-        }
-        [self setParentHierarchyText];
-        
+        [self.parentHierarchy removeObject:anItem.itemName];
+        self.removingParent = @"";
+    }
+    [self setParentHierarchyText];
+    
+    
+    if (self.currentrow < [self.checkListItems count] - 1)
+    {
         self.currentrow += 1;
         self.currentCheckListItem = self.checkListItems[self.currentrow];
         _listItemName.text = self.currentCheckListItem.itemName;
@@ -194,17 +200,20 @@
 
 - (void) previousSlide
 {
+    CheckListItem *anItem = self.checkListItems[self.currentrow];
+    
+    NSNumber *aKeyNumber = [NSNumber numberWithLong:anItem.itemKey];
+    [self.checkedItemKeys removeObject: aKeyNumber];
+    
+    if (anItem.itemPriority == 0) //if item from which came is a "0"
+    {
+        [self.parentHierarchy removeObject:anItem.itemName];
+        self.removingParent = @"";
+    }
+    [self setParentHierarchyText];
     
     if (self.currentrow > 0)
     {
-        CheckListItem *anItem = self.checkListItems[self.currentrow];
-        if (anItem.itemPriority == 0) //if item from which came is a "0"
-        {
-            [self.parentHierarchy removeObject:anItem.itemName];
-            self.removingParent = @"";
-        }
-        [self setParentHierarchyText];
-        
         self.currentrow -= 1;
         self.currentCheckListItem = self.checkListItems[self.currentrow];
         _listItemName.text = self.currentCheckListItem.itemName;

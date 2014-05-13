@@ -38,7 +38,7 @@ Kal *kal;
 @property BOOL suspendSpeechCommands;
 @property BOOL saveStateSpeechCommand;
 @property (weak, nonatomic) IBOutlet UIButton *speechCommandButton;
-
+@property NSMutableArray *checkedItemKeys;
 @property (strong, nonatomic) NSString *databasePath;
 @property (nonatomic) sqlite3 *checklistDB;
 @property NSString *listParent;

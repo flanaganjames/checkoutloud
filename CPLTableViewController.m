@@ -536,42 +536,6 @@
 
 - (void) slideShowForEntireList
 {
-//    self.currentrow = 0;
-//    NSInteger *theCount = 0;
-//    [self.listOfLists removeAllObjects];
-//    [self.listOfListNames removeAllObjects];
-//    NSMutableArray *anArray = [[NSMutableArray alloc] init];
-//    while (self.currentrow < [self.currentcells count])
-//    {   [anArray removeAllObjects];
-//        CheckListItem *item  = self.checkListItems[self.currentrow];
-//
-//        self.checkingItem = item;
-//        long aKey =  item.itemKey;
-//        [self findAllDescendantItemsbyKey:aKey];
-//        // add the item itself to the list and then its descendents
-//        [anArray addObject:item];
-//        if ([self.descendantItems count] > 0)
-//        {
-//            int aCounter = 0;
-//            while (aCounter < [self.descendantItems count])
-//            {
-//                [anArray addObject:self.descendantItems[aCounter]];
-//                aCounter += 1;
-//            }
-//        }
-//        [self.listOfLists addObject:[anArray copy]];
-//        [self.listOfListNames addObject:item.itemName];
-//        UITableViewCell *cell = self.currentcells[self.currentrow];
-//        cell.accessoryType = UITableViewCellAccessoryCheckmark; //sets visible checkmark
-//        self.currentrow += 1;
-//        theCount = theCount + [self.descendantItems count] + 1;
-//    }
-//    if (theCount > 0)
-//    {
-//        [self performSegueWithIdentifier: @"slideShow" sender: self];
-//    }
-
-    //    NSIndexPath *myIndexPath = [self.tableView indexPathForSelectedRow];
     
 //this new approach simplifies slideshow so that there will never be more than one list in lists of lists;  need to remove logic that handles that
     [self.listOfLists removeAllObjects];
@@ -600,8 +564,7 @@
     [self.listOfListNames removeAllObjects];
     long row = [myIndexPath row];
 //    UITableViewCell *cell = self.currentcells[row];
-    UITableViewCell *cell  = [self.tableView cellForRowAtIndexPath:myIndexPath];
-    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+
     
     CheckListItem *item  = self.checkListItems[row];
     self.checkingItem = item;
@@ -689,6 +652,7 @@
     self.listOfListNames = [[NSMutableArray alloc] init];
     self.unchecked_descendantKeys = [[NSMutableArray alloc] init];
     self.unchecked_descendantItems = [[NSMutableArray alloc] init];
+    self.checkedItemKeys = [[NSMutableArray alloc] init];
     NSString *docsDir;
     
     NSArray *dirPaths;
@@ -810,6 +774,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [self.openEarsEventsObserver setDelegate:self];
+    [self cellreloader];
     
 }
 
@@ -969,6 +934,7 @@
         [segue destinationViewController];
         slideShowViewController.listOfLists = self.listOfLists;
         slideShowViewController.listOfListNames = self.listOfListNames;
+        slideShowViewController.checkedItemKeys = self.checkedItemKeys;
         
 //        slideShowViewController.checkListItems = self.descendantItems;
 //        slideShowViewController.listParent = self.checkingItem.itemName;
@@ -1317,6 +1283,7 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
     self.currentcellpaths = [self.tableView indexPathsForVisibleRows];
     self.currentcellcount = [self.currentcells count];
     [self setTitles];
+    [self cellchecker];
     
 //    int *aCount = [self.checkListItems count];
 //    
@@ -1328,6 +1295,24 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
 //    [alert show];
 
     
+}
+
+- (void) cellchecker
+{
+    int aCounter = 0;
+    while (aCounter < [self.currentcellpaths count])
+    {
+        NSIndexPath *myIndexpath = self.currentcellpaths[aCounter];
+        UITableViewCell *cell  = self.currentcells[aCounter];
+        long row = [myIndexpath row];
+        CheckListItem *item  = self.checkListItems[row];
+        NSNumber *aKeyNumber = [NSNumber numberWithLong:item.itemKey];
+        if ([self.checkedItemKeys containsObject:aKeyNumber])
+        {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
+        aCounter += 1;
+    }
 }
 
 - (void) setTitles
