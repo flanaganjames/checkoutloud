@@ -585,20 +585,6 @@
 
 
 // not used but shows how to have a second alertview
-- (void) getReadyForSlideShow
-{
-    // check if any are checked,
-    if ([self.checkedItemKeys count] > 0  && self.askToResetCheckMarks)
-    {
-        [self handleAskResetCheckMarks];
-    }
-    else
-    {
-        [self performSegueWithIdentifier: @"slideShow" sender: self];
-    }
-}
-
-// not used but shows how to have a second alertview
 
 - (void) handleAskResetCheckMarks
 {
@@ -681,7 +667,7 @@
     self.readListButton.layer.borderWidth = 2;
     self.readListButton.layer.cornerRadius = 10.0;
     self.readListButton.layer.borderColor = [UIColor blueColor].CGColor;
-    self.askToResetCheckMarks = YES;
+
     self.skipCheckedItems = NO;
     self.suspendSpeechCommands = NO;
     self.backToParentButton.title = @"Read Me";
