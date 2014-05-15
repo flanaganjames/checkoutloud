@@ -564,6 +564,9 @@
     [self.listOfListNames removeAllObjects];
     long row = [myIndexPath row];
 //    UITableViewCell *cell = self.currentcells[row];
+    
+    
+    // when a checklist is initiated, assume user wants to uncheck all descendent items if checked.
 
     
     CheckListItem *item  = self.checkListItems[row];
@@ -574,8 +577,40 @@
     {
         [self.listOfLists addObject:self.descendantItems];
         [self.listOfListNames addObject:item.itemName];
+        [self getReadyForSlideShow];
+    }
+}
+
+- (void) getReadyForSlideShow
+{
+    // check if any are checked,
+    if ([self.checkedItemKeys count] > 0  && self.askToResetCheckMarks)
+    {
+        [self handleAskResetCheckMarks];
+    }
+    else
+    {
         [self performSegueWithIdentifier: @"slideShow" sender: self];
     }
+}
+
+- (void) handleAskResetCheckMarks
+{
+    UIAlertView *alerttwo = [[UIAlertView alloc] initWithTitle:@"Do you want to reset " message:@" and review items already marked with checkmarks?" delegate:self cancelButtonTitle:@"No, SKIP them." otherButtonTitles:@"YES!",nil];
+    alerttwo.tag = 2;
+    [alerttwo show];
+    
+}
+
+- (void) resetBeforeSlideShow
+{
+    [self.checkedItemKeys removeAllObjects];
+    [self performSegueWithIdentifier: @"slideShow" sender: self];
+}
+
+- (void) dontresetBeforeSlideShow
+{
+    [self performSegueWithIdentifier: @"slideShow" sender: self];
 }
 
 
@@ -640,7 +675,7 @@
     self.readListButton.layer.borderWidth = 2;
     self.readListButton.layer.cornerRadius = 10.0;
     self.readListButton.layer.borderColor = [UIColor blueColor].CGColor;
-    
+    self.askToResetCheckMarks = YES;
     self.suspendSpeechCommands = NO;
     self.backToParentButton.title = @"Read Me";
 
@@ -1038,33 +1073,53 @@
 
 - (void) handleUpdateDelete
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Are you Sure?" message:@"Do you want to delete item and all its descendants?" delegate:self cancelButtonTitle:@"No, Do NOT Delete." otherButtonTitles:@"Yes, Delete Now!",nil];
-    [alert show];
+    UIAlertView *alertone = [[UIAlertView alloc] initWithTitle:@"Are you Sure?" message:@"Do you want to delete item and all its descendants?" delegate:self cancelButtonTitle:@"No, Do NOT Delete." otherButtonTitles:@"Yes, Delete Now!",nil];
+    alertone.tag = 1;
+    [alertone show];
+
     
 }
 
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
-        NSLog(@"Do nothing");
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    switch (alertView.tag)
+    {
+        case 1:
+            if (buttonIndex == 0) {
+                NSLog(@"Do nothing");
+            }
+            else if (buttonIndex == 1) {
+                NSLog(@"OK Tapped. Delete item and descendants");
+                
+                CheckListItem *itemupdating = self.updatingItem;
+                [self.checkListItems removeObject:itemupdating];
+                
+                NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
+                [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
+                [self cellreloader]; //[self.tableView reloadData];
+                long aKey =  itemupdating.itemKey;
+                [self findAllDescendantKeysbyKey:aKey];
+                while ([self.descendantKeys count] > 0) {
+                    long eachKey = [self.descendantKeys[0] longValue];
+                    [self deleteOneByKey:eachKey];
+                    [self.descendantKeys removeObject:self.descendantKeys[0]];
+                }
+                [self deleteOneByKey:aKey];
+            }
+            break;
+        case 2:
+            if (buttonIndex == 0) {
+                NSLog(@"Do not reset; show slide show");
+                [self dontresetBeforeSlideShow];
+            }
+            else if (buttonIndex == 1) {
+                NSLog(@"OK Tapped. Reset Check Marks, show slideshow");
+                [self resetBeforeSlideShow];
+
+            }
+            break;
     }
-    else if (buttonIndex == 1) {
-        NSLog(@"OK Tapped. Delete item and descendants");
-        
-        CheckListItem *itemupdating = self.updatingItem;
-        [self.checkListItems removeObject:itemupdating];
-        
-        NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"itemPriority" ascending:YES];
-        [self.checkListItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
-        [self cellreloader]; //[self.tableView reloadData];
-        long aKey =  itemupdating.itemKey;
-        [self findAllDescendantKeysbyKey:aKey];
-        while ([self.descendantKeys count] > 0) {
-            long eachKey = [self.descendantKeys[0] longValue];
-            [self deleteOneByKey:eachKey];
-            [self.descendantKeys removeObject:self.descendantKeys[0]];
-        }
-        [self deleteOneByKey:aKey];
-    }
+    
 }
 
 - (IBAction)unwindUpdateMainList:(UIStoryboardSegue *)segue  sender:(id)sender
