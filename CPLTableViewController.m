@@ -30,6 +30,7 @@
 @property CheckListItem *updatingItem;
 @property CheckListItem *checkingItem;
 @property BOOL *updatingDelete;
+@property BOOL skipCheckedItems;
 
 
 // @property UITableView *tableView;   // for loadView which cases failure
@@ -552,6 +553,7 @@
     {
         [self.listOfLists addObject:self.descendantItems];
         [self.listOfListNames addObject:itemParent.itemName];
+        [self getReadyForSlideShow];
         [self performSegueWithIdentifier: @"slideShow" sender: self];
     }
 
@@ -599,7 +601,7 @@
     UIAlertView *alerttwo = [[UIAlertView alloc] initWithTitle:@"Do you want to reset " message:@" and review items already marked with checkmarks?" delegate:self cancelButtonTitle:@"No, SKIP them." otherButtonTitles:@"YES!",nil];
     alerttwo.tag = 2;
     [alerttwo show];
-    
+    return;
 }
 
 - (void) resetBeforeSlideShow
@@ -676,6 +678,7 @@
     self.readListButton.layer.cornerRadius = 10.0;
     self.readListButton.layer.borderColor = [UIColor blueColor].CGColor;
     self.askToResetCheckMarks = YES;
+    self.skipCheckedItems = NO;
     self.suspendSpeechCommands = NO;
     self.backToParentButton.title = @"Read Me";
 
