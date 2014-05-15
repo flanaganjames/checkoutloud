@@ -553,7 +553,6 @@
     {
         [self.listOfLists addObject:self.descendantItems];
         [self.listOfListNames addObject:itemParent.itemName];
-        [self getReadyForSlideShow];
         [self performSegueWithIdentifier: @"slideShow" sender: self];
     }
 
@@ -579,10 +578,13 @@
     {
         [self.listOfLists addObject:self.descendantItems];
         [self.listOfListNames addObject:item.itemName];
-        [self getReadyForSlideShow];
+        [self performSegueWithIdentifier: @"slideShow" sender: self];
+
     }
 }
 
+
+// not used but shows how to have a second alertview
 - (void) getReadyForSlideShow
 {
     // check if any are checked,
@@ -595,6 +597,8 @@
         [self performSegueWithIdentifier: @"slideShow" sender: self];
     }
 }
+
+// not used but shows how to have a second alertview
 
 - (void) handleAskResetCheckMarks
 {
