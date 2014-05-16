@@ -330,6 +330,7 @@
 
 - (void) findAllDescendantItemsbyKey:(long) parentKey
 {
+    self.checkedItemsHaveBeenSkipped = NO;
     [self.descendantItems removeAllObjects];
     int currentGeneration = 0;
     NSMutableArray *tempArray = [[NSMutableArray alloc] init];
@@ -354,6 +355,10 @@
             if (![self.checkedItemKeys containsObject: aNumber])
             {
                 [anotherTempArray addObject: item];
+            }
+            else
+            {
+                self.checkedItemsHaveBeenSkipped = YES;
             }
             innerCounter += 1;
         }
@@ -407,6 +412,10 @@
                     if (![self.checkedItemKeys containsObject: aNumber])
                     {
                         [anotherTempArray addObject: item];
+                    }
+                    else
+                    {
+                        self.checkedItemsHaveBeenSkipped = YES;
                     }
                     innerCounter += 1;
                 }
@@ -612,6 +621,10 @@
     self.checkingItem = itemParent;
     
     [self findAllDescendantItemsbyKey:aKey];
+    if (self.checkedItemsHaveBeenSkipped)
+    {
+        [self.fliteController say:@"Previously checked Items Will be Skipped" withVoice:self.slt];
+    }
     if ([self.descendantItems count] > 0)
     {
         [self.listOfLists addObject:self.descendantItems];
@@ -637,6 +650,10 @@
     self.checkingItem = item;
     long aKey =  item.itemKey;
     [self findAllDescendantItemsbyKey:aKey];
+    if (self.checkedItemsHaveBeenSkipped)
+    {
+        [self.fliteController say:@"Previously checked Items Will be Skipped" withVoice:self.slt];
+    }
     if ([self.descendantItems count] > 0)
     {
         [self.listOfLists addObject:self.descendantItems];
