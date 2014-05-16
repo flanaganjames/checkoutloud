@@ -340,8 +340,36 @@
     
     //first get the immediate descendents and put into the unchecked list
     tempArray = [self findImmediateDescendantsbyKey: parentKey];
-    
-    
+
+    if (self.skipCheckedItems && [tempArray count] > 0) //remove items already checked
+    {
+        NSMutableArray *anotherTempArray = [[NSMutableArray alloc] init];
+        int innerCounter = 0;
+        NSNumber *aNumber = [[NSNumber alloc] init];
+        while (innerCounter < [tempArray count])
+        {
+            CheckListItem *item = tempArray[innerCounter];
+            aNumber = [NSNumber numberWithLong:item.itemKey];
+            
+            if (![self.checkedItemKeys containsObject: aNumber])
+            {
+                [anotherTempArray addObject: item];
+            }
+            innerCounter += 1;
+        }
+        [tempArray removeAllObjects];
+        
+        if ([anotherTempArray count] > 0)
+        {   innerCounter = 0;
+            while (innerCounter < [anotherTempArray count])
+            {
+                CheckListItem *item  = anotherTempArray[innerCounter];
+                [tempArray addObject: item];
+                innerCounter += 1;
+            }
+        }
+        
+    }
     
     
     int aCounter = 0;
@@ -386,9 +414,9 @@
                 
                 if ([anotherTempArray count] > 0)
                 {   innerCounter = 0;
-                    while (aCounter < [anotherTempArray count])
+                    while (innerCounter < [anotherTempArray count])
                     {
-                        CheckListItem *item  = anotherTempArray[aCounter];
+                        CheckListItem *item  = anotherTempArray[innerCounter];
                         [tempArray addObject: item];
                         innerCounter += 1;
                     }
