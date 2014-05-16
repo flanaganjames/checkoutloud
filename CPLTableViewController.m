@@ -340,6 +340,10 @@
     
     //first get the immediate descendents and put into the unchecked list
     tempArray = [self findImmediateDescendantsbyKey: parentKey];
+    
+    
+    
+    
     int aCounter = 0;
     while (aCounter < [tempArray count])
     {
@@ -360,6 +364,37 @@
         else
         {
             tempArray = [self findImmediateDescendantsbyKey: item.itemKey];
+            // now remove from this list any that are already ckecked if "skipcheckeditems = YES"
+
+            if (self.skipCheckedItems && [tempArray count] > 0) //remove items already checked
+            {
+                NSMutableArray *anotherTempArray = [[NSMutableArray alloc] init];
+                int innerCounter = 0;
+                NSNumber *aNumber = [[NSNumber alloc] init];
+                while (innerCounter < [tempArray count])
+                {
+                    CheckListItem *item = tempArray[innerCounter];
+                    aNumber = [NSNumber numberWithLong:item.itemKey];
+                    
+                    if (![self.checkedItemKeys containsObject: aNumber])
+                    {
+                        [anotherTempArray addObject: item];
+                    }
+                    innerCounter += 1;
+                }
+                [tempArray removeAllObjects];
+                
+                if ([anotherTempArray count] > 0)
+                {   innerCounter = 0;
+                    while (aCounter < [anotherTempArray count])
+                    {
+                        CheckListItem *item  = anotherTempArray[aCounter];
+                        [tempArray addObject: item];
+                        innerCounter += 1;
+                    }
+                }
+                
+            }
             if ([tempArray count] > 0)
             {
                 CheckListItem *anotherItem = [[CheckListItem alloc] init];
@@ -585,7 +620,6 @@
 
 
 // not used but shows how to have a second alertview
-
 - (void) handleAskResetCheckMarks
 {
     UIAlertView *alerttwo = [[UIAlertView alloc] initWithTitle:@"Do you want to reset " message:@" and review items already marked with checkmarks?" delegate:self cancelButtonTitle:@"No, SKIP them." otherButtonTitles:@"YES!",nil];
@@ -668,7 +702,7 @@
     self.readListButton.layer.cornerRadius = 10.0;
     self.readListButton.layer.borderColor = [UIColor blueColor].CGColor;
 
-    self.skipCheckedItems = NO;
+    self.skipCheckedItems = YES;
     self.suspendSpeechCommands = NO;
     self.backToParentButton.title = @"Read Me";
 
