@@ -34,6 +34,7 @@
 		1730F5D11911AD8000FEAAF9 /* CustomSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 1730F5D01911AD8000FEAAF9 /* CustomSegue.m */; };
 		1730F5D41911ADCB00FEAAF9 /* CustomUnwindSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 1730F5D31911ADCB00FEAAF9 /* CustomUnwindSegue.m */; };
 		174CC80718F5EF7300D8D8A1 /* CPLTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 174CC80618F5EF7300D8D8A1 /* CPLTableViewCell.m */; };
+		17792A541925C12A0005F9B0 /* CPLPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17792A531925C12A0005F9B0 /* CPLPreferencesViewController.m */; };
 		178A982F190D885C00E2E357 /* CPLSlideShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 178A982E190D885C00E2E357 /* CPLSlideShowViewController.m */; };
 		17B782B518F75999009FC64C /* check-Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 17B782B418F75999009FC64C /* check-Icon-Small.png */; };
 		17B782BB18F776CF009FC64C /* checklist.db in Resources */ = {isa = PBXBuildFile; fileRef = 17B782BA18F776CF009FC64C /* checklist.db */; };
@@ -93,6 +94,8 @@
 		1730F5D31911ADCB00FEAAF9 /* CustomUnwindSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomUnwindSegue.m; path = "../../CustomIOSAlertView/ios-custom-alertview/CustomIOS7AlertView/CustomIOS7AlertView/View/CustomUnwindSegue.m"; sourceTree = "<group>"; };
 		174CC80518F5EF7300D8D8A1 /* CPLTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLTableViewCell.h; sourceTree = "<group>"; };
 		174CC80618F5EF7300D8D8A1 /* CPLTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLTableViewCell.m; sourceTree = "<group>"; };
+		17792A521925C12A0005F9B0 /* CPLPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLPreferencesViewController.h; sourceTree = "<group>"; };
+		17792A531925C12A0005F9B0 /* CPLPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLPreferencesViewController.m; sourceTree = "<group>"; };
 		178A982D190D885C00E2E357 /* CPLSlideShowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CPLSlideShowViewController.h; path = CoPilot/CPLSlideShowViewController.h; sourceTree = SOURCE_ROOT; };
 		178A982E190D885C00E2E357 /* CPLSlideShowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CPLSlideShowViewController.m; path = CoPilot/CPLSlideShowViewController.m; sourceTree = SOURCE_ROOT; };
 		17B782B418F75999009FC64C /* check-Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "check-Icon-Small.png"; path = "../../Icons/PNG Images/greencheckmark/check-Icon-Small.png"; sourceTree = "<group>"; };
@@ -179,6 +182,8 @@
 				17DA605818FB1A6C005D2F85 /* View */,
 				17249CFA18CC346100A6C5EF /* CPLTableViewController.h */,
 				17249CFB18CC346100A6C5EF /* CPLTableViewController.m */,
+				17792A521925C12A0005F9B0 /* CPLPreferencesViewController.h */,
+				17792A531925C12A0005F9B0 /* CPLPreferencesViewController.m */,
 				1730F5CF1911AD8000FEAAF9 /* CustomSegue.h */,
 				1730F5D01911AD8000FEAAF9 /* CustomSegue.m */,
 				1730F5D21911ADCB00FEAAF9 /* CustomUnwindSegue.h */,
@@ -376,6 +381,7 @@
 				17D5714A18D5474300663FAE /* CPLMUDViewController.m in Sources */,
 				172CD39518D228B900427D63 /* CPLAddListItemViewController.m in Sources */,
 				178A982F190D885C00E2E357 /* CPLSlideShowViewController.m in Sources */,
+				17792A541925C12A0005F9B0 /* CPLPreferencesViewController.m in Sources */,
 				1730F5D41911ADCB00FEAAF9 /* CustomUnwindSegue.m in Sources */,
 				174CC80718F5EF7300D8D8A1 /* CPLTableViewCell.m in Sources */,
 			);

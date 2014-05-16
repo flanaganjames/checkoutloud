@@ -16,6 +16,7 @@
 #import "CPLSlideShowViewController.h"
 #import "CustomSegue.h"
 #import "CustomUnwindSegue.h"
+#import "CPLPreferencesViewController.h"
 
 
 @interface CPLTableViewController ()
@@ -374,6 +375,10 @@
             }
         }
         
+    }
+    else // if skipcheckeditems = NO then remove all items from
+    {
+        [self.checkedItemKeys removeAllObjects];
     }
     
     
@@ -1051,6 +1056,23 @@
         slideShowViewController.openEarsEventsObserver = self.openEarsEventsObserver;
 //        slideShowViewController.sendingController = [segue sourceViewController];
     }
+    
+    if ([[segue identifier] isEqualToString:@"setPreferences"])
+    {
+        CPLPreferencesViewController *preferencesViewController =
+        [segue destinationViewController];
+        if (self.skipCheckedItems)
+        {
+            preferencesViewController.skipCheckedItems = YES;
+        }
+        else
+        {
+            preferencesViewController.skipCheckedItems = NO;
+        }
+        
+        preferencesViewController.resetNow = NO;
+        
+    }
 
 }
 
@@ -1143,6 +1165,31 @@
     [self cellreloader]; //[self.tableView reloadData];
 }
 
+
+- (IBAction) unwindCancelPreferences:(UIStoryboardSegue *)segue  sender:(id)sender
+{
+    
+}
+
+- (IBAction) unwindChangePreferences:(UIStoryboardSegue *)segue  sender:(id)sender
+{
+    CPLPreferencesViewController *source = [segue sourceViewController];
+    if (source.skipCheckedItems)
+    {
+        self.skipCheckedItems = YES;
+    }
+    else
+    {
+        self.skipCheckedItems = NO;
+    }
+    
+    if (source.resetNow)
+    {
+        [self.checkedItemKeys removeAllObjects];
+        [self cellreloader];
+    }
+}
+
 - (void) handleUpdateDelete
 {
     UIAlertView *alertone = [[UIAlertView alloc] initWithTitle:@"Are you Sure?" message:@"Do you want to delete item and all its descendants?" delegate:self cancelButtonTitle:@"No, Do NOT Delete." otherButtonTitles:@"Yes, Delete Now!",nil];
@@ -1151,6 +1198,7 @@
 
     
 }
+
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
