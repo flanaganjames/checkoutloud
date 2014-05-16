@@ -1433,12 +1433,38 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
         UITableViewCell *cell  = self.currentcells[aCounter];
         long row = [myIndexpath row];
         CheckListItem *item  = self.checkListItems[row];
-        NSNumber *aKeyNumber = [NSNumber numberWithLong:item.itemKey];
+        long aKey =item.itemKey;
+        NSNumber *aKeyNumber = [NSNumber numberWithLong:aKey];
         if ([self.checkedItemKeys containsObject:aKeyNumber])
         {
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
         }
+        // if all descendents checked then check self
+        [self findAllDescendantKeysbyKey:aKey];
+        if ([self.descendantKeys count] > 0)
+        {
+            int innerCounter = 0;
+            int checkedDescendants = 0;
+            
+            while (innerCounter < [self.descendantKeys count])
+            {
+                 NSNumber *anotherKeyNumber = [NSNumber numberWithLong:aKey];
+                anotherKeyNumber = self.descendantKeys[innerCounter];
+                if ([self.checkedItemKeys containsObject:anotherKeyNumber])
+                {
+                    checkedDescendants += 1;
+                }
+                innerCounter += 1;
+            }
+        
+            if (checkedDescendants == [self.descendantKeys count])
+            {
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                [self.checkedItemKeys addObject: aKeyNumber];
+            }
+        }
         aCounter += 1;
+        
     }
 }
 
