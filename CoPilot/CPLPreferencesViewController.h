@@ -11,7 +11,6 @@
 
 @interface CPLPreferencesViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UISwitch *speakSwitch;
-
 @property (weak, nonatomic) IBOutlet UISwitch *listenSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *skipCheckedSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *resetCheckedNow;

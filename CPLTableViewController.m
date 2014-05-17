@@ -98,7 +98,7 @@
                      [self.tableView selectRowAtIndexPath:index animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
                      
                     // [self respondSelectRow:index];
-                    [self slideShowForSelectRow:index];//speek name lof list starts checking
+                    [self slideShowForSelectRow:index];//speak name of list starts checking
                      
                  }
              }];
