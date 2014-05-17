@@ -1071,6 +1071,7 @@
         }
         
         preferencesViewController.resetNow = NO;
+        preferencesViewController.saveNow = NO;
         
     }
 
@@ -1187,6 +1188,11 @@
     {
         [self.checkedItemKeys removeAllObjects];
         [self cellreloader];
+    }
+    
+    if (source.saveNow)
+    {
+        
     }
 }
 

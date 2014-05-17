@@ -14,6 +14,9 @@
 @property (weak, nonatomic) IBOutlet UISwitch *listenSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *skipCheckedSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *resetCheckedNow;
+@property (weak, nonatomic) IBOutlet UISwitch *enabledragSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *savecurrentorderSwitch;
 @property BOOL skipCheckedItems;
 @property BOOL resetNow;
+@property BOOL saveNow;
 @end

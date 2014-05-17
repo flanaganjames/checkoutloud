@@ -37,7 +37,9 @@
         self.skipCheckedSwitch.on = NO;
     }
     
-    self.resetCheckedNow.on = YES;
+    self.resetCheckedNow.on = NO;
+    self.savecurrentorderSwitch.on = NO;
+    self.enabledragSwitch.on = NO;
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -48,13 +50,14 @@
     {self.skipCheckedItems = NO;}
     
     if (self.resetCheckedNow.on)
-    {
-        self.resetNow = NO;
-    }
+    {self.resetNow = YES;}
     else
-    {
-        self.resetNow = YES;
-    }
+    {self.resetNow = NO;}
+    
+    if (self.savecurrentorderSwitch.on)
+    {self.saveNow = YES;}
+    else
+    {self.saveNow = NO;}
 }
 
 - (void)didReceiveMemoryWarning
