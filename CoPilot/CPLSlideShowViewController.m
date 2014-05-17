@@ -66,6 +66,13 @@
     [super viewDidLoad];
     self.removingParent = @"";
     
+    
+    
+    if (self.checkedItemsHaveBeenSkipped)
+    {
+        self.warningText.text =@"WARNING: previously checked items will be skipped - per settings";
+    }
+    
     self.parentHierarchy = [[NSMutableArray alloc] init];
     self.currentCheckListItem = [[CheckListItem alloc] init];
     //start openears stuff

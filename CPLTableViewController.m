@@ -1048,6 +1048,7 @@
         slideShowViewController.listOfLists = self.listOfLists;
         slideShowViewController.listOfListNames = self.listOfListNames;
         slideShowViewController.checkedItemKeys = self.checkedItemKeys;
+        slideShowViewController.checkedItemsHaveBeenSkipped = self.checkedItemsHaveBeenSkipped;
         
 //        slideShowViewController.checkListItems = self.descendantItems;
 //        slideShowViewController.listParent = self.checkingItem.itemName;

@@ -19,12 +19,14 @@
 - (IBAction)quitChecking:(id)sender;
 @property BOOL allowSpeak;
 @property BOOL allowListen;
+@property (weak, nonatomic) IBOutlet UITextView *warningText;
 
 @property (weak, nonatomic) IBOutlet UITextView *listParentHierarchy;
 
 @property (weak, nonatomic) IBOutlet UITextField *listItemNumber;
 @property (weak, nonatomic) IBOutlet UITextField *listItemName;
 @property (weak, nonatomic) IBOutlet UIView *clickView;
+@property BOOL checkedItemsHaveBeenSkipped;
 @property NSMutableArray *checkedItemKeys;
 @property NSString *listParent;
 @property CheckListItem *currentCheckListItem;
