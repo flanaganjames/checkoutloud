@@ -11,7 +11,7 @@
 #import "CheckListItem.h"
 #import "CPLTableViewController.h"
 
-@interface CPLAddListItemViewController : UIViewController <OpenEarsEventsObserverDelegate>
+@interface CPLAddListItemViewController : UIViewController
 @property CheckListItem *checkListItem;
 
 @property (weak, nonatomic) IBOutlet UITextField *itemName;
@@ -19,7 +19,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *saveButton;
 
 @property (weak, nonatomic) IBOutlet UITextField *itemPriority;
-@property (strong, nonatomic) OpenEarsEventsObserver *openEarsEventsObserver;
 @property NSString *listParent;
 @property NSInteger defaultPriority;
 -(IBAction)textFieldReturn:(id)sender;

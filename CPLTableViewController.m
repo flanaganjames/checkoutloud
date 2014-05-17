@@ -83,8 +83,6 @@
 	NSLog(@"The received hypothesis is %@ with a score of %@ and an ID of %@", rawhypothesis, recognitionScore, utteranceID);
     
     NSString *hypothesis = [NSString stringWithFormat: @" %@", rawhypothesis];
-    if (self.suspendSpeechCommands == NO)
-    {
             NSArray *cells = self.currentcells;
             NSArray *visible = self.currentcellpaths;
             
@@ -126,8 +124,6 @@
                     [self changelanguageset]; //changes to the recreated language model
                 }
             }
-        
-    }// end if (self.suspendSpeechCommands == NO)
 }//end pocketsphinxDidReceiveHypothesis
 
 - (void) pocketsphinxDidStartCalibration {
@@ -756,7 +752,6 @@
     self.readListButton.layer.borderColor = [UIColor blueColor].CGColor;
 
     self.skipCheckedItems = YES;
-    self.suspendSpeechCommands = NO;
     self.allowSpeak = YES;
     self.allowListen = YES;
     self.backToParentButton.title = @"Read Me";
@@ -1003,13 +998,10 @@
     
     if ([[segue identifier] isEqualToString:@"AddToRoot"])
     {
-        self.saveStateSpeechCommand = self.suspendSpeechCommands;
-        self.suspendSpeechCommands = YES;
         CPLAddListItemViewController *addViewController =
         [segue destinationViewController];
         
         addViewController.listParent = self.listParent;
-        addViewController.openEarsEventsObserver = self.openEarsEventsObserver;
          
         if ([self.checkListItems count] > 0)
         {
@@ -1025,8 +1017,6 @@
     
     if ([[segue identifier] isEqualToString:@"UpdateMainList"])
     {
-        self.saveStateSpeechCommand = self.suspendSpeechCommands;
-        self.suspendSpeechCommands = YES;
         CPLMUDViewController *updateViewController =
         [segue destinationViewController];
         
@@ -1207,10 +1197,21 @@
     if (source.allowListen)
     {
         self.allowListen = YES;
+        [self.pocketsphinxController resumeRecognition ];
     }
     else
     {
         self.allowListen = NO;
+        [self.pocketsphinxController suspendRecognition ];
+    }
+    
+    if (source.allowSpeak)
+    {
+        self.allowSpeak = YES;
+    }
+    else
+    {
+        self.allowSpeak = NO;
     }
     
     

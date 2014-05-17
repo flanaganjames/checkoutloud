@@ -34,8 +34,6 @@ Kal *kal;
 
 - (IBAction)backToParent:(id)sender;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *backToParentButton;
-@property BOOL suspendSpeechCommands;
-@property BOOL saveStateSpeechCommand;
 @property (weak, nonatomic) IBOutlet UIButton *speechCommandButton;
 @property NSMutableArray *checkedItemKeys;
 @property BOOL checkedItemsHaveBeenSkipped;

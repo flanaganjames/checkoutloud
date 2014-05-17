@@ -14,18 +14,6 @@
 
 @implementation CPLAddListItemViewController
 
-//start openears stuff
-- (void) pocketsphinxDidReceiveHypothesis:(NSString *)hypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID {
-	NSLog(@"The received hypothesis is %@ with a score of %@ and an ID of %@", hypothesis, recognitionScore, utteranceID);
-    
-    if ([hypothesis  isEqual: @"SAVE"])
-    {
-        [self performSegueWithIdentifier: @"unwindAddToList" sender: self];
-    }
-    
-}
-//end openears stuff
-
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if (self.itemName.text.length > 0) {
@@ -52,11 +40,10 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    //start openears stuff
-    [self.openEarsEventsObserver setDelegate:self];
+
     self.itemPriority.text = [NSString stringWithFormat:@"%d", self.defaultPriority];
     self.itemPriority.keyboardType = UIKeyboardTypeDecimalPad;
-    //end of openears stuff
+
 }
 
 - (void)didReceiveMemoryWarning
