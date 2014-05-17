@@ -60,7 +60,7 @@
 
 
 - (FliteController *)fliteController { if (fliteController == nil) { fliteController = [[FliteController alloc] init]; } return fliteController; } - (Slt *)slt { if (slt == nil) { slt = [[Slt alloc] init]; } return slt; }
-//- (FliteController *)fliteController { if (fliteController == nil) { fliteController = [[FliteController alloc] init]; } return fliteController; } - (Kal *)kal { if (kal == nil) { kal = [[Kal alloc] init]; } return kal; }
+
 
 - (OpenEarsEventsObserver *)openEarsEventsObserver {
 	if (openEarsEventsObserver == nil) {
@@ -113,7 +113,8 @@
                 if (![self.listParent isEqual: @"MASTER LIST"]) //
                 {
                     self.listParent = self.listGrandParent;
-                    [self.fliteController say:self.listParent withVoice:self.slt];
+                    if (self.allowSpeak)
+                    {[self.fliteController say:self.listParent withVoice:self.slt];}
                     self.listParentKey = self.listGrandParentKey;
                     [self getGrandParent];
                     self.listLabel.text = self.listParent;
@@ -175,7 +176,8 @@
     [self.tableView selectRowAtIndexPath:self.currentcellpaths[self.currentrow ] animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
     NSString *text = item.itemName;
     
-    [self.fliteController say: text withVoice:self.slt];
+    if (self.allowSpeak)
+    {[self.fliteController say: text withVoice:self.slt];}
     //    [self.fliteController say: text withVoice:self.kal];
 }
 
@@ -607,7 +609,8 @@
     [self loadSpeechCommands];
     [self loadLanguageSet];
     [self changelanguageset]; //changes to the recreated language model
-    [self.fliteController say:self.listParent withVoice:self.slt];
+    if (self.allowSpeak)
+    {[self.fliteController say:self.listParent withVoice:self.slt];}
     
 }
 
@@ -627,7 +630,8 @@
     [self findAllDescendantItemsbyKey:aKey];
     if (self.checkedItemsHaveBeenSkipped)
     {
-        [self.fliteController say:@"Previously checked Items Will be Skipped" withVoice:self.slt];
+        if (self.allowSpeak)
+        {[self.fliteController say:@"Previously checked Items Will be Skipped" withVoice:self.slt];}
     }
     if ([self.descendantItems count] > 0)
     {
@@ -656,7 +660,8 @@
     [self findAllDescendantItemsbyKey:aKey];
     if (self.checkedItemsHaveBeenSkipped)
     {
-        [self.fliteController say:@"Previously checked Items Will be Skipped" withVoice:self.slt];
+        if (self.allowSpeak)
+        {[self.fliteController say:@"Previously checked Items Will be Skipped" withVoice:self.slt];}
     }
     if ([self.descendantItems count] > 0)
     {
@@ -846,8 +851,9 @@
     [self.openEarsEventsObserver setDelegate:self];
     
     
-    [self.fliteController say:@"WELCOME TO CHECK OUT LOUD" withVoice:self.slt];
-    [self.fliteController say:@"SAY A LIST NAME" withVoice:self.slt];
+    if (self.allowSpeak)
+    {[self.fliteController say:@"WELCOME TO CHECK OUT LOUD" withVoice:self.slt];}
+
 
 //    [self.fliteController say:@"Hey Boss.  Another day, another dollar." withVoice:self.kal];
     
@@ -1346,9 +1352,11 @@
         [self getGrandParent];
         self.listLabel.text = self.listParent;
         [self loadCurrentParentList];
-        [self.fliteController say:self.listParent withVoice:self.slt];
+        if (self.allowSpeak)
+        {[self.fliteController say:self.listParent withVoice:self.slt];}
         [self cellreloader]; //[self.tableView reloadData];
-        [self.fliteController say:self.listParent withVoice:self.slt];
+        if (self.allowSpeak)
+        {[self.fliteController say:self.listParent withVoice:self.slt];}
         [self loadSpeechCommands];
         [self loadLanguageSet];
         [self changelanguageset]; //changes to the recreated language model

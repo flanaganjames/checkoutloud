@@ -56,7 +56,8 @@
     _listItemName.text = self.currentCheckListItem.itemName;
     _listItemNumber.text = [NSString stringWithFormat: @"%ld", self.currentCheckListItem.itemPriority];
     NSString *sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listParentHierarchy.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
-    [self.fliteController say:sayThis withVoice:self.slt];
+    if (self.allowSpeak)
+    {[self.fliteController say:sayThis withVoice:self.slt];}
 }
 
 
@@ -112,7 +113,8 @@
     {
         sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listParentHierarchy.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
     }
-    [self.fliteController say:sayThis withVoice:self.slt];
+    if (self.allowSpeak)
+    {[self.fliteController say:sayThis withVoice:self.slt];}
 }
 
 - (void) nextSlide
@@ -156,7 +158,8 @@
         {
         sayThis = [NSString stringWithFormat: @"item %ld is %@", self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
         }
-        [self.fliteController say:sayThis withVoice:self.slt];
+        if (self.allowSpeak)
+        {[self.fliteController say:sayThis withVoice:self.slt];}
     }
     else // go to the next list
     {
@@ -186,13 +189,14 @@
             {
                 sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listParentHierarchy.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
             }
-
-            [self.fliteController say:sayThis withVoice:self.slt];
+            if (self.allowSpeak)
+            {[self.fliteController say:sayThis withVoice:self.slt];}
         }
         else
         {
         //perform unwind programmatically
-        [self.fliteController say:@"check list completed" withVoice:self.slt];
+            if (self.allowSpeak)
+            {[self.fliteController say:@"check list completed" withVoice:self.slt];}
         [self dismissViewControllerAnimated:YES completion:nil];
         }
     }
@@ -237,7 +241,8 @@
         {
             sayThis = [NSString stringWithFormat: @"item %ld is %@", self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
         }
-        [self.fliteController say:sayThis withVoice:self.slt];
+        if (self.allowSpeak)
+        {[self.fliteController say:sayThis withVoice:self.slt];}
     }
     else
     {
@@ -268,8 +273,8 @@
             {
                 sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listParentHierarchy.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
             }
-
-            [self.fliteController say:sayThis withVoice:self.slt];
+            if (self.allowSpeak)
+            {[self.fliteController say:sayThis withVoice:self.slt];}
         }
     }
 }
