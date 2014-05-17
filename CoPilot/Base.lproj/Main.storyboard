@@ -205,6 +205,7 @@
                         <outlet property="resetCheckedNow" destination="CaF-Ny-ux7" id="Ob3-Bu-Y1T"/>
                         <outlet property="savecurrentorderSwitch" destination="G8k-5S-pRa" id="Dv3-0q-qOD"/>
                         <outlet property="skipCheckedSwitch" destination="x6v-Ev-h1A" id="usa-0T-rcu"/>
+                        <outlet property="speakSwitch" destination="B31-KK-r4p" id="OsB-0G-nAE"/>
                         <outlet property="speekSwitch" destination="hYg-cf-gWW" id="SGM-7C-3ZB"/>
                     </connections>
                 </viewController>

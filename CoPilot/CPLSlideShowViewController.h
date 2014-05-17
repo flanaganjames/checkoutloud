@@ -17,6 +17,8 @@
 
 @interface CPLSlideShowViewController : UIViewController  <OpenEarsEventsObserverDelegate>
 - (IBAction)quitChecking:(id)sender;
+@property BOOL allowSpeak;
+@property BOOL allowListen;
 
 @property (weak, nonatomic) IBOutlet UITextView *listParentHierarchy;
 

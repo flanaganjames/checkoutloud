@@ -42,6 +42,9 @@
 @property NSArray *currentcells;
 @property NSArray *currentcellpaths;
 @property NSInteger currentcellcount;
+
+@property BOOL allowSpeak;
+@property BOOL allowListen;
 @end
 
 @implementation CPLTableViewController
@@ -754,6 +757,8 @@
 
     self.skipCheckedItems = YES;
     self.suspendSpeechCommands = NO;
+    self.allowSpeak = YES;
+    self.allowListen = YES;
     self.backToParentButton.title = @"Read Me";
 
     self.checkListItems = [[NSMutableArray alloc] init];
@@ -1054,6 +1059,8 @@
         slideShowViewController.fliteController = self.fliteController;
         slideShowViewController.slt = self.slt;
         slideShowViewController.openEarsEventsObserver = self.openEarsEventsObserver;
+        slideShowViewController.allowSpeak = self.allowSpeak;
+        slideShowViewController.allowListen = self.allowListen;
 //        slideShowViewController.sendingController = [segue sourceViewController];
     }
     
@@ -1072,6 +1079,8 @@
         
         preferencesViewController.resetNow = NO;
         preferencesViewController.saveNow = NO;
+        preferencesViewController.allowSpeak = self.allowSpeak;
+        preferencesViewController.allowListen = self.allowListen;
         
     }
 
@@ -1081,7 +1090,7 @@
 
 - (IBAction)unwindAddToList:(UIStoryboardSegue *)segue  sender:(id)sender
 {
-    self.suspendSpeechCommands = self.saveStateSpeechCommand;
+    
     CPLAddListItemViewController *source = [segue sourceViewController];
     CheckListItem *item = source.checkListItem;
     item.itemParent = self.listParent;
@@ -1156,13 +1165,13 @@
 
 - (IBAction)unwindCancelUpdate:(UIStoryboardSegue *)segue  sender:(id)sender
 {
-    self.suspendSpeechCommands = self.saveStateSpeechCommand;
+    
     [self cellreloader]; //[self.tableView reloadData];
 }
 
 - (IBAction)unwindCancelAdd:(UIStoryboardSegue *)segue  sender:(id)sender
 {
-    self.suspendSpeechCommands = self.saveStateSpeechCommand;
+    
     [self cellreloader]; //[self.tableView reloadData];
 }
 
@@ -1194,6 +1203,17 @@
     {
         
     }
+    
+    if (source.allowListen)
+    {
+        self.allowListen = YES;
+    }
+    else
+    {
+        self.allowListen = NO;
+    }
+    
+    
 }
 
 - (void) handleUpdateDelete
@@ -1250,7 +1270,7 @@
 
 - (IBAction)unwindUpdateMainList:(UIStoryboardSegue *)segue  sender:(id)sender
 {
-    self.suspendSpeechCommands = self.saveStateSpeechCommand;
+    
     CPLMUDViewController *source = [segue sourceViewController];
     CheckListItem *item = source.checkListItem;
     CheckListItem *itemupdating = self.updatingItem;
@@ -1316,18 +1336,6 @@
 
 }
 
-- (IBAction)speechCommandToggle:(id)sender
-{
-    if (self.suspendSpeechCommands)
-        {  self.suspendSpeechCommands = NO;
-            [self.pocketsphinxController resumeRecognition ];
-        }
-    else
-        { self.suspendSpeechCommands = YES;
-            [self.pocketsphinxController suspendRecognition ];
-        }
-    [self cellreloader];
-}
 
 - (IBAction)backToParent:(id)sender {
     if (![self.listParent isEqual: @"MASTER LIST"]) //
@@ -1343,7 +1351,7 @@
         [self loadSpeechCommands];
         [self loadLanguageSet];
         [self changelanguageset]; //changes to the recreated language model
-        [self setTitles];
+
     }
     else
     {[self showReadMe];}
@@ -1463,7 +1471,6 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
     self.currentcells = [self.tableView visibleCells]; //how to get array of all rows?
     self.currentcellpaths = [self.tableView indexPathsForVisibleRows];
     self.currentcellcount = [self.currentcells count];
-    [self setTitles];
     [self cellchecker];
     
 //    int *aCount = [self.checkListItems count];
@@ -1522,67 +1529,6 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
     }
 }
 
-- (void) setTitles
-{
-    if ([self.listParent isEqual: @"MASTER LIST"])
-    {   self.backToParentButton.title = @"Read Me";
-
-        if (self.currentcellcount > 0)
-        {
-            if (self.suspendSpeechCommands == NO)
-            {
-                    [self.readListButton setTitle: @"Check All Lists" forState: UIControlStateNormal];
-                    [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
-            }
-            else
-            {
-                [self.readListButton setTitle: @"Check All Lists" forState: UIControlStateNormal];
-                [self.speechCommandButton setTitle: @"Swipe to check" forState: UIControlStateNormal];
-            }
-        }
-        else
-        {
-            [self.readListButton setTitle: @"Tap \"+\" to add to list" forState: UIControlStateNormal];
-
-            if (self.suspendSpeechCommands == NO)
-            {
-                [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
-            }
-            else
-            {
-                [self.speechCommandButton setTitle: @"Swipe to check" forState: UIControlStateNormal];
-            }
-        }
-    }
-    else // is not Master List
-    {
-        if (self.currentcellcount > 0)
-        {
-            if (self.suspendSpeechCommands == NO)
-            {
-                [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
-                [self.readListButton setTitle: @"Check All Lists" forState: UIControlStateNormal];
-            }
-            else
-            {
-                [self.speechCommandButton setTitle: @"Swipe to check" forState: UIControlStateNormal];
-                [self.readListButton setTitle: @"Check All Lists" forState: UIControlStateNormal];
-            }
-        }
-        else
-        {
-            [self.readListButton setTitle: @"Tap \"+\" to add to list" forState: UIControlStateNormal];
-            if (self.suspendSpeechCommands == NO)
-            {
-                [self.speechCommandButton setTitle: @"Check Out Loud" forState: UIControlStateNormal];
-            }
-            else
-            {
-                [self.speechCommandButton setTitle: @"Swipe to check" forState: UIControlStateNormal];
-            }
-        }
-    }
-}
 
 - (void) handleTap:(UITapGestureRecognizer *)sender
 {

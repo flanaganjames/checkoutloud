@@ -40,6 +40,23 @@
     self.resetCheckedNow.on = NO;
     self.savecurrentorderSwitch.on = NO;
     self.enabledragSwitch.on = NO;
+    if (self.allowSpeak)
+    {
+        self.speakSwitch.on = YES;
+    }
+    else
+    {
+        self.speakSwitch.on = NO;
+    }
+    
+    if (self.allowListen)
+    {
+        self.listenSwitch.on = YES;
+    }
+    else
+    {
+        self.listenSwitch.on = NO;
+    }
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -58,6 +75,24 @@
     {self.saveNow = YES;}
     else
     {self.saveNow = NO;}
+    
+    if (self.speakSwitch.on)
+    {
+        self.allowSpeak = YES;
+    }
+    else
+    {
+        self.allowSpeak = NO;
+    }
+    
+    if (self.listenSwitch.on)
+    {
+        self.allowListen = YES;
+    }
+    else
+    {
+        self.allowListen = NO;
+    }
 }
 
 - (void)didReceiveMemoryWarning
