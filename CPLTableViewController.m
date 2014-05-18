@@ -426,9 +426,10 @@
                     [workingArray removeObject: item];
                 }
             }
-            else //it is a timecheckitem; their children do not get added to current slide show
+            else //it is a timecheckitem; its children do not get added to current slide show, but it itsef is added
             {
                 [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:item afterDelay:15];
+                [self.descendantItems addObject: item];
                 [workingArray removeObject: item];
             }
         }
@@ -659,20 +660,27 @@
 
     
     CheckListItem *item  = self.checkListItems[row];
-    self.checkingItem = item;
-    long aKey =  item.itemKey;
-    [self findAllDescendantItemsbyKey:aKey];
-    if (self.checkedItemsHaveBeenSkipped)
+    if ([self isTimeDelayItem:item])
     {
-        if (self.allowSpeak)
-        {[self.fliteController say:@"Previously checked Items Will be Skipped" withVoice:self.slt];}
+    [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:item afterDelay:15];
     }
-    if ([self.descendantItems count] > 0)
+    else
     {
-        [self.listOfLists addObject:self.descendantItems];
-        [self.listOfListNames addObject:item.itemName];
-        [self performSegueWithIdentifier: @"slideShow" sender: self];
+        self.checkingItem = item;
+        long aKey =  item.itemKey;
+        [self findAllDescendantItemsbyKey:aKey];
+        if (self.checkedItemsHaveBeenSkipped)
+        {
+            if (self.allowSpeak)
+            {[self.fliteController say:@"Previously checked Items Will be Skipped" withVoice:self.slt];}
+        }
+        if ([self.descendantItems count] > 0)
+        {
+            [self.listOfLists addObject:self.descendantItems];
+            [self.listOfListNames addObject:item.itemName];
+            [self performSegueWithIdentifier: @"slideShow" sender: self];
 
+        }
     }
 }
 
