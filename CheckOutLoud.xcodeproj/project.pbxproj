@@ -38,6 +38,7 @@
 		17792A56192821B30005F9B0 /* Settings-Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 17792A55192821B30005F9B0 /* Settings-Icon-Small.png */; };
 		17792A5A192823640005F9B0 /* Settings - Icon-2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17792A59192823640005F9B0 /* Settings - Icon-2x.png */; };
 		17792A5C1928237B0005F9B0 /* Settings-Icon-40.png in Resources */ = {isa = PBXBuildFile; fileRef = 17792A5B1928237B0005F9B0 /* Settings-Icon-40.png */; };
+		17792A5F192919030005F9B0 /* CPLTimeDelayItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 17792A5E192919030005F9B0 /* CPLTimeDelayItem.m */; };
 		178A982F190D885C00E2E357 /* CPLSlideShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 178A982E190D885C00E2E357 /* CPLSlideShowViewController.m */; };
 		17B782B518F75999009FC64C /* check-Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 17B782B418F75999009FC64C /* check-Icon-Small.png */; };
 		17B782BB18F776CF009FC64C /* checklist.db in Resources */ = {isa = PBXBuildFile; fileRef = 17B782BA18F776CF009FC64C /* checklist.db */; };
@@ -102,6 +103,8 @@
 		17792A55192821B30005F9B0 /* Settings-Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Settings-Icon-Small.png"; path = "../../Icons/PNG Images/settings/Settings-Icon-Small.png"; sourceTree = "<group>"; };
 		17792A59192823640005F9B0 /* Settings - Icon-2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Settings - Icon-2x.png"; path = "../../Icons/PNG Images/settings/Settings - Icon-2x.png"; sourceTree = "<group>"; };
 		17792A5B1928237B0005F9B0 /* Settings-Icon-40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Settings-Icon-40.png"; path = "../../Icons/PNG Images/settings/Settings-Icon-40.png"; sourceTree = "<group>"; };
+		17792A5D192919030005F9B0 /* CPLTimeDelayItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CPLTimeDelayItem.h; path = "../../CustomIOSAlertView/ios-custom-alertview/CustomIOS7AlertView/CustomIOS7AlertView/View/CPLTimeDelayItem.h"; sourceTree = "<group>"; };
+		17792A5E192919030005F9B0 /* CPLTimeDelayItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CPLTimeDelayItem.m; path = "../../CustomIOSAlertView/ios-custom-alertview/CustomIOS7AlertView/CustomIOS7AlertView/View/CPLTimeDelayItem.m"; sourceTree = "<group>"; };
 		178A982D190D885C00E2E357 /* CPLSlideShowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CPLSlideShowViewController.h; path = CoPilot/CPLSlideShowViewController.h; sourceTree = SOURCE_ROOT; };
 		178A982E190D885C00E2E357 /* CPLSlideShowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CPLSlideShowViewController.m; path = CoPilot/CPLSlideShowViewController.m; sourceTree = SOURCE_ROOT; };
 		17B782B418F75999009FC64C /* check-Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "check-Icon-Small.png"; path = "../../Icons/PNG Images/greencheckmark/check-Icon-Small.png"; sourceTree = "<group>"; };
@@ -207,6 +210,8 @@
 				17249CC918CC30E600A6C5EF /* Supporting Files */,
 				17249D0A18CCC29A00A6C5EF /* CheckListItem.h */,
 				17249D0B18CCC29A00A6C5EF /* CheckListItem.m */,
+				17792A5D192919030005F9B0 /* CPLTimeDelayItem.h */,
+				17792A5E192919030005F9B0 /* CPLTimeDelayItem.m */,
 				174CC80518F5EF7300D8D8A1 /* CPLTableViewCell.h */,
 				174CC80618F5EF7300D8D8A1 /* CPLTableViewCell.m */,
 			);
@@ -385,6 +390,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				17DA605B18FB1A6C005D2F85 /* CustomIOS7AlertView.m in Sources */,
+				17792A5F192919030005F9B0 /* CPLTimeDelayItem.m in Sources */,
 				17249CD318CC30E600A6C5EF /* CPLAppDelegate.m in Sources */,
 				17249CFC18CC346100A6C5EF /* CPLTableViewController.m in Sources */,
 				17249CCF18CC30E600A6C5EF /* main.m in Sources */,

@@ -17,6 +17,7 @@
 #import <OpenEars/FliteController.h>
 #import "CustomIOS7AlertView.h"
 #import "CheckListItem.h"
+#import "CPLTimeDelayItem.h"
 
 
 PocketsphinxController *pocketsphinxController;

@@ -28,6 +28,7 @@
 @property NSMutableArray *listOfListNames;
 @property NSMutableArray *unchecked_descendantKeys;
 @property NSMutableArray *unchecked_descendantItems;
+@property NSMutableArray *timeDelayItems;
 @property CheckListItem *updatingItem;
 @property CheckListItem *checkingItem;
 @property BOOL *updatingDelete;
@@ -246,47 +247,6 @@
     }
 }
 
-//- (void) getOneByKey:(long) aKey
-//{
-//    sqlite3_stmt    *statement;
-//    const char *dbpath = [_databasePath UTF8String];
-//    if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
-//    {
-//        NSString *updateSQL = [NSString stringWithFormat:
-//                @"SELECT * FROM CHECKLISTSBYKEY WHERE ID=\'%ld\'", aKey];
-//        const char *update_stmt = [updateSQL UTF8String];
-//        
-//        sqlite3_prepare_v2(_checklistDB, update_stmt,
-//                           -1, &statement, NULL);
-//        while (sqlite3_step(statement) == SQLITE_ROW)
-//        {   CheckListItem *item = [[CheckListItem alloc] init];
-//            NSString *taskname =
-//            [[NSString alloc] initWithUTF8String:
-//             (const char *) sqlite3_column_text(statement, 1)];
-//            int taskpriority = sqlite3_column_int(statement, 2);
-//            long taskparentkey = sqlite3_column_int(statement, 3);
-//            long taskkey = sqlite3_column_int(statement, 0);
-//
-//            item.itemName = taskname;
-//            item.itemKey = *(&(taskkey));
-//            item.itemPriority = *(&(taskpriority));
-//            item.itemParent = self.listParent;
-//            item.itemParentKey = *(&(taskparentkey));
-//            [self.descendantItems addObject:item];
-//            
-//    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Item Name"
-//        message:[NSString stringWithFormat: @"%@", taskname]
-//                                delegate:nil
-//                                                    cancelButtonTitle:@"OK"
-//                                                    otherButtonTitles:nil];
-//            [message show];
-//            
-//        }
-//        sqlite3_finalize(statement);
-//        sqlite3_close(_checklistDB);
-//    }
-//}
-//
 
 - (NSMutableArray *) findImmediateDescendantsbyKey:(long) parentKey
 {
@@ -485,7 +445,61 @@
 - (void) addItemToSlideShowandDelays: (CheckListItem *) aCLItem
 {
     [self.descendantItems addObject: aCLItem];
+    
+    if ([aCLItem.itemName isEqual: @"TIMEDELAY"])
+    {
+        CheckListItem *anotherItem = [[CheckListItem alloc] init];
+        anotherItem.itemName = aCLItem.itemName;
+        anotherItem.itemPriority = 1;
+
+        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:anotherItem afterDelay:30];
+    }
+    
+    if ([aCLItem.itemName isEqual: @"TIMEDELAY2"])
+    {
+        CheckListItem *anotherItem = [[CheckListItem alloc] init];
+        anotherItem.itemName = aCLItem.itemName;
+        anotherItem.itemPriority = 1;
+        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aCLItem afterDelay:60];
+    }
 }
+
+- (void) slideShowForTimeDelayItem: (CheckListItem *) aCLItem
+{
+    //    NSIndexPath *myIndexPath = [self.tableView indexPathForSelectedRow];
+    
+//    //CheckListItem  *aCLItem = self.timeDelayItems[0];
+//    [self.listOfLists removeAllObjects];
+//    [self.listOfListNames removeAllObjects];
+//
+//    self.checkedItemsHaveBeenSkipped = NO;
+//    [self.descendantItems removeAllObjects];
+//    [self.descendantItems addObject: aCLItem];
+//
+//    [self.listOfLists addObject:self.descendantItems];
+//    [self.listOfListNames addObject: @"Timed Item"];
+//    [self performSegueWithIdentifier: @"slideShow" sender: self];
+    
+    
+    self.checkingItem = aCLItem;
+    long aKey =  aCLItem.itemKey;
+    [self findAllDescendantItemsbyKey:aKey];
+    if (self.checkedItemsHaveBeenSkipped)
+    {
+        if (self.allowSpeak)
+        {[self.fliteController say:@"Previously checked Items Will be Skipped" withVoice:self.slt];}
+    }
+    if ([self.descendantItems count] > 0)
+    {
+        [self.listOfLists addObject:self.descendantItems];
+        [self.listOfListNames addObject:aCLItem.itemName];
+        [self performSegueWithIdentifier: @"slideShow" sender: self];
+        
+    }
+    
+}
+
+
 
 - (void) findAllDescendantKeysbyKey:(long) parentKey {
     
@@ -778,6 +792,7 @@
     self.unchecked_descendantKeys = [[NSMutableArray alloc] init];
     self.unchecked_descendantItems = [[NSMutableArray alloc] init];
     self.checkedItemKeys = [[NSMutableArray alloc] init];
+    self.timeDelayItems = [[NSMutableArray alloc] init];
     NSString *docsDir;
     
     NSArray *dirPaths;
