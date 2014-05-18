@@ -397,7 +397,8 @@
         item = workingArray[0];
         if (item.itemPriority == -1)
         {
-            [self.descendantItems addObject: item];
+            //[self.descendantItems addObject: item];
+            [self addItemToSlideShowandDelays: item];
             [workingArray removeObject: item];
         }
         else
@@ -443,7 +444,8 @@
                 CheckListItem *anotherItem = [[CheckListItem alloc] init];
                 anotherItem.itemName = item.itemName;
                 anotherItem.itemPriority = 0;
-                [self.descendantItems addObject: anotherItem];
+               //[self.descendantItems addObject: anotherItem];
+                [self addItemToSlideShowandDelays: anotherItem];
                 item.itemPriority = -1; // this should change the 0th item itemPriority
                 //push the currentworkingArray into tempLists
                 [tempLists addObject:[workingArray copy]];
@@ -458,7 +460,8 @@
             }
             else // item has no descendants
             {
-                [self.descendantItems addObject: item];
+                //[self.descendantItems addObject: item];
+                [self addItemToSlideShowandDelays: item];
                 [workingArray removeObject: item];
             }
         }
@@ -477,6 +480,11 @@
         }
         currentGeneration -= 1;
     }
+}
+
+- (void) addItemToSlideShowandDelays: (CheckListItem *) aCLItem
+{
+    [self.descendantItems addObject: aCLItem];
 }
 
 - (void) findAllDescendantKeysbyKey:(long) parentKey {
