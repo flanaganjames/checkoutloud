@@ -339,7 +339,7 @@
     }
     else // if skipcheckeditems = NO then remove all items from
     {
-        [self.checkedItemKeys removeAllObjects];
+       // [self.checkedItemKeys removeAllObjects];
     }
     
     
@@ -357,72 +357,78 @@
         item = workingArray[0];
         if (item.itemPriority == -1)
         {
-            //[self.descendantItems addObject: item];
-            [self addItemToSlideShowandDelays: item];
+            [self.descendantItems addObject: item];
             [workingArray removeObject: item];
         }
         else
         {
-            tempArray = [self findImmediateDescendantsbyKey: item.itemKey];
-            // now remove from this list any that are already ckecked if "skipcheckeditems = YES"
-
-            if (self.skipCheckedItems && [tempArray count] > 0) //remove items already checked
-            {
-                NSMutableArray *anotherTempArray = [[NSMutableArray alloc] init];
-                int innerCounter = 0;
-                NSNumber *aNumber = [[NSNumber alloc] init];
-                while (innerCounter < [tempArray count])
+            if (![self isTimeDelayItem: item])
                 {
-                    CheckListItem *item = tempArray[innerCounter];
-                    aNumber = [NSNumber numberWithLong:item.itemKey];
-                    
-                    if (![self.checkedItemKeys containsObject: aNumber])
+                tempArray = [self findImmediateDescendantsbyKey: item.itemKey];
+                // now remove from this list any that are already ckecked if "skipcheckeditems = YES"
+
+                if (self.skipCheckedItems && [tempArray count] > 0) //remove items already checked
+                {
+                    NSMutableArray *anotherTempArray = [[NSMutableArray alloc] init];
+                    int innerCounter = 0;
+                    NSNumber *aNumber = [[NSNumber alloc] init];
+                    while (innerCounter < [tempArray count])
                     {
-                        [anotherTempArray addObject: item];
-                    }
-                    else
-                    {
-                        self.checkedItemsHaveBeenSkipped = YES;
-                    }
-                    innerCounter += 1;
-                }
-                [tempArray removeAllObjects];
-                
-                if ([anotherTempArray count] > 0)
-                {   innerCounter = 0;
-                    while (innerCounter < [anotherTempArray count])
-                    {
-                        CheckListItem *item  = anotherTempArray[innerCounter];
-                        [tempArray addObject: item];
+                        CheckListItem *item = tempArray[innerCounter];
+                        aNumber = [NSNumber numberWithLong:item.itemKey];
+                        
+                        if (![self.checkedItemKeys containsObject: aNumber])
+                        {
+                            [anotherTempArray addObject: item];
+                        }
+                        else
+                        {
+                            self.checkedItemsHaveBeenSkipped = YES;
+                        }
                         innerCounter += 1;
                     }
+                    [tempArray removeAllObjects];
+                    
+                    if ([anotherTempArray count] > 0)
+                    {   innerCounter = 0;
+                        while (innerCounter < [anotherTempArray count])
+                        {
+                            CheckListItem *item  = anotherTempArray[innerCounter];
+                            [tempArray addObject: item];
+                            innerCounter += 1;
+                        }
+                    }
+                    
                 }
-                
-            }
-            if ([tempArray count] > 0)
-            {
-                CheckListItem *anotherItem = [[CheckListItem alloc] init];
-                anotherItem.itemName = item.itemName;
-                anotherItem.itemPriority = 0;
-                anotherItem.itemKey = item.itemKey;
-               //[self.descendantItems addObject: anotherItem];
-                [self addItemToSlideShowandDelays: anotherItem];
-                item.itemPriority = -1; // this should change the 0th item itemPriority
-                //push the currentworkingArray into tempLists
-                [tempLists addObject:[workingArray copy]];
-                [workingArray removeAllObjects];
-                int aCounter = 0;
-                while (aCounter < [tempArray count])
+                if ([tempArray count] > 0)
                 {
-                    [workingArray addObject: tempArray[aCounter]];
-                    aCounter += 1;
+                    CheckListItem *anotherItem = [[CheckListItem alloc] init];
+                    anotherItem.itemName = item.itemName;
+                    anotherItem.itemPriority = 0;
+                    anotherItem.itemKey = item.itemKey;
+                   //[self.descendantItems addObject: anotherItem];
+                    [self.descendantItems addObject: anotherItem];
+                    item.itemPriority = -1; // this should change the 0th item itemPriority
+                    //push the currentworkingArray into tempLists
+                    [tempLists addObject:[workingArray copy]];
+                    [workingArray removeAllObjects];
+                    int aCounter = 0;
+                    while (aCounter < [tempArray count])
+                    {
+                        [workingArray addObject: tempArray[aCounter]];
+                        aCounter += 1;
+                    }
+                    currentGeneration += 1;
                 }
-                currentGeneration += 1;
+                else // item has no descendants
+                {
+                    [self.descendantItems addObject: item];
+                    [workingArray removeObject: item];
+                }
             }
-            else // item has no descendants
+            else //it is a timecheckitem; their children do not get added to current slide show
             {
-                //[self.descendantItems addObject: item];
-                [self addItemToSlideShowandDelays: item];
+                [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:item afterDelay:15];
                 [workingArray removeObject: item];
             }
         }
@@ -456,15 +462,6 @@
     }
 }
 
-- (void) addItemToSlideShowandDelays: (CheckListItem *) aCLItem
-{
-    [self.descendantItems addObject: aCLItem];
-    
-    if ([self isTimeDelayItem: aCLItem])
-    {
-        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aCLItem afterDelay:30];
-    }
-}
 
 - (void) slideShowForTimeDelayItem: (CheckListItem *) aCLItem
 {
@@ -481,9 +478,7 @@
         [self.listOfLists addObject:self.descendantItems];
         [self.listOfListNames addObject:aCLItem.itemName];
         [self performSegueWithIdentifier: @"slideShow" sender: self];
-        
     }
-    
 }
 
 
