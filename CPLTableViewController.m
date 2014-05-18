@@ -404,6 +404,7 @@
                 CheckListItem *anotherItem = [[CheckListItem alloc] init];
                 anotherItem.itemName = item.itemName;
                 anotherItem.itemPriority = 0;
+                anotherItem.itemKey = item.itemKey;
                //[self.descendantItems addObject: anotherItem];
                 [self addItemToSlideShowandDelays: anotherItem];
                 item.itemPriority = -1; // this should change the 0th item itemPriority
@@ -442,45 +443,31 @@
     }
 }
 
+- (BOOL) isTimeDelayItem: (CheckListItem *) aCLItem
+{
+    // this will be more sophisticated with a regular expression
+    if ([aCLItem.itemName isEqual: @"TIMEDELAY"])
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
+}
+
 - (void) addItemToSlideShowandDelays: (CheckListItem *) aCLItem
 {
     [self.descendantItems addObject: aCLItem];
     
-    if ([aCLItem.itemName isEqual: @"TIMEDELAY"])
+    if ([self isTimeDelayItem: aCLItem])
     {
-        CheckListItem *anotherItem = [[CheckListItem alloc] init];
-        anotherItem.itemName = aCLItem.itemName;
-        anotherItem.itemPriority = 1;
-
-        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:anotherItem afterDelay:30];
-    }
-    
-    if ([aCLItem.itemName isEqual: @"TIMEDELAY2"])
-    {
-        CheckListItem *anotherItem = [[CheckListItem alloc] init];
-        anotherItem.itemName = aCLItem.itemName;
-        anotherItem.itemPriority = 1;
-        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aCLItem afterDelay:60];
+        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aCLItem afterDelay:30];
     }
 }
 
 - (void) slideShowForTimeDelayItem: (CheckListItem *) aCLItem
 {
-    //    NSIndexPath *myIndexPath = [self.tableView indexPathForSelectedRow];
-    
-//    //CheckListItem  *aCLItem = self.timeDelayItems[0];
-//    [self.listOfLists removeAllObjects];
-//    [self.listOfListNames removeAllObjects];
-//
-//    self.checkedItemsHaveBeenSkipped = NO;
-//    [self.descendantItems removeAllObjects];
-//    [self.descendantItems addObject: aCLItem];
-//
-//    [self.listOfLists addObject:self.descendantItems];
-//    [self.listOfListNames addObject: @"Timed Item"];
-//    [self performSegueWithIdentifier: @"slideShow" sender: self];
-    
-    
     self.checkingItem = aCLItem;
     long aKey =  aCLItem.itemKey;
     [self findAllDescendantItemsbyKey:aKey];
