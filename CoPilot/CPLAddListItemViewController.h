@@ -13,8 +13,12 @@
 
 @interface CPLAddListItemViewController : UIViewController
 @property CheckListItem *checkListItem;
-
+@property (weak, nonatomic) IBOutlet UITextField *delaySeconds;
+@property (weak, nonatomic) IBOutlet UISwitch *repeatSwitch;
+@property (weak, nonatomic) IBOutlet UITextField *delayMinutes;
 @property (weak, nonatomic) IBOutlet UITextField *itemName;
+
+@property (weak, nonatomic) IBOutlet UITextField *delayHours;
 
 @property (weak, nonatomic) IBOutlet UIButton *saveButton;
 

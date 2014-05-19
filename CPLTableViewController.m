@@ -541,7 +541,8 @@
 
 
 - (void) slideShowForTimeDelayItem: (CheckListItem *) aCLItem
-{
+{   // change this to create a queue of events that are due. Then in viewdidappear check that queue and do the slideshow then
+
     [self.listOfLists removeAllObjects];
     [self.listOfListNames removeAllObjects];
     self.checkingItem = aCLItem;

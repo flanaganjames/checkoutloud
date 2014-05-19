@@ -16,13 +16,31 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if (self.itemName.text.length > 0) {
+    if (self.itemName.text.length > 0)
+    {
        	self.checkListItem = [[CheckListItem alloc] init];
         
-        self.checkListItem.itemName = [self.itemName.text uppercaseString];
+        NSString *buildName = [[NSString alloc] init];
+        buildName = [self.itemName.text uppercaseString];
+        
+        //if any non-zero delay then build the name
+        if (![self.delaySeconds.text isEqual: @"0"] | ![self.delayMinutes.text isEqual: @"0"] | ![self.delayHours.text isEqual: @"0"])
+        {
+            buildName = [NSString stringWithFormat:@"%@-td-%@h%@m%@s", buildName, self.delayHours.text, self.delayMinutes.text, self.delaySeconds.text];
+            
+            if (self.repeatSwitch)
+            {
+                buildName = [NSString stringWithFormat:@"%@-rpt", buildName];
+            }
+        }
+        
+        
+        self.checkListItem.itemName = buildName;
         self.checkListItem.itemPriority = [self.itemPriority.text longLongValue];
+        
     }
-        //
+    
+    
 }
         
 
@@ -43,6 +61,11 @@
 
     self.itemPriority.text = [NSString stringWithFormat:@"%d", self.defaultPriority];
     self.itemPriority.keyboardType = UIKeyboardTypeDecimalPad;
+    self.delaySeconds.keyboardType = UIKeyboardTypeDecimalPad;
+    self.delayHours.keyboardType = UIKeyboardTypeDecimalPad;
+    self.delayMinutes.keyboardType = UIKeyboardTypeDecimalPad;
+    
+    self.repeatSwitch.on = NO;
 
 }
 
@@ -61,6 +84,15 @@
     }
     if ([_itemName isFirstResponder] && [touch view] != _itemName) {
         [_itemName resignFirstResponder];
+    }
+    if ([_delaySeconds isFirstResponder] && [touch view] != _delaySeconds) {
+        [_delaySeconds resignFirstResponder];
+    }
+    if ([_delayMinutes isFirstResponder] && [touch view] != _delayMinutes) {
+        [_delayMinutes resignFirstResponder];
+    }
+    if ([_delayHours isFirstResponder] && [touch view] != _delayHours) {
+        [_delayHours resignFirstResponder];
     }
     [super touchesBegan:touches withEvent:event];
 }
