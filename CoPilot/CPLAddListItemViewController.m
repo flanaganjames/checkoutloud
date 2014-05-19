@@ -26,7 +26,7 @@
         //if any non-zero delay then build the name
         if (![self.delaySeconds.text isEqual: @"0"] | ![self.delayMinutes.text isEqual: @"0"] | ![self.delayHours.text isEqual: @"0"])
         {
-            buildName = [NSString stringWithFormat:@"%@-td-%@h%@m%@s", buildName, self.delayHours.text, self.delayMinutes.text, self.delaySeconds.text];
+            buildName = [NSString stringWithFormat:@"%@ | td-%@h%@m%@s", buildName, self.delayHours.text, self.delayMinutes.text, self.delaySeconds.text];
             
             if (self.repeatSwitch)
             {
