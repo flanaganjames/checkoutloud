@@ -423,9 +423,10 @@
                     [workingArray removeObject: item];
                 }
             }
-            else //it is a timecheckitem; its children do not get added to current slide show
+            else //it is a time delay item; its children do not get added to current slide show
             {
-                [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:item afterDelay:15];
+                CPLTimeDelayItem *aTDItem = [self returnTDItem: item];
+                [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:aTDItem.totalDelaySeconds];
                 //[self.descendantItems addObject: item];
                 [workingArray removeObject: item];
             }
@@ -460,6 +461,18 @@
     }
 }
 
+- (CPLTimeDelayItem *) returnTDItem: (CheckListItem *) aCLItem
+{
+    CPLTimeDelayItem *aTDItem = [[CPLTimeDelayItem alloc] init];
+    
+    aTDItem.itemName = aCLItem.itemName; //the item name extracted from the string with its td information
+    // also the hours minutes and seconds extracted from its tdinformation
+    // its calculated total delay in seconds and whether or not it repeats
+    // set itemPriority to 1;
+    
+    return aTDItem;
+}
+
 - (void) slideShowForEntireList
 {
     
@@ -471,7 +484,7 @@
     CheckListItem *itemParent = [[CheckListItem alloc] init];
     itemParent.itemName = self.listParent;
     itemParent.itemKey = item.itemParentKey;
-    self.checkingItem = itemParent;
+    //self.checkingItem = itemParent;
     
     if ([self isTimeDelayItem:itemParent])
     {
@@ -514,7 +527,7 @@
     }
     else
     {
-        self.checkingItem = item;
+        //self.checkingItem = item;
         long aKey =  item.itemKey;
         [self findAllDescendantItemsbyKey:aKey];
         if (self.checkedItemsHaveBeenSkipped)
@@ -540,14 +553,14 @@
 }
 
 
-- (void) slideShowForTimeDelayItem: (CheckListItem *) aCLItem
+- (void) slideShowForTimeDelayItem: (CPLTimeDelayItem *) aTDItem
 {   // change this to create a queue of events that are due. Then in viewdidappear check that queue and do the slideshow then
 
     [self.listOfLists removeAllObjects];
     [self.listOfListNames removeAllObjects];
-    self.checkingItem = aCLItem;
-    long aKey =  aCLItem.itemKey;
-    aCLItem.itemPriority = 1;
+    //self.checkingItem = aCLItem;
+    long aKey =  aTDItem.itemKey;
+    aTDItem.itemPriority = 1;
     [self findAllDescendantItemsbyKey:aKey];
     if (self.checkedItemsHaveBeenSkipped)
     {
@@ -557,14 +570,14 @@
     if ([self.descendantItems count] > 0)
     {
         [self.listOfLists addObject:self.descendantItems];
-        [self.listOfListNames addObject:aCLItem.itemName];
+        [self.listOfListNames addObject:aTDItem.itemName];
         [self performSegueWithIdentifier: @"slideShow" sender: self];
     }
     else
     {
-        [self.descendantItems addObject: aCLItem];
+        [self.descendantItems addObject: aTDItem];
         [self.listOfLists addObject:self.descendantItems];
-        [self.listOfListNames addObject:@"Timed Reminder"];
+        [self.listOfListNames addObject:@"Time Delay Item"];
         [self performSegueWithIdentifier: @"slideShow" sender: self];
     }
 }
