@@ -337,22 +337,19 @@
         }
         
     }
-    else // if skipcheckeditems = NO then remove all items from
-    {
-       // [self.checkedItemKeys removeAllObjects];
-    }
     
-    
+    // put items of temarray into workingArray
     int aCounter = 0;
     while (aCounter < [tempArray count])
     {
         [workingArray addObject: tempArray[aCounter]];
         aCounter += 1;
     }
+    
     while (currentGeneration > -1)
     {
     while ([workingArray count] > 0)
-    {
+    {   // should I be destroying the old item?
         CheckListItem *item = [[CheckListItem alloc] init];
         item = workingArray[0];
         if (item.itemPriority == -1)
@@ -426,17 +423,17 @@
                     [workingArray removeObject: item];
                 }
             }
-            else //it is a timecheckitem; its children do not get added to current slide show, but it itsef is added
+            else //it is a timecheckitem; its children do not get added to current slide show
             {
                 [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:item afterDelay:15];
-                [self.descendantItems addObject: item];
+                //[self.descendantItems addObject: item];
                 [workingArray removeObject: item];
             }
         }
-    }
+    }// workingArray is now empty
         if (currentGeneration > 0) //pop a list of tempLists into workArray
         {
-            [workingArray removeAllObjects];
+            [workingArray removeAllObjects];// get rid of this
             NSMutableArray *anArray = tempLists[currentGeneration - 1];
             int aCounter = 0;
             while (aCounter < [anArray count])
@@ -463,9 +460,83 @@
     }
 }
 
+- (void) slideShowForEntireList
+{
+    
+    //this new approach simplifies slideshow so that there will never be more than one list in lists of lists;  need to remove logic that handles that
+    [self.listOfLists removeAllObjects];
+    [self.listOfListNames removeAllObjects];
+    
+    CheckListItem *item  = self.checkListItems[0];
+    CheckListItem *itemParent = [[CheckListItem alloc] init];
+    itemParent.itemName = self.listParent;
+    itemParent.itemKey = item.itemParentKey;
+    self.checkingItem = itemParent;
+    
+    if ([self isTimeDelayItem:itemParent])
+    {
+        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:itemParent afterDelay:15];
+    }
+    else
+    {
+    [self findAllDescendantItemsbyKey:itemParent.itemKey];
+    if (self.checkedItemsHaveBeenSkipped)
+    {
+        if (self.allowSpeak)
+        {[self.fliteController say:@"Previously checked Items Will be Skipped" withVoice:self.slt];}
+    }
+    if ([self.descendantItems count] > 0)
+    {
+        [self.listOfLists addObject:self.descendantItems];
+        [self.listOfListNames addObject:itemParent.itemName];
+        [self performSegueWithIdentifier: @"slideShow" sender: self];
+    }
+    }
+    
+}
+
+- (void) slideShowForSelectRow: (NSIndexPath *) myIndexPath
+{
+    //    NSIndexPath *myIndexPath = [self.tableView indexPathForSelectedRow];
+    [self.listOfLists removeAllObjects];
+    [self.listOfListNames removeAllObjects];
+    long row = [myIndexPath row];
+    //    UITableViewCell *cell = self.currentcells[row];
+    
+    
+    // when a checklist is initiated, assume user wants to uncheck all descendent items if checked.
+    
+    
+    CheckListItem *item  = self.checkListItems[row];
+    if ([self isTimeDelayItem:item])
+    {
+        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:item afterDelay:15];
+    }
+    else
+    {
+        self.checkingItem = item;
+        long aKey =  item.itemKey;
+        [self findAllDescendantItemsbyKey:aKey];
+        if (self.checkedItemsHaveBeenSkipped)
+        {
+            if (self.allowSpeak)
+            {[self.fliteController say:@"Previously checked Items Will be Skipped" withVoice:self.slt];}
+        }
+        if ([self.descendantItems count] > 0)
+        {
+            [self.listOfLists addObject:self.descendantItems];
+            [self.listOfListNames addObject:item.itemName];
+            [self performSegueWithIdentifier: @"slideShow" sender: self];
+            
+        }
+    }
+}
+
 
 - (void) slideShowForTimeDelayItem: (CheckListItem *) aCLItem
 {
+    [self.listOfLists removeAllObjects];
+    [self.listOfListNames removeAllObjects];
     self.checkingItem = aCLItem;
     long aKey =  aCLItem.itemKey;
     [self findAllDescendantItemsbyKey:aKey];
@@ -619,70 +690,6 @@
     
 }
 
-- (void) slideShowForEntireList
-{
-    
-//this new approach simplifies slideshow so that there will never be more than one list in lists of lists;  need to remove logic that handles that
-    [self.listOfLists removeAllObjects];
-    [self.listOfListNames removeAllObjects];
-    
-    CheckListItem *item  = self.checkListItems[0];
-    CheckListItem *itemParent = [[CheckListItem alloc] init];
-    itemParent.itemName = self.listParent;
-    long aKey =  item.itemParentKey;
-    self.checkingItem = itemParent;
-    
-    [self findAllDescendantItemsbyKey:aKey];
-    if (self.checkedItemsHaveBeenSkipped)
-    {
-        if (self.allowSpeak)
-        {[self.fliteController say:@"Previously checked Items Will be Skipped" withVoice:self.slt];}
-    }
-    if ([self.descendantItems count] > 0)
-    {
-        [self.listOfLists addObject:self.descendantItems];
-        [self.listOfListNames addObject:itemParent.itemName];
-        [self performSegueWithIdentifier: @"slideShow" sender: self];
-    }
-
-}
-
-- (void) slideShowForSelectRow: (NSIndexPath *) myIndexPath
-{
-//    NSIndexPath *myIndexPath = [self.tableView indexPathForSelectedRow];
-    [self.listOfLists removeAllObjects];
-    [self.listOfListNames removeAllObjects];
-    long row = [myIndexPath row];
-//    UITableViewCell *cell = self.currentcells[row];
-    
-    
-    // when a checklist is initiated, assume user wants to uncheck all descendent items if checked.
-
-    
-    CheckListItem *item  = self.checkListItems[row];
-    if ([self isTimeDelayItem:item])
-    {
-    [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:item afterDelay:15];
-    }
-    else
-    {
-        self.checkingItem = item;
-        long aKey =  item.itemKey;
-        [self findAllDescendantItemsbyKey:aKey];
-        if (self.checkedItemsHaveBeenSkipped)
-        {
-            if (self.allowSpeak)
-            {[self.fliteController say:@"Previously checked Items Will be Skipped" withVoice:self.slt];}
-        }
-        if ([self.descendantItems count] > 0)
-        {
-            [self.listOfLists addObject:self.descendantItems];
-            [self.listOfListNames addObject:item.itemName];
-            [self performSegueWithIdentifier: @"slideShow" sender: self];
-
-        }
-    }
-}
 
 
 // not used but shows how to have a second alertview
