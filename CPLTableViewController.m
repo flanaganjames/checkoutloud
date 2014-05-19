@@ -529,6 +529,13 @@
             [self performSegueWithIdentifier: @"slideShow" sender: self];
             
         }
+        else
+        {
+            [self.descendantItems addObject: item];
+            [self.listOfLists addObject:self.descendantItems];
+            [self.listOfListNames addObject:self.listParent];
+            [self performSegueWithIdentifier: @"slideShow" sender: self];
+        }
     }
 }
 
@@ -539,6 +546,7 @@
     [self.listOfListNames removeAllObjects];
     self.checkingItem = aCLItem;
     long aKey =  aCLItem.itemKey;
+    aCLItem.itemPriority = 1;
     [self findAllDescendantItemsbyKey:aKey];
     if (self.checkedItemsHaveBeenSkipped)
     {
@@ -549,6 +557,13 @@
     {
         [self.listOfLists addObject:self.descendantItems];
         [self.listOfListNames addObject:aCLItem.itemName];
+        [self performSegueWithIdentifier: @"slideShow" sender: self];
+    }
+    else
+    {
+        [self.descendantItems addObject: aCLItem];
+        [self.listOfLists addObject:self.descendantItems];
+        [self.listOfListNames addObject:@"Timed Reminder"];
         [self performSegueWithIdentifier: @"slideShow" sender: self];
     }
 }
