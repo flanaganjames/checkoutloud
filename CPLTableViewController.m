@@ -359,7 +359,11 @@
         }
         else
         {
-            if (![self isTimeDelayItem: item])
+            NSString *suffix = [self suffixForTimeDelayItem: item];
+            NSString *emptyString = @"";
+            
+            if (![suffix  isEqual: emptyString])
+
                 {
                 tempArray = [self findImmediateDescendantsbyKey: item.itemKey];
                 // now remove from this list any that are already ckecked if "skipcheckeditems = YES"
@@ -448,39 +452,38 @@
     }
 }
 
-- (NSString *) isTimeDelayItem: (CheckListItem *) aCLItem
+- (NSString *) suffixForTimeDelayItem: (CheckListItem *) aCLItem
 {
     NSString *tdsig = @""; // initialize suffix to empty
     
     NSString *string = aCLItem.itemName;
     NSError *error = NULL;
     // this finds " | td*****"
-    NSRegularExpression *regexsuffix = [NSRegularExpression regularExpressionWithPattern:@"\ \| td.+"
-                                                                                 options:NSRegularExpressionCaseInsensitive
-                                                                                   error:&error];
-    NSUInteger numberOfSuffix = [regexsuffix numberOfMatchesInString:string
-                                                             options:0
-                                                               range:NSMakeRange(0, [string length])];
-    if (numberOfSuffix > 0) // if it has a suffix
+    NSRegularExpression *regexsuffix = [NSRegularExpression regularExpressionWithPattern:@"\\ \\| td.+"
+        options:NSRegularExpressionCaseInsensitive
+        error:&error];
+    NSTextCheckingResult *match = [regexsuffix firstMatchInString:string
+        options:0
+        range:NSMakeRange(0, [string length])];
+    if (match) // if it has a suffix, get the suffix's tdsig
     {
-        NSArray *matches = [regexsuffix matchesInString:string
-                                                options:0
-                                                  range:NSMakeRange(0, [string length])];
-        NSString *suffix = matches[0]; // here is the entire suffix
-        NSRegularExpression *regextdprefix = [NSRegularExpression regularExpressionWithPattern:@"\ \| td-"
-                                                                                       options:NSRegularExpressionCaseInsensitive
-                                                                                         error:&error];
-        NSUInteger numberOftdPrefix = [regextdprefix numberOfMatchesInString:suffix
-                                                                     options:0
-                                                                       range:NSMakeRange(0, [suffix length])];
-        if (numberOftdPrefix > 0) // if the suffix has a prefix indicating a time delay item
-        {
-            tdsig = [regextdprefix stringByReplacingMatchesInString:suffix
-                                                            options:0
-                                                              range:NSMakeRange(0, [string length])
-                                                       withTemplate:@""];
-            // here is the part of the suffix that specifies time and repeat
-        }
+//        NSRange matchRange = [match range];
+//        NSString *suffix = [string substringWithRange: matchRange]; // here is the entire suffix
+//       NSString *suffix = @"\\ \\| td-stuff";
+//        NSRegularExpression *regextdprefix = [NSRegularExpression regularExpressionWithPattern:@"\\ \\| td-"
+//            options:NSRegularExpressionCaseInsensitive
+//            error:&error];
+//        NSTextCheckingResult *match2 = [regextdprefix firstMatchInString:suffix
+//            options:0
+//            range:NSMakeRange(0, [string length])];
+//        if (match2) // if the suffix has a prefix indicating a time delay item
+//        {
+//            tdsig = [regextdprefix stringByReplacingMatchesInString:suffix
+//            options:0
+//            range:NSMakeRange(0, [string length])
+//            withTemplate:@""];
+//            // here is the part of the suffix that specifies time and repeat
+//        }
     }
     return tdsig;
 }
@@ -510,7 +513,10 @@
     itemParent.itemKey = item.itemParentKey;
     //self.checkingItem = itemParent;
     
-    if ([self isTimeDelayItem:itemParent])
+    NSString *suffix = [self suffixForTimeDelayItem: itemParent];
+    NSString *emptyString = @"";
+    
+    if (![suffix  isEqual: emptyString]) // if the suffix is not an empty string
     {
         [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:itemParent afterDelay:15];
     }
@@ -545,7 +551,11 @@
     
     
     CheckListItem *item  = self.checkListItems[row];
-    if ([self isTimeDelayItem:item])
+    NSString *suffix = [self suffixForTimeDelayItem: item];
+    NSString *emptyString = @"";
+    
+    if (![suffix  isEqual: emptyString])
+
     {
         [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:item afterDelay:15];
     }
