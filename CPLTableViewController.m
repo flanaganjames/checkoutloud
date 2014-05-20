@@ -467,23 +467,22 @@
         range:NSMakeRange(0, [string length])];
     if (match) // if it has a suffix, get the suffix's tdsig
     {
-//        NSRange matchRange = [match range];
-//        NSString *suffix = [string substringWithRange: matchRange]; // here is the entire suffix
-//       NSString *suffix = @"\\ \\| td-stuff";
-//        NSRegularExpression *regextdprefix = [NSRegularExpression regularExpressionWithPattern:@"\\ \\| td-"
-//            options:NSRegularExpressionCaseInsensitive
-//            error:&error];
-//        NSTextCheckingResult *match2 = [regextdprefix firstMatchInString:suffix
-//            options:0
-//            range:NSMakeRange(0, [string length])];
-//        if (match2) // if the suffix has a prefix indicating a time delay item
-//        {
-//            tdsig = [regextdprefix stringByReplacingMatchesInString:suffix
-//            options:0
-//            range:NSMakeRange(0, [string length])
-//            withTemplate:@""];
-//            // here is the part of the suffix that specifies time and repeat
-//        }
+        NSRange matchRange = [match range];
+        NSString *suffix = [string substringWithRange: matchRange]; // here is the entire suffix
+        NSRegularExpression *regextdprefix = [NSRegularExpression regularExpressionWithPattern:@"\\ \\| td-"
+            options:NSRegularExpressionCaseInsensitive
+            error:&error];
+        NSTextCheckingResult *match2 = [regextdprefix firstMatchInString:suffix
+            options:0
+            range:NSMakeRange(0, [suffix length])];
+        if (match2) // if the suffix has a prefix indicating a time delay item
+        {
+            tdsig = [regextdprefix stringByReplacingMatchesInString:suffix
+            options:0
+            range:NSMakeRange(0, [suffix length])
+            withTemplate:@""];
+            // here is the part of the suffix that specifies time and repeat
+        }
     }
     return tdsig;
 }
