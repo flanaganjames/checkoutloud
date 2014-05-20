@@ -448,17 +448,41 @@
     }
 }
 
-- (BOOL) isTimeDelayItem: (CheckListItem *) aCLItem
+- (NSString *) isTimeDelayItem: (CheckListItem *) aCLItem
 {
-    // this will be more sophisticated with a regular expression
-    if ([aCLItem.itemName isEqual: @"TIMEDELAY"])
+    NSString *tdsig = @""; // initialize suffix to empty
+    
+    NSString *string = aCLItem.itemName;
+    NSError *error = NULL;
+    // this finds " | td*****"
+    NSRegularExpression *regexsuffix = [NSRegularExpression regularExpressionWithPattern:@"\ \| td.+"
+                                                                                 options:NSRegularExpressionCaseInsensitive
+                                                                                   error:&error];
+    NSUInteger numberOfSuffix = [regexsuffix numberOfMatchesInString:string
+                                                             options:0
+                                                               range:NSMakeRange(0, [string length])];
+    if (numberOfSuffix > 0) // if it has a suffix
     {
-        return YES;
+        NSArray *matches = [regexsuffix matchesInString:string
+                                                options:0
+                                                  range:NSMakeRange(0, [string length])];
+        NSString *suffix = matches[0]; // here is the entire suffix
+        NSRegularExpression *regextdprefix = [NSRegularExpression regularExpressionWithPattern:@"\ \| td-"
+                                                                                       options:NSRegularExpressionCaseInsensitive
+                                                                                         error:&error];
+        NSUInteger numberOftdPrefix = [regextdprefix numberOfMatchesInString:suffix
+                                                                     options:0
+                                                                       range:NSMakeRange(0, [suffix length])];
+        if (numberOftdPrefix > 0) // if the suffix has a prefix indicating a time delay item
+        {
+            tdsig = [regextdprefix stringByReplacingMatchesInString:suffix
+                                                            options:0
+                                                              range:NSMakeRange(0, [string length])
+                                                       withTemplate:@""];
+            // here is the part of the suffix that specifies time and repeat
+        }
     }
-    else
-    {
-        return NO;
-    }
+    return tdsig;
 }
 
 - (CPLTimeDelayItem *) returnTDItem: (CheckListItem *) aCLItem
