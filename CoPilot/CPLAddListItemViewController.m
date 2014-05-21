@@ -28,7 +28,7 @@
         {
             buildName = [NSString stringWithFormat:@"%@ | td-%@h%@m%@s", buildName, self.delayHours.text, self.delayMinutes.text, self.delaySeconds.text];
             
-            if (self.repeatSwitch)
+            if (self.repeatSwitch.on)
             {
                 buildName = [NSString stringWithFormat:@"%@-rpt", buildName];
             }
