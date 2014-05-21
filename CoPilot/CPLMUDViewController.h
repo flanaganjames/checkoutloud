@@ -8,10 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "CheckListItem.h"
+#import "CPLTimeDelayItem.h"
 
 @interface CPLMUDViewController : UIViewController
 @property CheckListItem *checkListItem;
+@property CPLTimeDelayItem *timeDelayItem;
 @property (weak, nonatomic) IBOutlet UITextField *itemName;
+
+@property (weak, nonatomic) IBOutlet UITextField *delaySeconds;
+@property (weak, nonatomic) IBOutlet UITextField *delayMinutes;
+@property (weak, nonatomic) IBOutlet UITextField *delayHours;
+@property (weak, nonatomic) IBOutlet UITextField *repeatTimes;
 
 @property (weak, nonatomic) IBOutlet UITextField *itemPriority;
 @property (weak, nonatomic) IBOutlet UISwitch *deleteSwitch;

@@ -1258,6 +1258,7 @@
         long row = [self.tableView indexPathForCell:sender].row;
         self.updatingItem = self.checkListItems[row];
         
+        CPLTimeDelayItem *aTDItem = [self returnTDItem:self.updatingItem];
         
         self.updatingItemCopied = [[CheckListItem alloc] init];
         self.updatingItemCopied.itemName = [self.updatingItem.itemName copy];
@@ -1267,6 +1268,7 @@
         self.updatingItemCopied.itemParentKey = self.updatingItem.itemParentKey;
         
         updateViewController.checkListItem = self.updatingItemCopied;
+        updateViewController.timeDelayItem = aTDItem;
         
     }
     
