@@ -430,6 +430,13 @@
                 [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:aTDItem.totalDelaySeconds];
                 //[self.descendantItems addObject: item];
                 [workingArray removeObject: item];
+                int aCounter = 0;
+                while (aCounter < aTDItem.repeatNumber)
+                {
+                    long aTimeinSeconds = (aCounter+1)*aTDItem.totalDelaySeconds;
+                    [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:aTimeinSeconds];
+                    aCounter += 1;
+                }
             }
         }
     }// workingArray is now empty
@@ -648,6 +655,13 @@
     if (aTDItem) // if a TDItem is returned
     {
         [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:aTDItem.totalDelaySeconds];
+        int aCounter = 0;
+        while (aCounter < aTDItem.repeatNumber)
+        {
+            long aTimeinSeconds = (aCounter+1)*aTDItem.totalDelaySeconds;
+            [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:aTimeinSeconds];
+            aCounter += 1;
+        }
     }
     else
     {
@@ -685,6 +699,13 @@
     if (aTDItem)
     {
         [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:aTDItem.totalDelaySeconds];
+        int aCounter = 0;
+        while (aCounter < aTDItem.repeatNumber)
+        {
+            long aTimeinSeconds = (aCounter+1)*aTDItem.totalDelaySeconds;
+            [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:aTimeinSeconds];
+            aCounter += 1;
+        }
     }
     else
     {
