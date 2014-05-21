@@ -636,7 +636,7 @@
     
     if (aTDItem) // if a TDItem is returned
     {
-        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:itemParent afterDelay:aTDItem.totalDelaySeconds];
+        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:aTDItem.totalDelaySeconds];
     }
     else
     {
@@ -673,7 +673,7 @@
     CPLTimeDelayItem *aTDItem = [self returnTDItem: item];
     if (aTDItem)
     {
-        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:item afterDelay:aTDItem.totalDelaySeconds];
+        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:aTDItem.totalDelaySeconds];
     }
     else
     {
