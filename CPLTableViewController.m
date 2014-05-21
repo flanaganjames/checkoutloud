@@ -529,16 +529,27 @@
         aTDItem.itemKey = aCLItem.itemKey;
         aTDItem.itemParentKey = aCLItem.itemParentKey;
         aTDItem.itemPriority = aCLItem.itemPriority;
-        NSRegularExpression *regexrepeat = [NSRegularExpression regularExpressionWithPattern:@"-rpt"
+        NSRegularExpression *regexrepeat = [NSRegularExpression regularExpressionWithPattern:@"\\d+rpt"
                                                                                        options:NSRegularExpressionCaseInsensitive
                                                                                          error:&error];
         NSTextCheckingResult *match3 = [regexrepeat firstMatchInString:tdsig
                                                                  options:0
                                                                    range:NSMakeRange(0, [tdsig length])];
         if (match3)
-        {aTDItem.repeat = YES;}
-        else
-        {aTDItem.repeat = NO;}
+        {
+            NSRange matchRange = [match3 range];
+            NSString *repeatstring = [tdsig substringWithRange: matchRange];
+            NSRegularExpression *regexrpt = [NSRegularExpression regularExpressionWithPattern:@"rpt"
+                                                                                    options:NSRegularExpressionCaseInsensitive
+                                                                                      error:&error];
+            
+            repeatstring = [regexrpt stringByReplacingMatchesInString:repeatstring
+                                                          options:0
+                                                            range:NSMakeRange(0, [repeatstring length])
+                                                     withTemplate:@""];
+            aTDItem.repeatNumber = [repeatstring intValue];
+            
+        }
         
         
         NSRegularExpression *regexnumberhours = [NSRegularExpression regularExpressionWithPattern:@"\\d+h"

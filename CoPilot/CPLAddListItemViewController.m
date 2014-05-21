@@ -26,12 +26,7 @@
         //if any non-zero delay then build the name
         if (![self.delaySeconds.text isEqual: @"0"] | ![self.delayMinutes.text isEqual: @"0"] | ![self.delayHours.text isEqual: @"0"])
         {
-            buildName = [NSString stringWithFormat:@"%@ | td-%@h%@m%@s", buildName, self.delayHours.text, self.delayMinutes.text, self.delaySeconds.text];
-            
-            if (self.repeatSwitch.on)
-            {
-                buildName = [NSString stringWithFormat:@"%@-rpt", buildName];
-            }
+            buildName = [NSString stringWithFormat:@"%@ | td-%@h%@m%@s%@rpt", buildName, self.delayHours.text, self.delayMinutes.text, self.delaySeconds.text, self.repeatTimes.text];
         }
         
         
@@ -64,8 +59,6 @@
     self.delaySeconds.keyboardType = UIKeyboardTypeDecimalPad;
     self.delayHours.keyboardType = UIKeyboardTypeDecimalPad;
     self.delayMinutes.keyboardType = UIKeyboardTypeDecimalPad;
-    
-    self.repeatSwitch.on = NO;
 
 }
 

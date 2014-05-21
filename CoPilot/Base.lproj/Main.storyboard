@@ -325,16 +325,18 @@
                                     <action selector="textFieldReturn:" destination="nGE-oO-E3Q" eventType="editingDidEndOnExit" id="MZg-eg-SGh"/>
                                 </connections>
                             </textField>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="Ykd-Ak-eoC">
-                                <rect key="frame" x="192" y="402" width="51" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </switch>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Repeat" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="vpd-KE-cVb">
                                 <rect key="frame" x="101" y="407" width="55" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0" borderStyle="roundedRect" minimumFontSize="17" id="ESy-TE-LSX">
+                                <rect key="frame" x="190" y="404" width="97" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -351,7 +353,7 @@
                         <outlet property="delaySeconds" destination="zvW-Sn-R0V" id="9f0-Ie-mMv"/>
                         <outlet property="itemName" destination="8ov-Cy-cFC" id="rFr-WS-adR"/>
                         <outlet property="itemPriority" destination="arC-oM-5U2" id="7pM-Ot-8i3"/>
-                        <outlet property="repeatSwitch" destination="Ykd-Ak-eoC" id="bkA-Lu-FKX"/>
+                        <outlet property="repeatTimes" destination="ESy-TE-LSX" id="cOM-Vo-D50"/>
                         <outlet property="saveButton" destination="W4W-ej-L32" id="rfX-jI-byB"/>
                     </connections>
                 </viewController>
