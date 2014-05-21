@@ -722,6 +722,9 @@ if (self.isViewLoaded && self.view.window)
     [self.listOfListNames removeAllObjects];
     //self.checkingItem = aCLItem;
     long aKey =  aTDItem.itemKey;
+    [self findAllDescendantKeysbyKey:aKey];
+    [self resetSelectedCheckMarks:self.descendantKeys];
+    
     aTDItem.itemPriority = 1;
     [self findAllDescendantItemsbyKey:aKey];
     if (self.checkedItemsHaveBeenSkipped)
@@ -918,6 +921,16 @@ UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Time Delayed Item Sc
 {
     [self.checkedItemKeys removeAllObjects];
     [self performSegueWithIdentifier: @"slideShow" sender: self];
+}
+
+- (void) resetSelectedCheckMarks: (NSMutableArray *) removeKeys
+{
+    NSNumber *key = [[NSNumber alloc ] init];
+    
+    for (key in removeKeys)
+    {
+        [self.checkedItemKeys removeObject:key];
+    }
 }
 
 - (void) dontresetBeforeSlideShow
