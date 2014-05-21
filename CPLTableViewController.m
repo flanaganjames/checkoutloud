@@ -489,14 +489,134 @@
 
 - (CPLTimeDelayItem *) returnTDItem: (CheckListItem *) aCLItem
 {
-    CPLTimeDelayItem *aTDItem = [[CPLTimeDelayItem alloc] init];
+    NSString *tdsig = @""; // initialize suffix to empty
     
-    aTDItem.itemName = aCLItem.itemName; //the item name extracted from the string with its td information
-    // also the hours minutes and seconds extracted from its tdinformation
-    // its calculated total delay in seconds and whether or not it repeats
-    // set itemPriority to 1;
+    NSString *string = aCLItem.itemName;
+    NSError *error = NULL;
+    // this finds " | td*****"
+    NSRegularExpression *regexsuffix = [NSRegularExpression regularExpressionWithPattern:@"\\ \\| td.+"
+                                                                options:NSRegularExpressionCaseInsensitive
+                                                                                   error:&error];
+    NSTextCheckingResult *match = [regexsuffix firstMatchInString:string
+                                                          options:0
+                                                            range:NSMakeRange(0, [string length])];
+    if (match) // if it has a suffix, get the suffix's tdsig
+    {
+        NSRange matchRange = [match range];
+        NSString *suffix = [string substringWithRange: matchRange]; // here is the entire suffix
+        NSRegularExpression *regextdprefix = [NSRegularExpression regularExpressionWithPattern:@"\\ \\| td-"
+                                                                                       options:NSRegularExpressionCaseInsensitive
+                                                                                         error:&error];
+        NSTextCheckingResult *match2 = [regextdprefix firstMatchInString:suffix
+                                                                 options:0
+                                                                   range:NSMakeRange(0, [suffix length])];
+        if (match2) // if the suffix has a prefix indicating a time delay item
+        {
+            tdsig = [regextdprefix stringByReplacingMatchesInString:suffix
+                                                            options:0
+                                                              range:NSMakeRange(0, [suffix length])
+                                                       withTemplate:@""];
+            // here is the part of the suffix that specifies time and repeat
+        }
+    }
     
-    return aTDItem;
+    NSString *emptyString = @"";
+    
+    if (![tdsig  isEqual: emptyString]) // if the suffix is not an empty string then this is a time delay item
+    {
+        CPLTimeDelayItem *aTDItem = [[CPLTimeDelayItem alloc] init];
+        aTDItem.itemName = [regexsuffix stringByReplacingMatchesInString:string
+                                                                   options:0
+                                                                     range:NSMakeRange(0, [string length])
+                                                              withTemplate:@""];
+        aTDItem.itemKey = aCLItem.itemKey;
+        aTDItem.itemParentKey = aCLItem.itemParentKey;
+        aTDItem.itemPriority = aCLItem.itemPriority;
+        NSRegularExpression *regexrepeat = [NSRegularExpression regularExpressionWithPattern:@"-rpt"
+                                                                                       options:NSRegularExpressionCaseInsensitive
+                                                                                         error:&error];
+        NSTextCheckingResult *match3 = [regexrepeat firstMatchInString:tdsig
+                                                                 options:0
+                                                                   range:NSMakeRange(0, [tdsig length])];
+        if (match3)
+        {aTDItem.repeat = YES;}
+        else
+        {aTDItem.repeat = NO;}
+        
+        
+        NSRegularExpression *regexnumberhours = [NSRegularExpression regularExpressionWithPattern:@"\\d+h"
+                                                                                     options:NSRegularExpressionCaseInsensitive
+                                                                                       error:&error];
+        NSTextCheckingResult *match4 = [regexnumberhours firstMatchInString:tdsig
+                                                               options:0
+                                                                 range:NSMakeRange(0, [tdsig length])];
+        if (match4)
+        {
+            NSRange matchRange = [match4 range];
+            NSString *hourstring = [tdsig substringWithRange: matchRange];
+            NSRegularExpression *regexh = [NSRegularExpression regularExpressionWithPattern:@"h"
+                                                                                          options:NSRegularExpressionCaseInsensitive
+                                                                                            error:&error];
+        
+            hourstring = [regexh stringByReplacingMatchesInString:hourstring
+                                                        options:0
+                                                          range:NSMakeRange(0, [hourstring length])
+                                                   withTemplate:@""];
+            aTDItem.delayHours = [hourstring intValue];
+        
+        }
+        
+        NSRegularExpression *regexnumberminutes = [NSRegularExpression regularExpressionWithPattern:@"\\d+m"
+                                                                                          options:NSRegularExpressionCaseInsensitive
+                                                                                            error:&error];
+        NSTextCheckingResult *match5 = [regexnumberminutes firstMatchInString:tdsig
+                                                                    options:0
+                                                                      range:NSMakeRange(0, [tdsig length])];
+        if (match5)
+        {
+            NSRange matchRange = [match5 range];
+            NSString *minutestring = [tdsig substringWithRange: matchRange];
+            NSRegularExpression *regexm = [NSRegularExpression regularExpressionWithPattern:@"m"
+                                                                                    options:NSRegularExpressionCaseInsensitive
+                                                                                      error:&error];
+            
+            minutestring = [regexm stringByReplacingMatchesInString:minutestring
+                                                          options:0
+                                                            range:NSMakeRange(0, [minutestring length])
+                                                     withTemplate:@""];
+            aTDItem.delayMinutes = [minutestring intValue];
+            
+        }
+        
+        NSRegularExpression *regexnumberseconds = [NSRegularExpression regularExpressionWithPattern:@"\\d+s"
+                                                                                            options:NSRegularExpressionCaseInsensitive
+                                                                                              error:&error];
+        NSTextCheckingResult *match6 = [regexnumberseconds firstMatchInString:tdsig
+                                                                      options:0
+                                                                        range:NSMakeRange(0, [tdsig length])];
+        if (match6)
+        {
+            NSRange matchRange = [match6 range];
+            NSString *secondstring = [tdsig substringWithRange: matchRange];
+            NSRegularExpression *regexs = [NSRegularExpression regularExpressionWithPattern:@"s"
+                                                                                    options:NSRegularExpressionCaseInsensitive
+                                                                                      error:&error];
+            
+            secondstring = [regexs stringByReplacingMatchesInString:secondstring
+                                                            options:0
+                                                              range:NSMakeRange(0, [secondstring length])
+                                                       withTemplate:@""];
+            aTDItem.delaySeconds = [secondstring intValue];
+            
+        }
+        
+        return aTDItem;
+    }
+    else
+    {
+        return nil;
+    }
+
 }
 
 - (void) slideShowForEntireList
