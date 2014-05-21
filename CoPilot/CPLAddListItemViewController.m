@@ -59,6 +59,7 @@
     self.delaySeconds.keyboardType = UIKeyboardTypeDecimalPad;
     self.delayHours.keyboardType = UIKeyboardTypeDecimalPad;
     self.delayMinutes.keyboardType = UIKeyboardTypeDecimalPad;
+    self.repeatTimes.keyboardType = UIKeyboardTypeDecimalPad;
 
 }
 
@@ -86,6 +87,9 @@
     }
     if ([_delayHours isFirstResponder] && [touch view] != _delayHours) {
         [_delayHours resignFirstResponder];
+    }
+    if ([_repeatTimes isFirstResponder] && [touch view] != _repeatTimes) {
+        [_repeatTimes resignFirstResponder];
     }
     [super touchesBegan:touches withEvent:event];
 }

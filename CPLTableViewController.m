@@ -427,7 +427,6 @@
             }
             else //it is a time delay item; its children do not get added to current slide show
             {
-                [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:aTDItem.totalDelaySeconds];
                 //[self.descendantItems addObject: item];
                 [workingArray removeObject: item];
                 int aCounter = 0;
@@ -654,7 +653,7 @@
     
     if (aTDItem) // if a TDItem is returned
     {
-        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:aTDItem.totalDelaySeconds];
+
         int aCounter = 0;
         while (aCounter < aTDItem.repeatNumber)
         {
@@ -698,7 +697,6 @@
     CPLTimeDelayItem *aTDItem = [self returnTDItem: item];
     if (aTDItem)
     {
-        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:aTDItem.totalDelaySeconds];
         int aCounter = 0;
         while (aCounter < aTDItem.repeatNumber)
         {
