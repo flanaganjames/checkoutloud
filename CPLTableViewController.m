@@ -716,7 +716,8 @@
 
 - (void) slideShowForTimeDelayItem: (CPLTimeDelayItem *) aTDItem
 {   // change this to create a queue of events that are due. Then in viewdidappear check that queue and do the slideshow then
-
+if (self.isViewLoaded && self.view.window)
+{
     [self.listOfLists removeAllObjects];
     [self.listOfListNames removeAllObjects];
     //self.checkingItem = aCLItem;
@@ -741,6 +742,11 @@
         [self.listOfListNames addObject:@"Time Delay Item"];
         [self performSegueWithIdentifier: @"slideShow" sender: self];
     }
+}
+else
+{
+    [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:5]; // check again in 5 seconds
+}
 }
 
 - (void) scheduleTimeDelayItem: (CPLTimeDelayItem *) aTDItem
