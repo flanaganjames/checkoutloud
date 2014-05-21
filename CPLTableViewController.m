@@ -359,12 +359,10 @@
         }
         else
         {
-            NSString *suffix = [self suffixForTimeDelayItem: item];
-            NSString *emptyString = @"";
-            
-            if (![suffix  isEqual: emptyString])
+            CPLTimeDelayItem *aTDItem = [self returnTDItem: item];
+            if (!aTDItem)
 
-                {
+            {
                 tempArray = [self findImmediateDescendantsbyKey: item.itemKey];
                 // now remove from this list any that are already ckecked if "skipcheckeditems = YES"
 
@@ -429,7 +427,6 @@
             }
             else //it is a time delay item; its children do not get added to current slide show
             {
-                CPLTimeDelayItem *aTDItem = [self returnTDItem: item];
                 [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:aTDItem.totalDelaySeconds];
                 //[self.descendantItems addObject: item];
                 [workingArray removeObject: item];
@@ -634,12 +631,12 @@
     itemParent.itemKey = item.itemParentKey;
     //self.checkingItem = itemParent;
     
-    NSString *suffix = [self suffixForTimeDelayItem: itemParent];
-    NSString *emptyString = @"";
+
+    CPLTimeDelayItem *aTDItem = [self returnTDItem: itemParent];
     
-    if (![suffix  isEqual: emptyString]) // if the suffix is not an empty string
+    if (aTDItem) // if a TDItem is returned
     {
-        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:itemParent afterDelay:15];
+        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:itemParent afterDelay:aTDItem.totalDelaySeconds];
     }
     else
     {
@@ -672,13 +669,11 @@
     
     
     CheckListItem *item  = self.checkListItems[row];
-    NSString *suffix = [self suffixForTimeDelayItem: item];
-    NSString *emptyString = @"";
     
-    if (![suffix  isEqual: emptyString])
-
+    CPLTimeDelayItem *aTDItem = [self returnTDItem: item];
+    if (aTDItem)
     {
-        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:item afterDelay:15];
+        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:item afterDelay:aTDItem.totalDelaySeconds];
     }
     else
     {
