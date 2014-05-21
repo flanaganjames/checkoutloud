@@ -610,6 +610,8 @@
             
         }
         
+        aTDItem.totalDelaySeconds = 3600*aTDItem.delayHours + 60*aTDItem.delayMinutes + aTDItem.delaySeconds;
+        
         return aTDItem;
     }
     else
