@@ -429,13 +429,7 @@
             {
                 //[self.descendantItems addObject: item];
                 [workingArray removeObject: item];
-                int aCounter = 0;
-                while (aCounter < aTDItem.repeatNumber)
-                {
-                    long aTimeinSeconds = (aCounter+1)*aTDItem.totalDelaySeconds;
-                    [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:aTimeinSeconds];
-                    aCounter += 1;
-                }
+                [self scheduleTimeDelayItem:aTDItem];
             }
         }
     }// workingArray is now empty
@@ -653,14 +647,7 @@
     
     if (aTDItem) // if a TDItem is returned
     {
-
-        int aCounter = 0;
-        while (aCounter < aTDItem.repeatNumber)
-        {
-            long aTimeinSeconds = (aCounter+1)*aTDItem.totalDelaySeconds;
-            [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:aTimeinSeconds];
-            aCounter += 1;
-        }
+        [self scheduleTimeDelayItem:aTDItem];
     }
     else
     {
@@ -697,13 +684,7 @@
     CPLTimeDelayItem *aTDItem = [self returnTDItem: item];
     if (aTDItem)
     {
-        int aCounter = 0;
-        while (aCounter < aTDItem.repeatNumber)
-        {
-            long aTimeinSeconds = (aCounter+1)*aTDItem.totalDelaySeconds;
-            [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:aTimeinSeconds];
-            aCounter += 1;
-        }
+        [self scheduleTimeDelayItem:aTDItem];
     }
     else
     {
@@ -762,6 +743,23 @@
     }
 }
 
+- (void) scheduleTimeDelayItem: (CPLTimeDelayItem *) aTDItem
+{
+    int aCounter = 0;
+    while (aCounter < aTDItem.repeatNumber)
+    {
+        long aTimeinSeconds = (aCounter+1)*aTDItem.totalDelaySeconds;
+        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:aTimeinSeconds];
+        aCounter += 1;
+    }
+UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Time Delayed Item Scheduled"
+    message:[NSString stringWithFormat: @"Repetitions: %d at intervals of %d hours, %d minues and %d seconds",aTDItem.repeatNumber, aTDItem.delayHours, aTDItem.delayMinutes, aTDItem.delaySeconds ]
+
+                                                 delegate:nil
+                                        cancelButtonTitle:@"OK"
+                                        otherButtonTitles:nil];
+[message show];
+}
 
 
 - (void) findAllDescendantKeysbyKey:(long) parentKey {
