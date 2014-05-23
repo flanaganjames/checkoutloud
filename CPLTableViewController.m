@@ -28,6 +28,7 @@
 @property NSMutableArray *listOfListNames;
 @property NSMutableArray *unchecked_descendantKeys;
 @property NSMutableArray *unchecked_descendantItems;
+@property NSMutableArray *unscheduledTDItems;
 @property NSMutableArray *timeDelayItems;
 @property CheckListItem *updatingItem;
 @property CheckListItem *checkingItem;
@@ -294,6 +295,7 @@
 {
     self.checkedItemsHaveBeenSkipped = NO;
     [self.descendantItems removeAllObjects];
+    [self.unscheduledTDItems removeAllObjects];
     int currentGeneration = 0;
     NSMutableArray *tempArray = [[NSMutableArray alloc] init];
     NSMutableArray *workingArray = [[NSMutableArray alloc] init];
@@ -429,7 +431,8 @@
             {
                 //[self.descendantItems addObject: item];
                 [workingArray removeObject: item];
-                [self scheduleTimeDelayItem:aTDItem];
+             //   [self scheduleTimeDelayItem:aTDItem];
+                [self.unscheduledTDItems addObject:aTDItem];
             }
         }
     }// workingArray is now empty
@@ -651,20 +654,19 @@
     }
     else
     {
-    [self findAllDescendantItemsbyKey:itemParent.itemKey];
-    if (self.checkedItemsHaveBeenSkipped)
-    {
-        if (self.allowSpeak)
-        {[self.fliteController say:@"Previously checked Items Will be Skipped" withVoice:self.slt];}
+        [self findAllDescendantItemsbyKey:itemParent.itemKey];
+        if (self.checkedItemsHaveBeenSkipped)
+        {
+            if (self.allowSpeak)
+            {[self.fliteController say:@"Previously checked Items Will be Skipped" withVoice:self.slt];}
+        }
+        if ([self.descendantItems count] > 0)
+        {
+            [self.listOfLists addObject:self.descendantItems];
+            [self.listOfListNames addObject:itemParent.itemName];
+            [self performSegueWithIdentifier: @"slideShow" sender: self];
+        }
     }
-    if ([self.descendantItems count] > 0)
-    {
-        [self.listOfLists addObject:self.descendantItems];
-        [self.listOfListNames addObject:itemParent.itemName];
-        [self performSegueWithIdentifier: @"slideShow" sender: self];
-    }
-    }
-    
 }
 
 - (void) slideShowForSelectRow: (NSIndexPath *) myIndexPath
@@ -752,6 +754,20 @@ else
 }
 }
 
+-(void) checkForUnscheduledTDItems
+//these are saved in the process of creating a slideshow (findAllDescItems) and then scheduled when the slideshow returns
+{
+    int aCounter = 0;
+    while (aCounter < [self.unscheduledTDItems count])
+    {
+        CPLTimeDelayItem *aTDItem = self.unscheduledTDItems[aCounter];
+        [self scheduleTimeDelayItem:aTDItem];
+        aCounter += 1;
+    }
+    
+    [self.unscheduledTDItems removeAllObjects];
+}
+
 - (void) scheduleTimeDelayItem: (CPLTimeDelayItem *) aTDItem
 {
     int aCounter = 0;
@@ -761,13 +777,15 @@ else
         [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:aTimeinSeconds];
         aCounter += 1;
     }
-UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Time Delayed Item Scheduled"
-    message:[NSString stringWithFormat: @"Repetitions: %d at intervals of %d hours, %d minues and %d seconds",aTDItem.repeatNumber, aTDItem.delayHours, aTDItem.delayMinutes, aTDItem.delaySeconds ]
+        NSString *aTitle = [NSString stringWithFormat: @"%@ Item Scheduled", aTDItem.itemName];
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:aTitle
+            message:[NSString stringWithFormat: @"Repetitions: %d at intervals of %d hours, %d minues and %d seconds",aTDItem.repeatNumber, aTDItem.delayHours, aTDItem.delayMinutes, aTDItem.delaySeconds ]
 
                                                  delegate:nil
                                         cancelButtonTitle:@"OK"
                                         otherButtonTitles:nil];
-[message show];
+        [message show];
+    
 }
 
 
@@ -1010,6 +1028,7 @@ UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Time Delayed Item Sc
     self.speechCommands = [[NSMutableArray alloc] init];
     self.descendantKeys = [[NSMutableArray alloc] init];
     self.descendantItems = [[NSMutableArray alloc] init];
+    self.unscheduledTDItems = [[NSMutableArray alloc] init];
     self.listOfLists = [[NSMutableArray alloc] init];
     self.listOfListNames = [[NSMutableArray alloc] init];
     self.unchecked_descendantKeys = [[NSMutableArray alloc] init];
@@ -1139,6 +1158,7 @@ UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Time Delayed Item Sc
 {
     [self.openEarsEventsObserver setDelegate:self];
     [self cellreloader];
+    [self checkForUnscheduledTDItems];
     
 }
 
