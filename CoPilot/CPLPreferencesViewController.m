@@ -7,6 +7,7 @@
 //
 
 #import "CPLPreferencesViewController.h"
+#import "CPLViewScheduledItemsTableViewController.h"
 
 @interface CPLPreferencesViewController ()
 
@@ -65,41 +66,51 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if (self.skipCheckedSwitch.on)
-    {self.skipCheckedItems = YES;}
-    else
-    {self.skipCheckedItems = NO;}
-    
-    if (self.resetCheckedNow.on)
-    {self.resetNow = YES;}
-    else
-    {self.resetNow = NO;}
-    
-    if (self.savecurrentorderSwitch.on)
-    {self.saveNow = YES;}
-    else
-    {self.saveNow = NO;}
-    
-    if (self.speakSwitch.on)
+    if ([[segue identifier] isEqualToString:@"showScheduledItems"])
     {
-        self.allowSpeak = YES;
+        CPLViewScheduledItemsTableViewController *scheduledItemsController =
+        [segue destinationViewController];
+        
+        scheduledItemsController.timeDelayItems = self.timeDelayItems;
     }
     else
     {
-        self.allowSpeak = NO;
-    }
-    
-    if (self.listenSwitch.on)
-    {
-        self.allowListen = YES;
-    }
-    else
-    {
-        self.allowListen = NO;
-    }
-    if (self.cancelScheduledSwitch.on)
-    {
-        self.cancelScheduledItems = YES;
+        if (self.skipCheckedSwitch.on)
+        {self.skipCheckedItems = YES;}
+        else
+        {self.skipCheckedItems = NO;}
+        
+        if (self.resetCheckedNow.on)
+        {self.resetNow = YES;}
+        else
+        {self.resetNow = NO;}
+        
+        if (self.savecurrentorderSwitch.on)
+        {self.saveNow = YES;}
+        else
+        {self.saveNow = NO;}
+        
+        if (self.speakSwitch.on)
+        {
+            self.allowSpeak = YES;
+        }
+        else
+        {
+            self.allowSpeak = NO;
+        }
+        
+        if (self.listenSwitch.on)
+        {
+            self.allowListen = YES;
+        }
+        else
+        {
+            self.allowListen = NO;
+        }
+        if (self.cancelScheduledSwitch.on)
+        {
+            self.cancelScheduledItems = YES;
+        }
     }
 }
 
@@ -107,6 +118,11 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)unwindViewScheduledItems:(UIStoryboardSegue *)segue  sender:(id)sender
+{
+    
 }
 
 /*

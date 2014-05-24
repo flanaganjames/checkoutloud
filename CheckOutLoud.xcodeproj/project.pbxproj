@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		172459B61930F78900819C24 /* CPLViewScheduledItemsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 172459B51930F78900819C24 /* CPLViewScheduledItemsTableViewController.m */; };
 		17249CC318CC30E600A6C5EF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249CC218CC30E600A6C5EF /* Foundation.framework */; };
 		17249CC518CC30E600A6C5EF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249CC418CC30E600A6C5EF /* CoreGraphics.framework */; };
 		17249CC718CC30E600A6C5EF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17249CC618CC30E600A6C5EF /* UIKit.framework */; };
@@ -59,6 +60,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		172459B41930F78900819C24 /* CPLViewScheduledItemsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLViewScheduledItemsTableViewController.h; sourceTree = "<group>"; };
+		172459B51930F78900819C24 /* CPLViewScheduledItemsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLViewScheduledItemsTableViewController.m; sourceTree = "<group>"; };
 		17249CBF18CC30E600A6C5EF /* CheckOutLoud.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CheckOutLoud.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		17249CC218CC30E600A6C5EF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		17249CC418CC30E600A6C5EF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -191,6 +194,8 @@
 				17DA605818FB1A6C005D2F85 /* View */,
 				17249CFA18CC346100A6C5EF /* CPLTableViewController.h */,
 				17249CFB18CC346100A6C5EF /* CPLTableViewController.m */,
+				172459B41930F78900819C24 /* CPLViewScheduledItemsTableViewController.h */,
+				172459B51930F78900819C24 /* CPLViewScheduledItemsTableViewController.m */,
 				17792A521925C12A0005F9B0 /* CPLPreferencesViewController.h */,
 				17792A531925C12A0005F9B0 /* CPLPreferencesViewController.m */,
 				1730F5CF1911AD8000FEAAF9 /* CustomSegue.h */,
@@ -394,6 +399,7 @@
 				17249CD318CC30E600A6C5EF /* CPLAppDelegate.m in Sources */,
 				17249CFC18CC346100A6C5EF /* CPLTableViewController.m in Sources */,
 				17249CCF18CC30E600A6C5EF /* main.m in Sources */,
+				172459B61930F78900819C24 /* CPLViewScheduledItemsTableViewController.m in Sources */,
 				1730F5D11911AD8000FEAAF9 /* CustomSegue.m in Sources */,
 				17249D0C18CCC29A00A6C5EF /* CheckListItem.m in Sources */,
 				17D5714A18D5474300663FAE /* CPLMUDViewController.m in Sources */,

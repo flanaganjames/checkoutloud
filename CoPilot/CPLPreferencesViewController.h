@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UISwitch *savecurrentorderSwitch;
 
 @property (weak, nonatomic) IBOutlet UISwitch *cancelScheduledSwitch;
+@property NSMutableArray *timeDelayItems;
 @property BOOL cancelScheduledItems;
 @property BOOL skipCheckedItems;
 @property BOOL resetNow;

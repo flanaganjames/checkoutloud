@@ -775,6 +775,11 @@ else
     {
         long aTimeinSeconds = (aCounter+1)*aTDItem.totalDelaySeconds;
         [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:aTimeinSeconds];
+        //add it to the list of things to be done by the operating system
+        [self.timeDelayItems addObject:aTDItem];
+        //add it to the list showing the things that will be done
+        [self performSelector:@selector(removeScheduledItemFromList:) withObject:aTDItem afterDelay:aTimeinSeconds];
+        // schedule the removal from list right after it is done
         aCounter += 1;
     }
         NSString *aTitle = [NSString stringWithFormat: @"%@ Item Scheduled", aTDItem.itemName];
@@ -1356,6 +1361,7 @@ else
         preferencesViewController.saveNow = NO;
         preferencesViewController.allowSpeak = self.allowSpeak;
         preferencesViewController.allowListen = self.allowListen;
+        preferencesViewController.timeDelayItems = self.timeDelayItems;
         
     }
 
