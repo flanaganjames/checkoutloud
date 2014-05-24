@@ -17,6 +17,7 @@
 #import "CustomSegue.h"
 #import "CustomUnwindSegue.h"
 #import "CPLPreferencesViewController.h"
+#import "CPLTimeDelayItem.h"
 
 
 @interface CPLTableViewController ()
@@ -773,12 +774,17 @@ else
     int aCounter = 0;
     while (aCounter < aTDItem.repeatNumber)
     {
+        CPLTimeDelayItem *aTDItemCopy = [self copyTDItem:aTDItem];
         long aTimeinSeconds = (aCounter+1)*aTDItem.totalDelaySeconds;
-        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:aTimeinSeconds];
+        NSDate *now = [NSDate date];
+//        long aTimeFudge = aTimeinSeconds/60;
+        NSDate *newDate1 = [now addTimeInterval:aTimeinSeconds];
+        aTDItemCopy.setDateTime = newDate1;
+        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItemCopy afterDelay:aTimeinSeconds];
         //add it to the list of things to be done by the operating system
-        [self.timeDelayItems addObject:aTDItem];
+        [self.timeDelayItems addObject:aTDItemCopy];
         //add it to the list showing the things that will be done
-        [self performSelector:@selector(removeScheduledItemFromList:) withObject:aTDItem afterDelay:aTimeinSeconds];
+        [self performSelector:@selector(removeScheduledItemFromList:) withObject:aTDItemCopy afterDelay:aTimeinSeconds];
         // schedule the removal from list right after it is done
         aCounter += 1;
     }
@@ -793,6 +799,24 @@ else
     
 }
 
+- (CPLTimeDelayItem *) copyTDItem: (CPLTimeDelayItem *) aTDItem
+{
+    CPLTimeDelayItem *aTDItemCopy = [[CPLTimeDelayItem alloc] init];
+    
+    aTDItemCopy.itemName = aTDItem.itemName;
+    aTDItemCopy.itemKey = aTDItem.itemKey;
+    aTDItemCopy.itemParentKey = aTDItem.itemParentKey;
+    aTDItemCopy.itemPriority = aTDItem.itemPriority;
+    aTDItemCopy.repeatNumber = aTDItem.repeatNumber;
+    aTDItemCopy.delayHours = aTDItem.delayHours;
+    aTDItemCopy.delayMinutes = aTDItem.delayMinutes;
+    aTDItemCopy.delaySeconds = aTDItem.delaySeconds;
+    aTDItemCopy.totalDelaySeconds = aTDItem.totalDelaySeconds;
+    aTDItemCopy.setDateTime = aTDItem.setDateTime;
+    
+    return aTDItemCopy;
+}
+
 - (void) removeScheduledItemFromList: (CPLTimeDelayItem *) aTDItem
 {
     [self.timeDelayItems removeObject: aTDItem];
@@ -801,6 +825,7 @@ else
 - (void) cancelScheduledReminders
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [self.timeDelayItems removeAllObjects];
 }
 
 

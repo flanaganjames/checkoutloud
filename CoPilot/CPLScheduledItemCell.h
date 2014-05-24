@@ -10,7 +10,6 @@
 
 @interface CPLScheduledItemCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UITextField *itemName;
-@property (weak, nonatomic) IBOutlet UITextField *timeAdded;
 @property (weak, nonatomic) IBOutlet UITextField *timeDue;
 
 @end

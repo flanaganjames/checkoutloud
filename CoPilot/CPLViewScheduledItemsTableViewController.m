@@ -68,6 +68,16 @@
     CPLTimeDelayItem *scheduledItem = [self.timeDelayItems objectAtIndex:indexPath.row];
     NSString *itemName = [NSString stringWithFormat: @"%@", scheduledItem.itemName];
     cell.itemName.text = itemName;
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"hh:mm:ss"];
+    
+    //Optionally for time zone converstions
+    [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"..."]];
+    
+    NSString *stringFromDate = [formatter stringFromDate:scheduledItem.setDateTime];
+    
+    cell.timeDue.text = stringFromDate;
     return cell;
 }
 
