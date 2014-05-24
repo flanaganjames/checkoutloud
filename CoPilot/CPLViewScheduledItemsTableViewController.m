@@ -7,6 +7,8 @@
 //
 
 #import "CPLViewScheduledItemsTableViewController.h"
+#import "CPLTimeDelayItem.h"
+#import "CPLScheduledItemCell.h"
 
 @interface CPLViewScheduledItemsTableViewController ()
 
@@ -44,28 +46,31 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
+
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
+
     // Return the number of rows in the section.
-    return 0;
+    return [self.timeDelayItems count];
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+ 
+    static NSString *CellIdentifier = @"ScheduledItemCell";
+    CPLScheduledItemCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    CPLTimeDelayItem *scheduledItem = [self.timeDelayItems objectAtIndex:indexPath.row];
+    NSString *itemName = [NSString stringWithFormat: @"%@", scheduledItem.itemName];
+    cell.itemName.text = itemName;
     return cell;
 }
-*/
+
 
 /*
 // Override to support conditional editing of the table view.

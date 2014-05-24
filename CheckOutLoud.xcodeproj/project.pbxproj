@@ -43,6 +43,7 @@
 		178A982F190D885C00E2E357 /* CPLSlideShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 178A982E190D885C00E2E357 /* CPLSlideShowViewController.m */; };
 		17B782B518F75999009FC64C /* check-Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 17B782B418F75999009FC64C /* check-Icon-Small.png */; };
 		17B782BB18F776CF009FC64C /* checklist.db in Resources */ = {isa = PBXBuildFile; fileRef = 17B782BA18F776CF009FC64C /* checklist.db */; };
+		17BD14A119310A5200CC82F5 /* CPLScheduledItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BD14A019310A5200CC82F5 /* CPLScheduledItemCell.m */; };
 		17D5714A18D5474300663FAE /* CPLMUDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D5714918D5474300663FAE /* CPLMUDViewController.m */; };
 		17DA602F18FA38E4005D2F85 /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 17DA602E18FA38E4005D2F85 /* Icon-Small.png */; };
 		17DA603118FA3902005D2F85 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17DA603018FA3902005D2F85 /* Icon-Small@2x.png */; };
@@ -112,6 +113,8 @@
 		178A982E190D885C00E2E357 /* CPLSlideShowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CPLSlideShowViewController.m; path = CoPilot/CPLSlideShowViewController.m; sourceTree = SOURCE_ROOT; };
 		17B782B418F75999009FC64C /* check-Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "check-Icon-Small.png"; path = "../../Icons/PNG Images/greencheckmark/check-Icon-Small.png"; sourceTree = "<group>"; };
 		17B782BA18F776CF009FC64C /* checklist.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = checklist.db; sourceTree = "<group>"; };
+		17BD149F19310A5100CC82F5 /* CPLScheduledItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLScheduledItemCell.h; sourceTree = "<group>"; };
+		17BD14A019310A5200CC82F5 /* CPLScheduledItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLScheduledItemCell.m; sourceTree = "<group>"; };
 		17D5714818D5474300663FAE /* CPLMUDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLMUDViewController.h; sourceTree = "<group>"; };
 		17D5714918D5474300663FAE /* CPLMUDViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLMUDViewController.m; sourceTree = "<group>"; };
 		17DA602E18FA38E4005D2F85 /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Small.png"; path = "../../Icons/PNG Images/CheckOutLoud/Icon-Small.png"; sourceTree = "<group>"; };
@@ -219,6 +222,8 @@
 				17792A5E192919030005F9B0 /* CPLTimeDelayItem.m */,
 				174CC80518F5EF7300D8D8A1 /* CPLTableViewCell.h */,
 				174CC80618F5EF7300D8D8A1 /* CPLTableViewCell.m */,
+				17BD149F19310A5100CC82F5 /* CPLScheduledItemCell.h */,
+				17BD14A019310A5200CC82F5 /* CPLScheduledItemCell.m */,
 			);
 			path = CoPilot;
 			sourceTree = "<group>";
@@ -400,6 +405,7 @@
 				17249CFC18CC346100A6C5EF /* CPLTableViewController.m in Sources */,
 				17249CCF18CC30E600A6C5EF /* main.m in Sources */,
 				172459B61930F78900819C24 /* CPLViewScheduledItemsTableViewController.m in Sources */,
+				17BD14A119310A5200CC82F5 /* CPLScheduledItemCell.m in Sources */,
 				1730F5D11911AD8000FEAAF9 /* CustomSegue.m in Sources */,
 				17249D0C18CCC29A00A6C5EF /* CheckListItem.m in Sources */,
 				17D5714A18D5474300663FAE /* CPLMUDViewController.m in Sources */,
