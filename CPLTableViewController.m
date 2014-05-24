@@ -1661,6 +1661,11 @@ else
         self.listParentKey = self.listGrandParentKey;
         [self getGrandParent];
         self.listLabel.text = self.listParent;
+        if ([self.listParent isEqual: @"MASTER LIST"])
+        {
+            self.backToParentButton.title = @"Read Me";
+        }
+            
         [self loadCurrentParentList];
         if (self.allowSpeak)
         {[self.fliteController say:self.listParent withVoice:self.slt];}
