@@ -788,6 +788,16 @@ else
     
 }
 
+- (void) removeScheduledItemFromList: (CPLTimeDelayItem *) aTDItem
+{
+    [self.timeDelayItems removeObject: aTDItem];
+}
+
+- (void) cancelScheduledReminders
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+}
+
 
 - (void) findAllDescendantKeysbyKey:(long) parentKey {
     
@@ -1489,6 +1499,10 @@ else
         self.allowSpeak = NO;
     }
     
+    if (source.cancelScheduledItems)
+    {
+        [self cancelScheduledReminders];
+    }
     
 }
 

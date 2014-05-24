@@ -40,6 +40,8 @@
     self.resetCheckedNow.on = NO;
     self.savecurrentorderSwitch.on = NO;
     self.enabledragSwitch.on = NO;
+    self.cancelScheduledSwitch.on = NO;
+    self.cancelScheduledItems = NO;
     if (self.allowSpeak)
     {
         self.speakSwitch.on = YES;
@@ -57,6 +59,8 @@
     {
         self.listenSwitch.on = NO;
     }
+    
+    
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -92,6 +96,10 @@
     else
     {
         self.allowListen = NO;
+    }
+    if (self.cancelScheduledSwitch.on)
+    {
+        self.cancelScheduledItems = YES;
     }
 }
 
