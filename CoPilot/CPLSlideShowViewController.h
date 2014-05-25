@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "CheckListItem.h"
+#import "CPLTimeDelayItem.h"
 #import <OpenEars/OpenEarsEventsObserver.h>
 #import <OpenEars/FliteController.h>
 #import <Slt/Slt.h>
@@ -33,6 +34,8 @@
 @property NSMutableArray *checkListItems;
 @property NSMutableArray *listOfLists;
 @property NSMutableArray *listOfListNames;
+@property NSMutableArray *unscheduledTDItems;
+@property NSMutableArray *tobescheduledTDItems;
 @property long currentrow;
 @property long currentlist;
 @property FliteController *fliteController;

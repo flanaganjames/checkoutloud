@@ -30,6 +30,7 @@
 @property NSMutableArray *unchecked_descendantKeys;
 @property NSMutableArray *unchecked_descendantItems;
 @property NSMutableArray *unscheduledTDItems;
+@property NSMutableArray *tobescheduledTDItems;
 @property NSMutableArray *timeDelayItems;
 @property CheckListItem *updatingItem;
 @property CheckListItem *checkingItem;
@@ -706,7 +707,7 @@
             [self performSegueWithIdentifier: @"slideShow" sender: self];
             
         }
-        else
+        else //if there are no descendants then create slideshow of one item
         {
             [self.descendantItems addObject: item];
             [self.listOfLists addObject:self.descendantItems];
@@ -759,13 +760,14 @@ else
 //these are saved in the process of creating a slideshow (findAllDescItems) and then scheduled when the slideshow returns
 {
     int aCounter = 0;
-    while (aCounter < [self.unscheduledTDItems count])
+    while (aCounter < [self.tobescheduledTDItems count])
     {
-        CPLTimeDelayItem *aTDItem = self.unscheduledTDItems[aCounter];
+        CPLTimeDelayItem *aTDItem = self.tobescheduledTDItems[aCounter];
         [self scheduleTimeDelayItem:aTDItem];
         aCounter += 1;
     }
     
+    [self.tobescheduledTDItems removeAllObjects];
     [self.unscheduledTDItems removeAllObjects];
 }
 
@@ -1074,6 +1076,7 @@ else
     self.descendantKeys = [[NSMutableArray alloc] init];
     self.descendantItems = [[NSMutableArray alloc] init];
     self.unscheduledTDItems = [[NSMutableArray alloc] init];
+    self.tobescheduledTDItems = [[NSMutableArray alloc] init];
     self.listOfLists = [[NSMutableArray alloc] init];
     self.listOfListNames = [[NSMutableArray alloc] init];
     self.unchecked_descendantKeys = [[NSMutableArray alloc] init];
@@ -1362,6 +1365,8 @@ else
         slideShowViewController.openEarsEventsObserver = self.openEarsEventsObserver;
         slideShowViewController.allowSpeak = self.allowSpeak;
         slideShowViewController.allowListen = self.allowListen;
+        slideShowViewController.unscheduledTDItems = self.unscheduledTDItems;
+        slideShowViewController.tobescheduledTDItems = self.tobescheduledTDItems;
 //        slideShowViewController.sendingController = [segue sourceViewController];
     }
     

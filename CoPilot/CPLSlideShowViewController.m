@@ -122,11 +122,44 @@
     }
     if (self.allowSpeak)
     {[self.fliteController say:sayThis withVoice:self.slt];}
+    //if first item is resuming a checklist immeidately after some TD items move the TD items to the tobscheduled array
+    [self moveifpassScheduledItem:self.currentCheckListItem];
+}
+
+- (void) moveifpassScheduledItem: (CheckListItem *) aCLItem
+{
+    NSMutableArray *anArray = [[NSMutableArray alloc] init];
+    
+    CPLTimeDelayItem *aTDItem = [[CPLTimeDelayItem alloc] init];
+    for (aTDItem in self.unscheduledTDItems)
+    {
+        if (aTDItem.itemPriority < aCLItem.itemPriority)
+            //once the slide show has passed the priority position of a TDItem in unscheduled move that TDItem from unshceuled to tobescheduled
+        {
+            [self.tobescheduledTDItems addObject:aTDItem];
+        }
+        else
+        {
+            [anArray addObject: aTDItem];
+        }
+    }
+    self.unscheduledTDItems = anArray;
+}
+
+- (void) moveremainingScheduledItem
+{
+    CPLTimeDelayItem *aTDItem = [[CPLTimeDelayItem alloc] init];
+    for (aTDItem in self.unscheduledTDItems)
+    {
+            [self.tobescheduledTDItems addObject:aTDItem];
+    }
+    [self.unscheduledTDItems removeAllObjects];
 }
 
 - (void) nextSlide
 {
     CheckListItem *anItem = self.checkListItems[self.currentrow];
+
     
     NSNumber *aKeyNumber = [NSNumber numberWithLong:anItem.itemKey];
     [self.checkedItemKeys addObject: aKeyNumber];
@@ -143,6 +176,7 @@
     {
         self.currentrow += 1;
         self.currentCheckListItem = self.checkListItems[self.currentrow];
+        [self moveifpassScheduledItem:self.currentCheckListItem];
         _listItemName.text = self.currentCheckListItem.itemName;
         _listItemNumber.text = [NSString stringWithFormat: @"%ld", self.currentCheckListItem.itemPriority];
         NSString *sayThis = @"";
@@ -204,6 +238,8 @@
         //perform unwind programmatically
             if (self.allowSpeak)
             {[self.fliteController say:@"check list completed" withVoice:self.slt];}
+        // if arrive at end of list move all remaining unscheduled TD items to the tobescheduled array
+        [self moveremainingScheduledItem];
         [self dismissViewControllerAnimated:YES completion:nil];
         }
     }
