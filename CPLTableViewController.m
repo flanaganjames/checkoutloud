@@ -1507,7 +1507,6 @@ else
         }
         
         preferencesViewController.resetNow = NO;
-        preferencesViewController.saveNow = NO;
         preferencesViewController.allowSpeak = self.allowSpeak;
         preferencesViewController.allowListen = self.allowListen;
         preferencesViewController.timeDelayItems = self.timeDelayItems;
@@ -1630,10 +1629,6 @@ else
         [self cellreloader];
     }
     
-    if (source.saveNow)
-    {
-        
-    }
     
     if (source.allowListen)
     {
@@ -1669,12 +1664,6 @@ else
     {
         self.allowDragReorder = NO;
         [self setEditing: NO];
-    }
-    if(source.saveNow)
-    {
-        self.allowDragReorder = NO;
-        [self setEditing: NO];
-        // [self captureListOrderandSave;
     }
     
 }

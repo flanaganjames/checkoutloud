@@ -39,10 +39,9 @@
     }
     
     self.resetCheckedNow.on = NO;
-    self.savecurrentorderSwitch.on = NO;
     self.cancelScheduledSwitch.on = NO;
     self.cancelScheduledItems = NO;
-    self.saveNow = NO;
+
     if (self.allowSpeak)
     {
         self.speakSwitch.on = YES;
@@ -92,11 +91,6 @@
         else
         {self.resetNow = NO;}
         
-        if (self.savecurrentorderSwitch.on)
-        {self.saveNow = YES;}
-        else
-        {self.saveNow = NO;}
-        
         if (self.speakSwitch.on)
         {
             self.allowSpeak = YES;
@@ -125,10 +119,6 @@
         else
         {
             self.allowDragReorder = NO;
-        }
-        if (self.savecurrentorderSwitch.on)
-        {
-            self.saveNow = YES;
         }
 
     }
