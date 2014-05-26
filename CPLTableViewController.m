@@ -1286,13 +1286,13 @@ else
     long newrow = [toIndexPath row];
     CheckListItem *item  = self.checkListItems[priorrow];// this is the item that moved
     
-//UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"from and to"
-//    message:[NSString stringWithFormat: @"from %ld,  to %ld, itemName %@", priorrow, newrow, item.itemName]
-//
-//                                                 delegate:nil
-//                                        cancelButtonTitle:@"OK"
-//                                        otherButtonTitles:nil];
-//[message show];
+UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"from and to"
+    message:[NSString stringWithFormat: @"from %ld,  to %ld, itemName %@", priorrow, newrow, item.itemName]
+
+                                                 delegate:nil
+                                        cancelButtonTitle:@"OK"
+                                        otherButtonTitles:nil];
+[message show];
     
 
     if (newrow < priorrow) //item moved up
@@ -1337,15 +1337,16 @@ else
     {
         if (priorrow > 0)
         {
-            int rowPrior = priorrow - 1;
-            CheckListItem *itemAbove = self.checkListItems[rowPrior];
+            int aCounter = priorrow - 1;
+            CheckListItem *itemAbove = self.checkListItems[aCounter];
             int aPriority = itemAbove.itemPriority + 1;
-            int aCounter = rowPrior;
+            aCounter = priorrow + 1;
             CheckListItem *itemBelow = self.checkListItems[aCounter];
             itemBelow.itemPriority = aPriority;
             [self updatePriorityofItem:itemBelow];
             aCounter += 1;
-            while (aCounter < newrow)
+            aPriority += 1;
+            while (aCounter < newrow + 1)
             {
                 CheckListItem *nextItem = self.checkListItems[aCounter];
                 nextItem.itemPriority = aPriority;
@@ -1361,9 +1362,11 @@ else
             int aCounter = 1;//what was item 1 is now priority 1
             CheckListItem *itemBelow = self.checkListItems[aCounter];
             int aPriority = 1;
+            itemBelow.itemPriority = aPriority;
             [self updatePriorityofItem:itemBelow];
             aCounter += 1;
-            while (aCounter < newrow)
+            aPriority += 1;
+            while (aCounter < newrow + 1)
             {
                 CheckListItem *nextItem = self.checkListItems[aCounter];
                 nextItem.itemPriority = aPriority;
