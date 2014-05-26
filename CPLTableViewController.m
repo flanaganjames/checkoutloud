@@ -36,6 +36,7 @@
 @property CheckListItem *checkingItem;
 @property BOOL *updatingDelete;
 @property BOOL skipCheckedItems;
+@property BOOL allowDragReorder;
 
 
 // @property UITableView *tableView;   // for loadView which cases failure
@@ -1069,6 +1070,7 @@ else
     self.skipCheckedItems = YES;
     self.allowSpeak = YES;
     self.allowListen = YES;
+    self.allowDragReorder = NO;
     self.backToParentButton.title = @"Read Me";
 
     self.checkListItems = [[NSMutableArray alloc] init];
@@ -1276,21 +1278,139 @@ else
 }
 */
 
-/*
+
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-}
-*/
+    long priorrow = [fromIndexPath row];
+    long newrow = [toIndexPath row];
+    CheckListItem *item  = self.checkListItems[priorrow];// this is the item that moved
+    
+//UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"from and to"
+//    message:[NSString stringWithFormat: @"from %ld,  to %ld, itemName %@", priorrow, newrow, item.itemName]
+//
+//                                                 delegate:nil
+//                                        cancelButtonTitle:@"OK"
+//                                        otherButtonTitles:nil];
+//[message show];
+    
 
-/*
+    if (newrow < priorrow) //item moved up
+    {
+        if (newrow > 0) // the new position is after the start of the list
+        {
+            long rowabove = newrow - 1;
+            CheckListItem *itemAbove = self.checkListItems[rowabove];
+            long aPriority = itemAbove.itemPriority + 1;
+
+            item.itemPriority = aPriority;// 1 + the priority of the item above
+            [self updatePriorityofItem:item];
+            aPriority += 1;
+            int aCounter = newrow;
+            while (aCounter < priorrow)
+            {
+                CheckListItem *nextItem = self.checkListItems[aCounter];
+                nextItem.itemPriority = aPriority;
+                [self updatePriorityofItem:nextItem];
+                aCounter += 1;
+                aPriority += 1;
+            }
+        }
+        else // the new position is at the start of the list
+        {
+            int aPriority = 1;
+            item.itemPriority = aPriority;
+            [self updatePriorityofItem:item];
+            aPriority += 1;
+            int aCounter = 0;
+            while (aCounter < priorrow)
+            {
+                CheckListItem *nextItem = self.checkListItems[aCounter];
+                nextItem.itemPriority = aPriority;
+                [self updatePriorityofItem:nextItem];
+                aCounter += 1;
+                aPriority += 1;
+            }
+        }
+    }
+    else // item moved down, renumber everything from prior point down to new point
+    {
+        if (priorrow > 0)
+        {
+            int rowPrior = priorrow - 1;
+            CheckListItem *itemAbove = self.checkListItems[rowPrior];
+            int aPriority = itemAbove.itemPriority + 1;
+            int aCounter = rowPrior;
+            CheckListItem *itemBelow = self.checkListItems[aCounter];
+            itemBelow.itemPriority = aPriority;
+            [self updatePriorityofItem:itemBelow];
+            aCounter += 1;
+            while (aCounter < newrow)
+            {
+                CheckListItem *nextItem = self.checkListItems[aCounter];
+                nextItem.itemPriority = aPriority;
+                [self updatePriorityofItem:nextItem];
+                aCounter += 1;
+                aPriority += 1;
+            }
+            item.itemPriority = aPriority;
+            [self updatePriorityofItem:item];
+        }
+        else //item moved was at beginning of list as item 0
+        {
+            int aCounter = 1;//what was item 1 is now priority 1
+            CheckListItem *itemBelow = self.checkListItems[aCounter];
+            int aPriority = 1;
+            [self updatePriorityofItem:itemBelow];
+            aCounter += 1;
+            while (aCounter < newrow)
+            {
+                CheckListItem *nextItem = self.checkListItems[aCounter];
+                nextItem.itemPriority = aPriority;
+                [self updatePriorityofItem:nextItem];
+                aCounter += 1;
+                aPriority += 1;
+            }
+            item.itemPriority = aPriority;
+            [self updatePriorityofItem:item];
+        }
+    }
+}
+
+- (void) updatePriorityofItem: (CheckListItem *) item
+{
+    // update the task in the database
+    sqlite3_stmt    *statement;
+    const char *dbpath = [_databasePath UTF8String];
+    if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
+    {
+        NSString *updateSQL = [NSString stringWithFormat:
+                               @"UPDATE CHECKLISTSBYKEY SET PRIORITY=%ld WHERE ID=%ld",
+                               item.itemPriority, item.itemKey];
+        const char *update_stmt = [updateSQL UTF8String];
+        
+        sqlite3_prepare_v2(_checklistDB, update_stmt,
+                           -1, &statement, NULL);
+        if (sqlite3_step(statement) == SQLITE_DONE)
+        {
+        }
+        else
+        {
+        }
+        sqlite3_finalize(statement);
+        sqlite3_close(_checklistDB);
+    } // SQLITE_OK
+}
+
+
+
 // Override to support conditional rearranging of the table view.
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the item to be re-orderable.
     return YES;
 }
-*/
+
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -1388,6 +1508,7 @@ else
         preferencesViewController.allowSpeak = self.allowSpeak;
         preferencesViewController.allowListen = self.allowListen;
         preferencesViewController.timeDelayItems = self.timeDelayItems;
+        preferencesViewController.allowDragReorder = self.allowDragReorder;
         
     }
 
@@ -1534,6 +1655,23 @@ else
     if (source.cancelScheduledItems)
     {
         [self cancelScheduledReminders];
+    }
+    
+    if (source.allowDragReorder)
+    {
+        self.allowDragReorder = YES;
+        [self setEditing: YES];
+    }
+    else
+    {
+        self.allowDragReorder = NO;
+        [self setEditing: NO];
+    }
+    if(source.saveNow)
+    {
+        self.allowDragReorder = NO;
+        [self setEditing: NO];
+        // [self captureListOrderandSave;
     }
     
 }
@@ -1785,13 +1923,7 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
     return demoView;
 }
 
-//UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"last item"
-//    message:[NSString stringWithFormat: @"%C line 1.\n %C line 2,\n %C line 3", (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022]
-//                        
-//                                                 delegate:nil
-//                                        cancelButtonTitle:@"OK"
-//                                        otherButtonTitles:nil];
-//[message show];
+
 
 - (void) cellreloader
 {

@@ -26,4 +26,5 @@
 @property BOOL saveNow;
 @property BOOL allowSpeak;
 @property BOOL allowListen;
+@property BOOL allowDragReorder;
 @end

@@ -40,9 +40,9 @@
     
     self.resetCheckedNow.on = NO;
     self.savecurrentorderSwitch.on = NO;
-    self.enabledragSwitch.on = NO;
     self.cancelScheduledSwitch.on = NO;
     self.cancelScheduledItems = NO;
+    self.saveNow = NO;
     if (self.allowSpeak)
     {
         self.speakSwitch.on = YES;
@@ -60,7 +60,14 @@
     {
         self.listenSwitch.on = NO;
     }
-    
+    if (self.allowDragReorder)
+    {
+        self.enabledragSwitch.on = YES;
+    }
+    else
+    {
+        self.enabledragSwitch.on = NO;
+    }
     
 }
 
@@ -111,6 +118,19 @@
         {
             self.cancelScheduledItems = YES;
         }
+        if (self.enabledragSwitch.on)
+        {
+            self.allowDragReorder = YES;
+        }
+        else
+        {
+            self.allowDragReorder = NO;
+        }
+        if (self.savecurrentorderSwitch.on)
+        {
+            self.saveNow = YES;
+        }
+
     }
 }
 
