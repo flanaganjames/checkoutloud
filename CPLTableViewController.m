@@ -1255,28 +1255,44 @@ else
     
 }
 
-/*
+
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
     return YES;
 }
-*/
 
-/*
+
+
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
+        
+        long row = [indexPath row];
+        CheckListItem *itemupdating  = self.checkListItems[row];
+        long aKey =  itemupdating.itemKey;
+        [self findAllDescendantKeysbyKey:aKey];
+        while ([self.descendantKeys count] > 0) {
+            long eachKey = [self.descendantKeys[0] longValue];
+            [self deleteOneByKey:eachKey];
+            [self.descendantKeys removeObject:self.descendantKeys[0]];
+        }
+        [self deleteOneByKey:aKey];
+        
+        [self.checkListItems removeObjectAtIndex:indexPath.row];
+
+        
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
+
+    }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
 }
-*/
+
 
 
 // Override to support rearranging the table view.
@@ -1668,8 +1684,9 @@ else
     
 }
 
-- (void) handleUpdateDelete
+- (void) handleUpdateDelete: (CheckListItem *) anItem
 {
+    self.updatingItem = anItem;
     UIAlertView *alertone = [[UIAlertView alloc] initWithTitle:@"Are you Sure?" message:@"Do you want to delete item and all its descendants?" delegate:self cancelButtonTitle:@"No, Do NOT Delete." otherButtonTitles:@"Yes, Delete Now!",nil];
     alertone.tag = 1;
     [alertone show];
@@ -1730,7 +1747,7 @@ else
     
     if (source.setDelete)
     {// confirm delete
-        [self handleUpdateDelete];
+        [self handleUpdateDelete:itemupdating];
     }
     else
     {
