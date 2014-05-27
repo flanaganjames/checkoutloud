@@ -1892,10 +1892,11 @@ else
     }
     else if ([self.editMode isEqual: @"Insert"])// edit mode is "Insert"
     {
-        self.editMode = @"NoEdit";
-        self.allowDragReorder = NO;
-        [self setEditing: NO];
+        self.editMode = @"AddToEnd";
         self.editModeButton.title = self.editMode;
+        self.allowDragReorder = YES;
+        self.insertMode = YES;
+        [self setEditing: YES];
         
     }
     else if ([self.editMode isEqual: @"AddToEnd"])// edit mode is "Insert"
