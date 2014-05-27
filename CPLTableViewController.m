@@ -37,6 +37,8 @@
 @property BOOL *updatingDelete;
 @property BOOL skipCheckedItems;
 @property BOOL allowDragReorder;
+@property NSString *editMode;
+@property BOOL insertMode;
 
 
 // @property UITableView *tableView;   // for loadView which cases failure
@@ -1071,6 +1073,9 @@ else
     self.allowSpeak = YES;
     self.allowListen = YES;
     self.allowDragReorder = NO;
+    self.insertMode = NO;
+    self.editMode = @"NoEdit";
+    self.editModeButton.title = self.editMode;
     self.backToParentButton.title = @"Read Me";
 
     self.checkListItems = [[NSMutableArray alloc] init];
@@ -1261,6 +1266,18 @@ else
 {
     // Return NO if you do not want the specified item to be editable.
     return YES;
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)aTableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if(self.insertMode)
+    {
+        return UITableViewCellEditingStyleInsert;
+    }
+    else
+    {
+        return UITableViewCellEditingStyleDelete;
+    }
 }
 
 
@@ -1674,6 +1691,7 @@ else
     if (source.allowDragReorder)
     {
         self.allowDragReorder = YES;
+        self.insertMode = YES;
         [self setEditing: YES];
     }
     else
@@ -1805,6 +1823,36 @@ else
 
 }
 
+
+- (IBAction)changeEditMode:(id)sender
+{
+    if ([self.editMode isEqual: @"NoEdit"])
+    {
+        self.editMode = @"Modify";
+        self.allowDragReorder = YES;
+        self.insertMode = NO;
+        [self setEditing: YES];
+        self.editModeButton.title = self.editMode;
+        
+    }
+    else if ([self.editMode isEqual: @"Modify"])
+    {
+        self.editMode = @"Insert";
+        self.allowDragReorder = YES;
+        self.insertMode = YES;
+        [self setEditing: YES];
+        self.editModeButton.title = self.editMode;
+        
+    }
+    else // edit mode is "Insert"
+    {
+        self.editMode = @"NoEdit";
+        self.allowDragReorder = NO;
+        [self setEditing: NO];
+        self.editModeButton.title = self.editMode;
+        
+    }
+}
 
 - (IBAction)backToParent:(id)sender {
     if (![self.listParent isEqual: @"MASTER LIST"]) //

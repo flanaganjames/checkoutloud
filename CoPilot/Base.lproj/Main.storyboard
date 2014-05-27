@@ -76,15 +76,16 @@
                                 <segue destination="OvZ-j5-mHb" kind="modal" identifier="setPreferences" id="Yzg-Bm-rf6"/>
                             </connections>
                         </button>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="ydI-Ws-qYW">
+                        <barButtonItem key="rightBarButtonItem" title="Edit" id="InH-W6-C7o">
                             <connections>
-                                <segue destination="nGE-oO-E3Q" kind="modal" identifier="AddToRoot" id="fNH-BR-ahx"/>
+                                <action selector="changeEditMode:" destination="TBr-cB-YTL" id="1rP-b3-ZNa"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="backToParentButton" destination="2Xg-su-ogu" id="6yA-0Q-f62"/>
+                        <outlet property="editModeButton" destination="InH-W6-C7o" id="7dl-fU-LUt"/>
                         <outlet property="listLabel" destination="YK1-wk-4K2" id="ef1-Nc-v9g"/>
                         <outlet property="readListButton" destination="EAc-pg-uHQ" id="ebm-CY-2jM"/>
                         <segue destination="zdP-xx-fqQ" kind="custom" identifier="slideShow" customClass="CustomSegue" id="vVf-P9-Wtn"/>
