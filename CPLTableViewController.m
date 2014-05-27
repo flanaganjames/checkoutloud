@@ -1306,7 +1306,10 @@ else
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
     }
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
+    else if (editingStyle == UITableViewCellEditingStyleInsert)
+    {
+        if ([self.editMode isEqual: @"Insert"])
+        {
         // use addview as a custom segue to creat instance, then unwindAdd
         long row = [indexPath row];
         CheckListItem *itemInsertAbove  = self.checkListItems[row];
@@ -1325,7 +1328,17 @@ else
         }
         self.addItemPriority = insertItemPriority; //this item now has updatePriority
         [self performSegueWithIdentifier: @"AddToList" sender: self];
-    }   
+        }
+        if ([self.editMode isEqual: @"AddToEnd"])
+        {
+            long row = [self.checkListItems count] - 1;
+            CheckListItem *lastItem  = self.checkListItems[row];
+            long nextPriority = lastItem.itemPriority + 1;
+            
+            self.addItemPriority = nextPriority;
+            [self performSegueWithIdentifier: @"AddToList" sender: self];
+        }
+    }
 }
 
 
@@ -1847,11 +1860,24 @@ else
 {
     if ([self.editMode isEqual: @"NoEdit"])
     {
-        self.editMode = @"Modify";
-        self.allowDragReorder = YES;
-        self.insertMode = NO;
-        [self setEditing: YES];
-        self.editModeButton.title = self.editMode;
+        if ([self.checkListItems count] > 0)
+        {
+            self.editMode = @"Modify";
+            self.allowDragReorder = YES;
+            self.insertMode = NO;
+            [self setEditing: YES];
+            self.editModeButton.title = self.editMode;
+        }
+        else
+        {
+            self.editMode = @"AddToEnd";
+            self.editModeButton.title = self.editMode;
+            self.allowDragReorder = YES;
+            self.insertMode = YES;
+            [self setEditing: YES];
+            self.addItemPriority = 1;
+            [self performSegueWithIdentifier: @"AddToList" sender: self];
+        }
         
     }
     else if ([self.editMode isEqual: @"Modify"])
@@ -1861,15 +1887,23 @@ else
         self.insertMode = YES;
         [self setEditing: YES];
         self.editModeButton.title = self.editMode;
+        [self cellreloader];
         
     }
-    else // edit mode is "Insert"
+    else if ([self.editMode isEqual: @"Insert"])// edit mode is "Insert"
     {
         self.editMode = @"NoEdit";
         self.allowDragReorder = NO;
         [self setEditing: NO];
         self.editModeButton.title = self.editMode;
         
+    }
+    else if ([self.editMode isEqual: @"AddToEnd"])// edit mode is "Insert"
+    {
+        self.editMode = @"NoEdit";
+        self.allowDragReorder = NO;
+        [self setEditing: NO];
+        self.editModeButton.title = self.editMode;
     }
 }
 
