@@ -89,6 +89,7 @@
                         <outlet property="listLabel" destination="YK1-wk-4K2" id="ef1-Nc-v9g"/>
                         <outlet property="readListButton" destination="EAc-pg-uHQ" id="ebm-CY-2jM"/>
                         <segue destination="zdP-xx-fqQ" kind="custom" identifier="slideShow" customClass="CustomSegue" id="vVf-P9-Wtn"/>
+                        <segue destination="nGE-oO-E3Q" kind="custom" identifier="AddToList" id="RTF-8U-dov"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7RQ-wb-c29" userLabel="First Responder" sceneMemberID="firstResponder"/>

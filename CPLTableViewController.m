@@ -34,6 +34,7 @@
 @property NSMutableArray *timeDelayItems;
 @property CheckListItem *updatingItem;
 @property CheckListItem *checkingItem;
+@property long addItemPriority;
 @property BOOL *updatingDelete;
 @property BOOL skipCheckedItems;
 @property BOOL allowDragReorder;
@@ -1306,7 +1307,24 @@ else
 
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+        // use addview as a custom segue to creat instance, then unwindAdd
+        long row = [indexPath row];
+        CheckListItem *itemInsertAbove  = self.checkListItems[row];
+        long insertItemPriority =  itemInsertAbove.itemPriority;
+        long changedPriority = insertItemPriority + 1;
+        //change the priorities of this and all subsequent items to +1
+        int aCounter = row;
+        int theCount = [self.checkListItems count] ;
+        while (aCounter < theCount)
+        {
+            CheckListItem *nextItem = self.checkListItems[aCounter];
+            nextItem.itemPriority = changedPriority;
+            [self updatePriorityofItem:nextItem];
+            aCounter += 1;
+            changedPriority += 1;
+        }
+        self.addItemPriority = insertItemPriority; //this item now has updatePriority
+        [self performSegueWithIdentifier: @"AddToList" sender: self];
     }   
 }
 
@@ -1463,23 +1481,24 @@ else
         ((CustomSegue *)segue).originatingPoint = mypoint;
     }
     
-    if ([[segue identifier] isEqualToString:@"AddToRoot"])
+    if ([[segue identifier] isEqualToString:@"AddToList"])
     {
         CPLAddListItemViewController *addViewController =
         [segue destinationViewController];
         
         addViewController.listParent = self.listParent;
+        addViewController.defaultPriority = self.addItemPriority;
          
-        if ([self.checkListItems count] > 0)
-        {
-            NSInteger lastElement = [self.checkListItems count] - 1;
-            CheckListItem *item = self.checkListItems[lastElement];
-            addViewController.defaultPriority = item.itemPriority + 1;
-        }
-        else
-        {
-            addViewController.defaultPriority = 1;
-        }
+//        if ([self.checkListItems count] > 0)
+//        {
+//            NSInteger lastElement = [self.checkListItems count] - 1;
+//            CheckListItem *item = self.checkListItems[lastElement];
+//            addViewController.defaultPriority = item.itemPriority + 1;
+//        }
+//        else
+//        {
+//            addViewController.defaultPriority = 1;
+//        }
     }
     
     if ([[segue identifier] isEqualToString:@"UpdateMainList"])
