@@ -1008,7 +1008,7 @@ else
 }
 
 
-//this method should npt get called - see handleTap gesture
+//this method should not get called - see handleTap gesture
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
@@ -1075,7 +1075,7 @@ else
     self.allowListen = YES;
     self.allowDragReorder = NO;
     self.insertMode = NO;
-    self.editMode = @"NoEdit";
+    self.editMode = @"Navigate";
     self.editModeButton.title = self.editMode;
     self.backToParentButton.title = @"Read Me";
 
@@ -1858,7 +1858,7 @@ else
 
 - (IBAction)changeEditMode:(id)sender
 {
-    if ([self.editMode isEqual: @"NoEdit"])
+    if ([self.editMode isEqual: @"Navigate"])
     {
         if ([self.checkListItems count] > 0)
         {
@@ -1901,7 +1901,7 @@ else
     }
     else if ([self.editMode isEqual: @"AddToEnd"])// edit mode is "Insert"
     {
-        self.editMode = @"NoEdit";
+        self.editMode = @"Navigate";
         self.allowDragReorder = NO;
         [self setEditing: NO];
         self.editModeButton.title = self.editMode;
@@ -2108,8 +2108,10 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
     
     CGPoint location = [sender locationInView:self.tableView];
     NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
-    
+    if ([self.editMode isEqual: @"Navigate"])
+    {
     [self respondSelectRow:swipedIndexPath];
+    }
 }
 
 - (void) handleSwipes:(UISwipeGestureRecognizer *)sender
