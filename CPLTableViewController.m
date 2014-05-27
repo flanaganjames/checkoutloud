@@ -1863,6 +1863,7 @@ else
         if ([self.checkListItems count] > 0)
         {
             self.editMode = @"Modify";
+            self.backToParentButton.title = @"Read Me";
             self.allowDragReorder = YES;
             self.insertMode = NO;
             [self setEditing: YES];
@@ -1883,6 +1884,7 @@ else
     else if ([self.editMode isEqual: @"Modify"])
     {
         self.editMode = @"Insert";
+         self.backToParentButton.title = @"Read Me";
         self.allowDragReorder = YES;
         self.insertMode = YES;
         [self setEditing: YES];
@@ -1894,6 +1896,7 @@ else
     {
         self.editMode = @"AddToEnd";
         self.editModeButton.title = self.editMode;
+         self.backToParentButton.title = @"Read Me";
         self.allowDragReorder = YES;
         self.insertMode = YES;
         [self setEditing: YES];
@@ -1902,6 +1905,14 @@ else
     else if ([self.editMode isEqual: @"AddToEnd"])// edit mode is "Insert"
     {
         self.editMode = @"Navigate";
+        if ([self.listParent isEqual: @"MASTER LIST"])
+        {
+            self.backToParentButton.title = @"Read Me";
+        }
+        else
+        {
+            self.backToParentButton.title = @"Return";
+        }
         self.allowDragReorder = NO;
         [self setEditing: NO];
         self.editModeButton.title = self.editMode;
@@ -1909,7 +1920,7 @@ else
 }
 
 - (IBAction)backToParent:(id)sender {
-    if (![self.listParent isEqual: @"MASTER LIST"]) //
+    if (![self.listParent isEqual: @"MASTER LIST"] && [self.editMode isEqual: @"Navigate"]) //
     {
         self.listParent = self.listGrandParent;
         self.listParentKey = self.listGrandParentKey;
@@ -2114,17 +2125,29 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
     }
 }
 
+//- (void) handleTap:(UITapGestureRecognizer *)sender
+//{
+//    //start a slide show to check the current selected element and its descendants
+//    
+//    CGPoint location = [sender locationInView:self.tableView];
+//    NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
+//    
+//    [self slideShowForSelectRow:swipedIndexPath];
+//
+//}
+
+
 - (void) handleSwipes:(UISwipeGestureRecognizer *)sender
 {
-    if (sender.direction == UISwipeGestureRecognizerDirectionLeft)
-    {
-        //edit current selected element?
-        CGPoint location = [sender locationInView:self.tableView];
-        NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
-        UITableViewCell *cell  = [self.tableView cellForRowAtIndexPath:swipedIndexPath];
-        
-        [self performSegueWithIdentifier: @"UpdateMainList" sender: cell];
-    }
+//    if (sender.direction == UISwipeGestureRecognizerDirectionLeft)
+//    {
+//        //edit current selected element?
+//        CGPoint location = [sender locationInView:self.tableView];
+//        NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
+//        UITableViewCell *cell  = [self.tableView cellForRowAtIndexPath:swipedIndexPath];
+//        
+//        [self performSegueWithIdentifier: @"UpdateMainList" sender: cell];
+//    }
     
     
     if (sender.direction == UISwipeGestureRecognizerDirectionRight)
@@ -2138,11 +2161,23 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
 
     }
     
-    if (sender.direction == UISwipeGestureRecognizerDirectionUp)
-    {
-        // navigate up one level
-        [self backToParent:self];
-    }
+//    if (sender.direction == UISwipeGestureRecognizerDirectionRight)
+//    {
+//    // navigate
+//        CGPoint location = [sender locationInView:self.tableView];
+//        NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
+//        if ([self.editMode isEqual: @"Navigate"])
+//        {
+//            [self respondSelectRow:swipedIndexPath];
+//        }
+//        
+//    }
+    
+//    if (sender.direction == UISwipeGestureRecognizerDirectionLeft)
+//    {
+//        // navigate up one level
+//        [self backToParent:self];
+//    }
     
     if (sender.direction == UISwipeGestureRecognizerDirectionDown)
     {
