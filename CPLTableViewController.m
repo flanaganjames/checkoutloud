@@ -1237,7 +1237,7 @@ else
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    [self.tableView setRowHeight:35.0f];
+    [self.tableView setRowHeight:40.0f];
     return [self.checkListItems count];
 }
 
@@ -1350,13 +1350,7 @@ else
     long newrow = [toIndexPath row];
     CheckListItem *item  = self.checkListItems[priorrow];// this is the item that moved
     
-//UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"from and to"
-//    message:[NSString stringWithFormat: @"from %ld,  to %ld, itemName %@", priorrow, newrow, item.itemName]
-//
-//                                                 delegate:nil
-//                                        cancelButtonTitle:@"OK"
-//                                        otherButtonTitles:nil];
-//[message show];
+
     
 
     if (newrow < priorrow) //item moved up
@@ -2119,7 +2113,16 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
     
     CGPoint location = [sender locationInView:self.tableView];
     NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
-    if ([self.editMode isEqual: @"Navigate"])
+    
+//UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"indexpath"
+//    message:[NSString stringWithFormat: @"%@", swipedIndexPath]
+//
+//                                                 delegate:nil
+//                                        cancelButtonTitle:@"OK"
+//                                        otherButtonTitles:nil];
+//[message show];
+    
+    if ([self.editMode isEqual: @"Navigate"] && swipedIndexPath)
     {
     [self respondSelectRow:swipedIndexPath];
     }
