@@ -1253,7 +1253,8 @@ else
     CheckListItem *checkItem = [self.checkListItems objectAtIndex:indexPath.row];
 	NSString *paddedName = [NSString stringWithFormat: @" %@", checkItem.itemName];
 	cell.textLabel.text = paddedName;
-    cell.accessoryType = UITableViewCellAccessoryDetailButton;
+    cell.accessoryType = UITableViewCellAccessoryNone;
+//    cell.accessoryType = UITableViewCellAccessoryDetailButton;
     cell.textLabel.font = [UIFont systemFontOfSize:16.0];
     cell.textLabel.textColor = [UIColor blackColor];
     cell.textLabel.backgroundColor = [UIColor greenColor];
@@ -1315,32 +1316,50 @@ else
     {
         if ([self.editMode isEqual: @"Insert"])
         {
-        // use addview as a custom segue to creat instance, then unwindAdd
-        long row = [indexPath row];
-        CheckListItem *itemInsertAbove  = self.checkListItems[row];
-        long insertItemPriority =  itemInsertAbove.itemPriority;
-        long changedPriority = insertItemPriority + 1;
-        //change the priorities of this and all subsequent items to +1
-        int aCounter = row;
-        int theCount = [self.checkListItems count] ;
-        while (aCounter < theCount)
-        {
-            CheckListItem *nextItem = self.checkListItems[aCounter];
-            nextItem.itemPriority = changedPriority;
-            [self updatePriorityofItem:nextItem];
-            aCounter += 1;
-            changedPriority += 1;
+            // use addview as a custom segue to creat instance, then unwindAdd
+            long row = [indexPath row];
+            CheckListItem *itemInsertAbove  = self.checkListItems[row];
+            long insertItemPriority =  itemInsertAbove.itemPriority;
+            long changedPriority = insertItemPriority + 1;
+            //change the priorities of this and all subsequent items to +1
+            int aCounter = row;
+            int theCount = [self.checkListItems count] ;
+            while (aCounter < theCount)
+            {
+                CheckListItem *nextItem = self.checkListItems[aCounter];
+                nextItem.itemPriority = changedPriority;
+                [self updatePriorityofItem:nextItem];
+                aCounter += 1;
+                changedPriority += 1;
+            }
+            self.addItemPriority = insertItemPriority; //this item now has updatePriority
+            [self performSegueWithIdentifier: @"AddToList" sender: self];
         }
-        self.addItemPriority = insertItemPriority; //this item now has updatePriority
-        [self performSegueWithIdentifier: @"AddToList" sender: self];
-        }
-        if ([self.editMode isEqual: @"AddToEnd"])
+        if ([self.editMode isEqual: @"AddAfter"])
         {
-            long row = [self.checkListItems count] - 1;
-            CheckListItem *lastItem  = self.checkListItems[row];
-            long nextPriority = lastItem.itemPriority + 1;
+//            long row = [self.checkListItems count] - 1;
+//            CheckListItem *lastItem  = self.checkListItems[row];
+//            long nextPriority = lastItem.itemPriority + 1;
+//            
+//            self.addItemPriority = nextPriority;
             
-            self.addItemPriority = nextPriority;
+            long row = [indexPath row];
+            CheckListItem *itemInsertBelow  = self.checkListItems[row];
+            long insertItemPriority =  itemInsertBelow.itemPriority + 1;
+            long changedPriority = insertItemPriority + 2;
+            //change the priorities of this and all subsequent items to +1
+            int aCounter = row + 1;
+            int theCount = [self.checkListItems count] ;
+            while (aCounter < theCount)
+            {
+                CheckListItem *nextItem = self.checkListItems[aCounter];
+                nextItem.itemPriority = changedPriority;
+                [self updatePriorityofItem:nextItem];
+                aCounter += 1;
+                changedPriority += 1;
+            }
+            self.addItemPriority = insertItemPriority; //this item now has updatePriority
+            
             [self performSegueWithIdentifier: @"AddToList" sender: self];
         }
     }
@@ -1870,7 +1889,7 @@ else
         }
         else
         {
-            self.editMode = @"AddToEnd";
+            self.editMode = @"AddAfter";
             self.editModeButton.title = self.editMode;
             self.allowDragReorder = YES;
             self.insertMode = YES;
@@ -1884,16 +1903,16 @@ else
     {
         self.editMode = @"Insert";
          self.backToParentButton.title = @"Read Me";
-        self.allowDragReorder = YES;
+//        self.allowDragReorder = YES;
         self.insertMode = YES;
-        [self setEditing: YES];
+//        [self setEditing: YES];
         self.editModeButton.title = self.editMode;
         [self cellreloader];
         
     }
     else if ([self.editMode isEqual: @"Insert"])// edit mode is "Insert"
     {
-        self.editMode = @"AddToEnd";
+        self.editMode = @"AddAfter";
         self.editModeButton.title = self.editMode;
          self.backToParentButton.title = @"Read Me";
         self.allowDragReorder = YES;
@@ -1901,7 +1920,7 @@ else
         [self setEditing: YES];
         
     }
-    else if ([self.editMode isEqual: @"AddToEnd"])// edit mode is "Insert"
+    else if ([self.editMode isEqual: @"AddAfter"])// edit mode is "Insert"
     {
         self.editMode = @"Navigate";
         if ([self.listParent isEqual: @"MASTER LIST"])
