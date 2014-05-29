@@ -975,6 +975,11 @@ else
     
 }
 
+- (void) respondModifyRow: (NSIndexPath *) myIndexPath
+{
+    UITableViewCell *cell  = [self.tableView cellForRowAtIndexPath:myIndexPath];
+    [self performSegueWithIdentifier: @"UpdateMainList" sender: cell];
+}
 
 
 // not used but shows how to have a second alertview
@@ -2125,6 +2130,11 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
     if ([self.editMode isEqual: @"Navigate"] && swipedIndexPath)
     {
     [self respondSelectRow:swipedIndexPath];
+    }
+    
+    if ([self.editMode isEqual: @"Modify"] && swipedIndexPath)
+    {
+        [self respondModifyRow:swipedIndexPath];
     }
 }
 
