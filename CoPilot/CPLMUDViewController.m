@@ -30,9 +30,9 @@
     // Do any additional setup after loading the view.
     
     
-    _itemPriority.text = [NSString stringWithFormat: @"%ld", self.checkListItem.itemPriority];
-    self.itemPriority.keyboardType = UIKeyboardTypeDecimalPad;
-    self.deleteSwitch.on = NO;
+//    _itemPriority.text = [NSString stringWithFormat: @"%ld", self.checkListItem.itemPriority];
+//    self.itemPriority.keyboardType = UIKeyboardTypeDecimalPad;
+//    self.deleteSwitch.on = NO;
     self.setDelete = NO;
     self.delaySeconds.keyboardType = UIKeyboardTypeDecimalPad;
     self.delayHours.keyboardType = UIKeyboardTypeDecimalPad;
@@ -72,8 +72,8 @@
 {
     if (self.itemName.text.length > 0)
     {
-        if (self.itemPriority.text.length > 0) {
-            self.checkListItem.itemPriority = [self.itemPriority.text longLongValue];}
+//        if (self.itemPriority.text.length > 0) {
+//            self.checkListItem.itemPriority = [self.itemPriority.text longLongValue];}
         
         NSString *buildName = [[NSString alloc] init];
         buildName = [self.itemName.text uppercaseString];
@@ -85,20 +85,21 @@
         }
         
         self.checkListItem.itemName = buildName;
-        
-        if (self.deleteSwitch.on)
-        {self.setDelete = YES;};
     }
+        
 }
 
-- (IBAction) textFieldReturn:(id)sender{
+- (IBAction) textFieldReturn:(id)sender
+{
     [sender resignFirstResponder];
 }
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
     UITouch *touch = [[event allTouches] anyObject];
-    if ([_itemPriority isFirstResponder] && [touch view] != _itemPriority) {
-        [_itemPriority resignFirstResponder];
-        }
+//    if ([_itemPriority isFirstResponder] && [touch view] != _itemPriority) {
+//        [_itemPriority resignFirstResponder];
+//        }
     if ([_itemName isFirstResponder] && [touch view] != _itemName) {
         [_itemName resignFirstResponder];
     }

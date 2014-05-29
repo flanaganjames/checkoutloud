@@ -29,10 +29,8 @@
             buildName = [NSString stringWithFormat:@"%@ | td-%@h%@m%@s%@rpt", buildName, self.delayHours.text, self.delayMinutes.text, self.delaySeconds.text, self.repeatTimes.text];
         }
         
-        
         self.checkListItem.itemName = buildName;
-        self.checkListItem.itemPriority = [self.itemPriority.text longLongValue];
-        
+        self.checkListItem.itemPriority = self.defaultPriority;
     }
     
     
@@ -54,8 +52,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
-    self.itemPriority.text = [NSString stringWithFormat:@"%d", self.defaultPriority];
-    self.itemPriority.keyboardType = UIKeyboardTypeDecimalPad;
+//    self.itemPriority.text = [NSString stringWithFormat:@"%d", self.defaultPriority];
+//    self.itemPriority.keyboardType = UIKeyboardTypeDecimalPad;
     self.delaySeconds.keyboardType = UIKeyboardTypeDecimalPad;
     self.delayHours.keyboardType = UIKeyboardTypeDecimalPad;
     self.delayMinutes.keyboardType = UIKeyboardTypeDecimalPad;
@@ -73,9 +71,9 @@
 }
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [[event allTouches] anyObject];
-    if ([_itemPriority isFirstResponder] && [touch view] != _itemPriority) {
-        [_itemPriority resignFirstResponder];
-    }
+//    if ([_itemPriority isFirstResponder] && [touch view] != _itemPriority) {
+//        [_itemPriority resignFirstResponder];
+//    }
     if ([_itemName isFirstResponder] && [touch view] != _itemName) {
         [_itemName resignFirstResponder];
     }
