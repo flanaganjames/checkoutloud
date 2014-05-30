@@ -1081,7 +1081,7 @@ else
     self.allowDragReorder = NO;
     self.insertMode = NO;
     self.editMode = @"Navigate";
-    self.editModeButton.title = self.editMode;
+    self.editModeButton.title = @"Edit";
     self.backToParentButton.title = @"Read Me";
 
     self.checkListItems = [[NSMutableArray alloc] init];
@@ -1314,7 +1314,7 @@ else
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert)
     {
-        if ([self.editMode isEqual: @"Insert"])
+        if ([self.editMode isEqual: @"AddAbove"])
         {
             // use addview as a custom segue to creat instance, then unwindAdd
             long row = [indexPath row];
@@ -1593,7 +1593,7 @@ else
         preferencesViewController.allowSpeak = self.allowSpeak;
         preferencesViewController.allowListen = self.allowListen;
         preferencesViewController.timeDelayItems = self.timeDelayItems;
-        preferencesViewController.allowDragReorder = self.allowDragReorder;
+
         
     }
 
@@ -1738,17 +1738,6 @@ else
         [self cancelScheduledReminders];
     }
     
-    if (source.allowDragReorder)
-    {
-        self.allowDragReorder = YES;
-        self.insertMode = YES;
-        [self setEditing: YES];
-    }
-    else
-    {
-        self.allowDragReorder = NO;
-        [self setEditing: NO];
-    }
     
 }
 
@@ -1880,17 +1869,17 @@ else
     {
         if ([self.checkListItems count] > 0)
         {
-            self.editMode = @"Modify";
+            self.editMode = @"Edit";
             self.backToParentButton.title = @"Read Me";
             self.allowDragReorder = YES;
             self.insertMode = NO;
             [self setEditing: YES];
-            self.editModeButton.title = self.editMode;
+            self.editModeButton.title = @"AddAbove";
         }
         else
         {
             self.editMode = @"AddAfter";
-            self.editModeButton.title = self.editMode;
+            self.editModeButton.title = @"Nav";
             self.allowDragReorder = YES;
             self.insertMode = YES;
             [self setEditing: YES];
@@ -1899,28 +1888,28 @@ else
         }
         
     }
-    else if ([self.editMode isEqual: @"Modify"])
+    else if ([self.editMode isEqual: @"Edit"])
     {
-        self.editMode = @"Insert";
+        self.editMode = @"AddBefore";
          self.backToParentButton.title = @"Read Me";
 //        self.allowDragReorder = YES;
         self.insertMode = YES;
 //        [self setEditing: YES];
-        self.editModeButton.title = self.editMode;
+        self.editModeButton.title = @"AddAfter";
         [self cellreloader];
         
     }
-    else if ([self.editMode isEqual: @"Insert"])// edit mode is "Insert"
+    else if ([self.editMode isEqual: @"AddBefore"])// edit mode is "Insert"
     {
         self.editMode = @"AddAfter";
-        self.editModeButton.title = self.editMode;
+        self.editModeButton.title = @"Nav";
          self.backToParentButton.title = @"Read Me";
         self.allowDragReorder = YES;
         self.insertMode = YES;
         [self setEditing: YES];
         
     }
-    else if ([self.editMode isEqual: @"AddAfter"])// edit mode is "Insert"
+    else if ([self.editMode isEqual: @"AddAfter"])
     {
         self.editMode = @"Navigate";
         if ([self.listParent isEqual: @"MASTER LIST"])
@@ -1933,7 +1922,7 @@ else
         }
         self.allowDragReorder = NO;
         [self setEditing: NO];
-        self.editModeButton.title = self.editMode;
+        self.editModeButton.title = @"Edit";
     }
 }
 
@@ -2151,7 +2140,7 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
     [self respondSelectRow:swipedIndexPath];
     }
     
-    if ([self.editMode isEqual: @"Modify"] && swipedIndexPath)
+    if ([self.editMode isEqual: @"Edit"] && swipedIndexPath)
     {
         [self respondModifyRow:swipedIndexPath];
     }

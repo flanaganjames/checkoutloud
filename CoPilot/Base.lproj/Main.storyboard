@@ -167,16 +167,6 @@
                                 <rect key="frame" x="251" y="247" width="51" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </switch>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="ro4-hK-ed0">
-                                <rect key="frame" x="253" y="401" width="51" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </switch>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable drag reordering" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0XK-px-Y4Q">
-                                <rect key="frame" x="6" y="406" width="175" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="zpZ-XR-nj4">
                                 <rect key="frame" x="251" y="100" width="51" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -217,7 +207,6 @@
                     </view>
                     <connections>
                         <outlet property="cancelScheduledSwitch" destination="b1A-Vl-50c" id="lMA-nc-T8B"/>
-                        <outlet property="enabledragSwitch" destination="ro4-hK-ed0" id="EfA-Ze-awG"/>
                         <outlet property="listenSwitch" destination="hYg-cf-gWW" id="Yur-1X-haj"/>
                         <outlet property="resetCheckedNow" destination="CaF-Ny-ux7" id="Ob3-Bu-Y1T"/>
                         <outlet property="skipCheckedSwitch" destination="x6v-Ev-h1A" id="usa-0T-rcu"/>

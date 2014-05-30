@@ -59,14 +59,7 @@
     {
         self.listenSwitch.on = NO;
     }
-    if (self.allowDragReorder)
-    {
-        self.enabledragSwitch.on = YES;
-    }
-    else
-    {
-        self.enabledragSwitch.on = NO;
-    }
+
     
 }
 
@@ -111,14 +104,6 @@
         if (self.cancelScheduledSwitch.on)
         {
             self.cancelScheduledItems = YES;
-        }
-        if (self.enabledragSwitch.on)
-        {
-            self.allowDragReorder = YES;
-        }
-        else
-        {
-            self.allowDragReorder = NO;
         }
 
     }

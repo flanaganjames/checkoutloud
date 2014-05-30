@@ -14,7 +14,6 @@
 @property (weak, nonatomic) IBOutlet UISwitch *listenSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *skipCheckedSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *resetCheckedNow;
-@property (weak, nonatomic) IBOutlet UISwitch *enabledragSwitch;
 
 @property (weak, nonatomic) IBOutlet UISwitch *cancelScheduledSwitch;
 @property NSMutableArray *timeDelayItems;
