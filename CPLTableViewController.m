@@ -1874,7 +1874,7 @@ else
             self.allowDragReorder = YES;
             self.insertMode = NO;
             [self setEditing: YES];
-            self.editModeButton.title = @"AddAbove";
+            self.editModeButton.title = @">Add+";
         }
         else
         {
@@ -1892,17 +1892,17 @@ else
     {
         self.editMode = @"AddBefore";
          self.backToParentButton.title = @"Read Me";
-//        self.allowDragReorder = YES;
+        self.allowDragReorder = YES;
         self.insertMode = YES;
-//        [self setEditing: YES];
-        self.editModeButton.title = @"AddAfter";
+        [self setEditing: YES];
+        self.editModeButton.title = @">Add-";
         [self cellreloader];
         
     }
     else if ([self.editMode isEqual: @"AddBefore"])// edit mode is "Insert"
     {
         self.editMode = @"AddAfter";
-        self.editModeButton.title = @"Nav";
+        self.editModeButton.title = @">Check";
          self.backToParentButton.title = @"Read Me";
         self.allowDragReorder = YES;
         self.insertMode = YES;
@@ -1922,7 +1922,7 @@ else
         }
         self.allowDragReorder = NO;
         [self setEditing: NO];
-        self.editModeButton.title = @"Edit";
+        self.editModeButton.title = @">Edit";
     }
 }
 

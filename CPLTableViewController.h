@@ -31,13 +31,13 @@ Kal *kal;
 - (IBAction)readListButton:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UILabel *listLabel;
-- (IBAction)speechCommandToggle:(id)sender;
+
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *editModeButton;
 - (IBAction)changeEditMode:(id)sender;
 
 - (IBAction)backToParent:(id)sender;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *backToParentButton;
-@property (weak, nonatomic) IBOutlet UIButton *speechCommandButton;
+
 @property NSMutableArray *checkedItemKeys;
 @property BOOL checkedItemsHaveBeenSkipped;
 @property (strong, nonatomic) NSString *databasePath;

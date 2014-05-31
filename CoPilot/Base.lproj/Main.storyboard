@@ -66,9 +66,9 @@
                             </connections>
                         </barButtonItem>
                         <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" id="3Yt-QF-NI1">
-                            <rect key="frame" x="79" y="8" width="162" height="29"/>
+                            <rect key="frame" x="94" y="8" width="133" height="29"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="Check Out Loud" image="Settings-Icon-Small.png">
+                            <state key="normal" title="Check Mode" image="Settings-Icon-Small.png">
                                 <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -76,7 +76,7 @@
                                 <segue destination="OvZ-j5-mHb" kind="modal" identifier="setPreferences" id="Yzg-Bm-rf6"/>
                             </connections>
                         </button>
-                        <barButtonItem key="rightBarButtonItem" title="Edit" id="InH-W6-C7o">
+                        <barButtonItem key="rightBarButtonItem" title=">Edit" id="InH-W6-C7o">
                             <connections>
                                 <action selector="changeEditMode:" destination="TBr-cB-YTL" id="1rP-b3-ZNa"/>
                             </connections>
