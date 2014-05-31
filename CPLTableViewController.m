@@ -1081,7 +1081,7 @@ else
     self.allowDragReorder = NO;
     self.insertMode = NO;
     self.editMode = @"Navigate";
-    self.editModeButton.title = @"Edit";
+    self.editModeButton.title = @">Edit";
     self.backToParentButton.title = @"Read Me";
 
     self.checkListItems = [[NSMutableArray alloc] init];
@@ -1314,7 +1314,7 @@ else
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert)
     {
-        if ([self.editMode isEqual: @"AddAbove"])
+        if ([self.editMode isEqual: @"AddBefore"])
         {
             // use addview as a custom segue to creat instance, then unwindAdd
             long row = [indexPath row];
@@ -1874,12 +1874,14 @@ else
             self.allowDragReorder = YES;
             self.insertMode = NO;
             [self setEditing: YES];
-            self.editModeButton.title = @">Add+";
+            self.editModeButton.title = @">Add ^";
+            self.preferencesandModeName.titleLabel.text = @"Edit Mode";
         }
         else
         {
             self.editMode = @"AddAfter";
             self.editModeButton.title = @"Nav";
+             self.preferencesandModeName.titleLabel.text = @"Add v Mode";
             self.allowDragReorder = YES;
             self.insertMode = YES;
             [self setEditing: YES];
@@ -1892,10 +1894,11 @@ else
     {
         self.editMode = @"AddBefore";
          self.backToParentButton.title = @"Read Me";
+        self.preferencesandModeName.titleLabel.text = @"Add ^ Mode";
         self.allowDragReorder = YES;
         self.insertMode = YES;
         [self setEditing: YES];
-        self.editModeButton.title = @">Add-";
+        self.editModeButton.title = @">Add v";
         [self cellreloader];
         
     }
@@ -1903,6 +1906,7 @@ else
     {
         self.editMode = @"AddAfter";
         self.editModeButton.title = @">Check";
+        self.preferencesandModeName.titleLabel.text = @"Add v Mode";
          self.backToParentButton.title = @"Read Me";
         self.allowDragReorder = YES;
         self.insertMode = YES;
@@ -1912,6 +1916,7 @@ else
     else if ([self.editMode isEqual: @"AddAfter"])
     {
         self.editMode = @"Navigate";
+        self.preferencesandModeName.titleLabel.text = @"Check Mode";
         if ([self.listParent isEqual: @"MASTER LIST"])
         {
             self.backToParentButton.title = @"Read Me";

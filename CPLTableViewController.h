@@ -31,6 +31,7 @@ Kal *kal;
 - (IBAction)readListButton:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UILabel *listLabel;
+@property (weak, nonatomic) IBOutlet UIButton *preferencesandModeName;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *editModeButton;
 - (IBAction)changeEditMode:(id)sender;

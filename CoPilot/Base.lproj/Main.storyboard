@@ -87,6 +87,7 @@
                         <outlet property="backToParentButton" destination="2Xg-su-ogu" id="6yA-0Q-f62"/>
                         <outlet property="editModeButton" destination="InH-W6-C7o" id="7dl-fU-LUt"/>
                         <outlet property="listLabel" destination="YK1-wk-4K2" id="ef1-Nc-v9g"/>
+                        <outlet property="preferencesandModeName" destination="3Yt-QF-NI1" id="ipQ-MY-kng"/>
                         <outlet property="readListButton" destination="EAc-pg-uHQ" id="ebm-CY-2jM"/>
                         <segue destination="zdP-xx-fqQ" kind="custom" identifier="slideShow" customClass="CustomSegue" id="vVf-P9-Wtn"/>
                         <segue destination="nGE-oO-E3Q" kind="custom" identifier="AddToList" id="RTF-8U-dov"/>
