@@ -1375,8 +1375,6 @@ else
     CheckListItem *item  = self.checkListItems[priorrow];// this is the item that moved
     
 
-    
-
     if (newrow < priorrow) //item moved up
     {
         if (newrow > 0) // the new position is after the start of the list
@@ -1460,15 +1458,28 @@ else
             [self updatePriorityofItem:item];
         }
     }
+    [self loadCurrentParentList];
+    [self cellreloader];
 }
+
+//UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"updating priority of"
+//                                                message:  [NSString stringWithFormat: @"key %ld,to %ld", item.itemKey, item.itemPriority]
+//                                               delegate:self
+//                                      cancelButtonTitle:@"OK"
+//                                      otherButtonTitles:nil];
+//[alert show];
 
 - (void) updatePriorityofItem: (CheckListItem *) item
 {
+
+    
     // update the task in the database
     sqlite3_stmt    *statement;
     const char *dbpath = [_databasePath UTF8String];
     if (sqlite3_open(dbpath, &_checklistDB) == SQLITE_OK)
     {
+
+        
         NSString *updateSQL = [NSString stringWithFormat:
                                @"UPDATE CHECKLISTSBYKEY SET PRIORITY=%ld WHERE ID=%ld",
                                item.itemPriority, item.itemKey];
@@ -1887,6 +1898,7 @@ else
             [self setEditing: YES];
             self.addItemPriority = 1;
             [self performSegueWithIdentifier: @"AddToList" sender: self];
+            
         }
         
     }
@@ -1911,6 +1923,7 @@ else
         self.allowDragReorder = YES;
         self.insertMode = YES;
         [self setEditing: YES];
+        [self cellreloader];
         
     }
     else if ([self.editMode isEqual: @"AddAfter"])
@@ -1928,6 +1941,7 @@ else
         self.allowDragReorder = NO;
         [self setEditing: NO];
         self.editModeButton.title = @">Edit";
+        [self cellreloader];
     }
 }
 
@@ -2016,7 +2030,7 @@ else
     
 - (IBAction)readListButton:(id)sender
 {
-if (self.currentcellcount > 0)
+if (self.currentcellcount > 0  && [self.editMode isEqual: @"Navigate"])
 {
     [self slideShowForEntireList];
 
@@ -2068,14 +2082,7 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%C 
     self.currentcellcount = [self.currentcells count];
     [self cellchecker];
     
-//    int *aCount = [self.checkListItems count];
-//    
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"self.currentcellcount and self.checkListItems count"
-//    message:  [NSString stringWithFormat: @"%d,%d", self.currentcellcount, aCount]
-//                                                   delegate:self
-//                                          cancelButtonTitle:@"OK"
-//                                          otherButtonTitles:nil];
-//    [alert show];
+
 
     
 }
