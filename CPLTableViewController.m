@@ -756,6 +756,7 @@ if (self.isViewLoaded && self.view.window)
 }
 else
 {
+    {[self.fliteController say:@"Scheduled item delayed - please return to main window" withVoice:self.slt];}
     [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:5]; // check again in 5 seconds
 }
 }
@@ -1081,7 +1082,7 @@ else
     self.allowDragReorder = NO;
     self.insertMode = NO;
     self.editMode = @"Navigate";
-    self.editModeButton.title = @">Edit";
+    self.editModeButton.title = @"-> Edit";
     self.backToParentButton.title = @"Read Me";
 
     self.checkListItems = [[NSMutableArray alloc] init];
@@ -1885,13 +1886,13 @@ else
             self.allowDragReorder = YES;
             self.insertMode = NO;
             [self setEditing: YES];
-            self.editModeButton.title = @">Add ^";
+            self.editModeButton.title = @"-> Add ^";
             self.preferencesandModeName.titleLabel.text = @"Edit Mode";
         }
         else
         {
             self.editMode = @"AddAfter";
-            self.editModeButton.title = @"Nav";
+            self.editModeButton.title = @"-> Check";
              self.preferencesandModeName.titleLabel.text = @"Add v Mode";
             self.allowDragReorder = YES;
             self.insertMode = YES;
@@ -1910,14 +1911,14 @@ else
         self.allowDragReorder = YES;
         self.insertMode = YES;
         [self setEditing: YES];
-        self.editModeButton.title = @">Add v";
+        self.editModeButton.title = @"-> Add v";
         [self cellreloader];
         
     }
     else if ([self.editMode isEqual: @"AddBefore"])// edit mode is "Insert"
     {
         self.editMode = @"AddAfter";
-        self.editModeButton.title = @">Check";
+        self.editModeButton.title = @"-> Check";
         self.preferencesandModeName.titleLabel.text = @"Add v Mode";
          self.backToParentButton.title = @"Read Me";
         self.allowDragReorder = YES;
@@ -1940,7 +1941,7 @@ else
         }
         self.allowDragReorder = NO;
         [self setEditing: NO];
-        self.editModeButton.title = @">Edit";
+        self.editModeButton.title = @"-> Edit";
         [self cellreloader];
     }
 }
