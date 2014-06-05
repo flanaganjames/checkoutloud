@@ -802,7 +802,7 @@ else
     }
         NSString *aTitle = [NSString stringWithFormat: @"%@ Item Scheduled", aTDItem.itemName];
         UIAlertView *message = [[UIAlertView alloc] initWithTitle:aTitle
-            message:[NSString stringWithFormat: @"Repetitions: %d at intervals of %d hours, %d minues and %d seconds",aTDItem.repeatNumber, aTDItem.delayHours, aTDItem.delayMinutes, aTDItem.delaySeconds ]
+            message:[NSString stringWithFormat: @"Repetitions: %d at intervals of %d hours, %d minutes and %d seconds",aTDItem.repeatNumber, aTDItem.delayHours, aTDItem.delayMinutes, aTDItem.delaySeconds ]
 
                                                  delegate:nil
                                         cancelButtonTitle:@"OK"

@@ -23,6 +23,12 @@
         NSString *buildName = [[NSString alloc] init];
         buildName = [self.itemName.text uppercaseString];
         
+        if ([self.delaySeconds.text isEqual: @""]) {self.delaySeconds.text = @"0";}
+        if ([self.delayMinutes.text isEqual: @""]) {self.delayMinutes.text = @"0";}
+        if ([self.delayHours.text isEqual: @""]) {self.delayHours.text = @"0";}
+        if ([self.repeatTimes.text isEqual: @""]) {self.repeatTimes.text = @"1";}
+        
+        
         //if any non-zero delay then build the name
         if (![self.delaySeconds.text isEqual: @"0"] | ![self.delayMinutes.text isEqual: @"0"] | ![self.delayHours.text isEqual: @"0"])
         {
