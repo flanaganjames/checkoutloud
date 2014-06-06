@@ -38,6 +38,14 @@
     }
     
 }
+
+- (void) pocketsphinxDidResumeRecognition {
+	NSLog(@"SlideShow Pocketsphinx has resumed recognition.");
+    
+
+
+}
+
 //end openears stuff
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -449,18 +457,22 @@
     [self handleQuitConfirm];
 }
 
-- (void) resetWaitForFlite
-{
-    self.waitForFlite = NO;
+
+- (void) fliteDidFinishSpeaking {
+     self.waitForFlite = NO;
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Flite Finished"
+//                                                    message:  [NSString stringWithFormat: @"Resume"]
+//                                                   delegate:self
+//                                          cancelButtonTitle:@"OK"
+//                                          otherButtonTitles:nil];
+//    [alert show];
 }
 
 - (void) passToFlite: (NSString *) sayThis
 {
     if (self.allowSpeak)
     {
-        self. fliteWaitInterval = 4 + [sayThis length]/30;
         self.waitForFlite = YES;
-        [self performSelector:@selector(resetWaitForFlite) withObject:nil afterDelay: self. fliteWaitInterval];
         [self.fliteController say:sayThis withVoice:self.slt];}
 }
 @end
