@@ -26,7 +26,7 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *listItemNumber;
 @property (weak, nonatomic) IBOutlet UITextField *listItemName;
-@property (weak, nonatomic) IBOutlet UIView *clickView;
+
 @property BOOL checkedItemsHaveBeenSkipped;
 @property NSMutableArray *checkedItemKeys;
 @property NSString *listParent;
@@ -47,4 +47,5 @@
 @property (nonatomic, strong) UISwipeGestureRecognizer *rightSwipeGestureRecognizer;
 @property (nonatomic, strong) UISwipeGestureRecognizer *upSwipeGestureRecognizer;
 @property (nonatomic, strong) UITapGestureRecognizer * tapGestureRecognizer;
+@property BOOL waitForFlite;
 @end

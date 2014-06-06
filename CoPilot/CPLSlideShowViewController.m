@@ -11,8 +11,7 @@
 @interface CPLSlideShowViewController ()
 @property NSMutableArray *parentHierarchy;
 @property NSString *removingParent;
-@property BOOL continueRepeat;
-@property int repeatDelay;
+@property int fliteWaitInterval;
 @end
 
 @implementation CPLSlideShowViewController
@@ -30,12 +29,12 @@
 
         
         
-        [self nextSlide];
+        [self nextSlideAfterWait];
     }
     
     if ([hypothesis  isEqual: @" SAY AGAIN"] | [hypothesis  isEqual: @" REPEAT"])
     {
-        [self previousSlide];
+        [self previousSlideAfterWait];
     }
     
 }
@@ -58,8 +57,7 @@
     _listItemName.text = self.currentCheckListItem.itemName;
     _listItemNumber.text = [NSString stringWithFormat: @"%ld", self.currentCheckListItem.itemPriority];
     NSString *sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listParentHierarchy.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
-    if (self.allowSpeak)
-    {[self.fliteController say:sayThis withVoice:self.slt];}
+    [self passToFlite:sayThis];
 }
 
 
@@ -68,7 +66,7 @@
     [super viewDidLoad];
     self.removingParent = @"";
     
-    self.repeatDelay = 7;
+    self.waitForFlite =NO;
     
     if (self.checkedItemsHaveBeenSkipped)
     {
@@ -123,11 +121,8 @@
     {
         sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listParentHierarchy.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
     }
-    if (self.allowSpeak)
-    {[self.fliteController say:sayThis withVoice:self.slt];
-        self.continueRepeat = YES; //this will be set to NO when quit slideshow or when finish
-        [self performSelector:@selector(repeatSameSlide) withObject:nil afterDelay:self.repeatDelay ];
-    }
+    [self passToFlite:sayThis];
+    
     //if first item is resuming a checklist immeidately after some TD items move the TD items to the tobscheduled array
     [self moveifpassScheduledItem:self.currentCheckListItem];
 }
@@ -162,41 +157,20 @@
     [self.unscheduledTDItems removeAllObjects];
 }
 
-- (void) repeatSameSlide
+- (void) nextSlideAfterWait
 {
-    if (self.continueRepeat)
+    if (self.waitForFlite)
     {
-
-        NSString *sayThis = @"";
-        if (self.currentCheckListItem.itemPriority == 0)
-        {
-            sayThis = [NSString stringWithFormat: @"item %@ has children ",  self.currentCheckListItem.itemName ];
-        }
-        else if (self.currentCheckListItem.itemPriority == -1)
-        {
-            sayThis = [NSString stringWithFormat: @"end of children of item %@",  self.currentCheckListItem.itemName ];
-        }
-        else
-        {
-            sayThis = [NSString stringWithFormat: @"item %ld is %@", self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
-        }
-        if (self.allowSpeak)
-        {
-            sayThis = [NSString stringWithFormat: @"%@", sayThis];
-            
-            [self.fliteController say:sayThis withVoice:self.slt];
-            
- //           [self performSelector:@selector(repeatSameSlide) withObject:nil afterDelay:self.repeatDelay ];
-            
-// with above commented out only one repeat will occur
-        }
-    
+        [self performSelector:@selector(nextSlideAfterWait) withObject:nil afterDelay: 1]; // try every second until waitForFlite is NO;
+    }
+    else
+    {
+        [self nextSlide];//then go to next slide
     }
 }
 
 - (void) nextSlide
 {
-    self.continueRepeat = NO;
     
     CheckListItem *anItem = self.checkListItems[self.currentrow];
 
@@ -239,12 +213,7 @@
         {
         sayThis = [NSString stringWithFormat: @"item %ld is %@", self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
         }
-        if (self.allowSpeak)
-        {[self.fliteController say:sayThis withVoice:self.slt];
-            self.continueRepeat = YES;
-         [self performSelector:@selector(repeatSameSlide) withObject:nil afterDelay:self.repeatDelay ];
-            
-        }
+        [self passToFlite:sayThis];
     }
     else // go to the next list
     {
@@ -274,23 +243,29 @@
             {
                 sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listParentHierarchy.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
             }
-            if (self.allowSpeak)
-            {[self.fliteController say:sayThis withVoice:self.slt];
-                self.continueRepeat = YES;
-            [self performSelector:@selector(repeatSameSlide) withObject:nil afterDelay:self.repeatDelay ];
-            }
+            [self passToFlite:sayThis];
         }
         else
         {
         //perform unwind programmatically
-            if (self.allowSpeak)
-            {
-                self.continueRepeat = NO;
-                [self.fliteController say:@"check list completed" withVoice:self.slt];}
+            NSString *sayThis = @"check list completed";
+            [self passToFlite: sayThis];
         // if arrive at end of list move all remaining unscheduled TD items to the tobescheduled array
-        [self moveremainingScheduledItem];
-        [self dismissViewControllerAnimated:YES completion:nil];
+            [self moveremainingScheduledItem];
+            [self dismissViewControllerAnimated:YES completion:nil];
         }
+    }
+}
+
+- (void) previousSlideAfterWait
+{
+    if (self.waitForFlite)
+    {
+        [self performSelector:@selector(nextSlideAfterWait) withObject:nil afterDelay: 1]; // try every second until waitForFlite is NO;
+    }
+    else
+    {
+        [self previousSlide];//then go to next slide
     }
 }
 
@@ -333,8 +308,7 @@
         {
             sayThis = [NSString stringWithFormat: @"item %ld is %@", self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
         }
-        if (self.allowSpeak)
-        {[self.fliteController say:sayThis withVoice:self.slt];}
+        [self passToFlite: sayThis];
     }
     else
     {
@@ -365,8 +339,7 @@
             {
                 sayThis = [NSString stringWithFormat: @"Checking list named \'%@\'. item %ld is %@", self.listParentHierarchy.text, self.currentCheckListItem.itemPriority, self.currentCheckListItem.itemName ];
             }
-            if (self.allowSpeak)
-            {[self.fliteController say:sayThis withVoice:self.slt];}
+            [self passToFlite: sayThis];
         }
     }
 }
@@ -377,29 +350,24 @@
     // Dispose of any resources that can be recreated.
 }
 
-//- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-//    [self nextSlide];
-//    [super touchesBegan:touches withEvent:event];
-//}
 
 - (void) handleTap:(UITapGestureRecognizer *)sender
 {
-    [self nextSlide];
+    [self nextSlideAfterWait];
 }
 
 - (void) handleSwipes:(UISwipeGestureRecognizer *)sender
 {
     if (sender.direction == UISwipeGestureRecognizerDirectionLeft)
     {
-        [self previousSlide];
-        //[self nextSlide];
+        [self previousSlideAfterWait];
+    
     }
     
     
     if (sender.direction == UISwipeGestureRecognizerDirectionRight)
     {
-       // [self previousSlide];
-        [self nextSlide];
+        [self nextSlideAfterWait];
     }
     
     if (sender.direction == UISwipeGestureRecognizerDirectionUp)
@@ -420,7 +388,6 @@
     }
     else if (buttonIndex == 1) {
         NSLog(@"OK Tapped. Quit checking this list");
-        self.continueRepeat = NO;
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
@@ -456,5 +423,20 @@
 
 - (IBAction)quitChecking:(id)sender {
     [self handleQuitConfirm];
+}
+
+- (void) resetWaitForFlite
+{
+    self.waitForFlite = NO;
+}
+
+- (void) passToFlite: (NSString *) sayThis
+{
+    if (self.allowSpeak)
+    {
+        self. fliteWaitInterval = 4 + [sayThis length]/15;
+        self.waitForFlite = YES;
+        [self performSelector:@selector(resetWaitForFlite) withObject:nil afterDelay: self. fliteWaitInterval];
+        [self.fliteController say:sayThis withVoice:self.slt];}
 }
 @end
