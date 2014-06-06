@@ -353,21 +353,45 @@
 
 - (void) handleTap:(UITapGestureRecognizer *)sender
 {
-    [self nextSlideAfterWait];
+    //[self nextSlideAfterWait];
+    if (self.waitForFlite)
+    {
+        // do nothing
+    }
+    else
+    {
+        [self nextSlide];
+    }
 }
 
 - (void) handleSwipes:(UISwipeGestureRecognizer *)sender
 {
     if (sender.direction == UISwipeGestureRecognizerDirectionLeft)
     {
-        [self previousSlideAfterWait];
+        //[self previousSlideAfterWait];
+        if (self.waitForFlite)
+        {
+            // do nothing
+        }
+        else
+        {
+            [self previousSlide];
+        }
     
     }
     
     
     if (sender.direction == UISwipeGestureRecognizerDirectionRight)
     {
-        [self nextSlideAfterWait];
+       // [self nextSlideAfterWait];
+        if (self.waitForFlite)
+        {
+            // do nothing
+        }
+        else
+        {
+            [self nextSlide];
+        }
     }
     
     if (sender.direction == UISwipeGestureRecognizerDirectionUp)
@@ -434,7 +458,7 @@
 {
     if (self.allowSpeak)
     {
-        self. fliteWaitInterval = 4 + [sayThis length]/15;
+        self. fliteWaitInterval = 4 + [sayThis length]/30;
         self.waitForFlite = YES;
         [self performSelector:@selector(resetWaitForFlite) withObject:nil afterDelay: self. fliteWaitInterval];
         [self.fliteController say:sayThis withVoice:self.slt];}
