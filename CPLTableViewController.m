@@ -5,12 +5,11 @@
 //  Created by James Flanagan on 3/8/14.
 //  Copyright (c) 2014 James Flanagan. All rights reserved.
 //
-// Plans: cut and Move, prepopulate database, timer functions, dressing it up
+
 
 #import "CPLTableViewController.h"
 #import "CheckListItem.h"
 #import <OpenEars/LanguageModelGenerator.h>
-//#import "CPLSecondViewController.h"
 #import "CPLAddListItemViewController.h"
 #import "CPLMUDViewController.h"
 #import "CPLSlideShowViewController.h"
@@ -53,6 +52,7 @@
 
 @property BOOL allowSpeak;
 @property BOOL allowListen;
+@property BOOL waitForFlite;
 @end
 
 @implementation CPLTableViewController
@@ -121,8 +121,8 @@
                 if (![self.listParent isEqual: @"MASTER LIST"]) //
                 {
                     self.listParent = self.listGrandParent;
-                    if (self.allowSpeak)
-                    {[self.fliteController say:self.listParent withVoice:self.slt];}
+                    [self passToFlite:self.listParent];
+
                     self.listParentKey = self.listGrandParentKey;
                     [self getGrandParent];
                     self.listLabel.text = self.listParent;
@@ -184,9 +184,7 @@
     [self.tableView selectRowAtIndexPath:self.currentcellpaths[self.currentrow ] animated:NO scrollPosition:            UITableViewScrollPositionMiddle];
     NSString *text = item.itemName;
     
-    if (self.allowSpeak)
-    {[self.fliteController say: text withVoice:self.slt];}
-    //    [self.fliteController say: text withVoice:self.kal];
+    [self passToFlite:text];
 }
 
 - (void)loadCurrentParentList {
@@ -663,8 +661,7 @@
         [self findAllDescendantItemsbyKey:itemParent.itemKey];
         if (self.checkedItemsHaveBeenSkipped)
         {
-            if (self.allowSpeak)
-            {[self.fliteController say:@"Previously checked Items Will be Skipped" withVoice:self.slt];}
+            [self passToFlite:@"Previously checked Items Will be Skipped"];
         }
         if ([self.descendantItems count] > 0)
         {
@@ -701,8 +698,7 @@
         [self findAllDescendantItemsbyKey:aKey];
         if (self.checkedItemsHaveBeenSkipped)
         {
-            if (self.allowSpeak)
-            {[self.fliteController say:@"Previously checked Items Will be Skipped" withVoice:self.slt];}
+            [self passToFlite:@"Previously checked Items Will be Skipped"];
         }
         if ([self.descendantItems count] > 0)
         {
@@ -737,8 +733,7 @@ if (self.isViewLoaded && self.view.window)
     [self findAllDescendantItemsbyKey:aKey];
     if (self.checkedItemsHaveBeenSkipped)
     {
-        if (self.allowSpeak)
-        {[self.fliteController say:@"Previously checked Items Will be Skipped" withVoice:self.slt];}
+        [self passToFlite:@"Previously checked Items Will be Skipped"];
     }
     if ([self.descendantItems count] > 0)
     {
@@ -756,8 +751,10 @@ if (self.isViewLoaded && self.view.window)
 }
 else
 {
-    {[self.fliteController say:@"Scheduled item delayed - please return to main window" withVoice:self.slt];}
-    [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:5]; // check again in 5 seconds
+    //note this flite call deliberately is not contingent upon preferences allowing speech.  This occurs when main view is not in view and user needs to be reminded to return to main view for this time delayed scheduled event
+    [self.fliteController say:@"Scheduled item delayed - please return to main window" withVoice:self.slt];
+    
+    [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:5]; // try again in 5 seconds
 }
 }
 
@@ -784,7 +781,6 @@ else
         CPLTimeDelayItem *aTDItemCopy = [self copyTDItem:aTDItem];
         long aTimeinSeconds = (aCounter+1)*aTDItem.totalDelaySeconds;
         NSDate *now = [NSDate date];
-//        long aTimeFudge = aTimeinSeconds/60;
         NSDate *newDate1 = [now addTimeInterval:aTimeinSeconds];
         aTDItemCopy.setDateTime = newDate1;
         [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItemCopy afterDelay:aTimeinSeconds];
@@ -925,7 +921,7 @@ else
 
 
 
-//commands for items in all checklists
+//also support commands for items in Master List
     const char *dbpath = [_databasePath UTF8String];
     sqlite3_stmt    *statement;
     
@@ -949,7 +945,6 @@ else
         }
         sqlite3_close(_checklistDB);
     }
-    
 
 }
 
@@ -971,8 +966,7 @@ else
     [self loadSpeechCommands];
     [self loadLanguageSet];
     [self changelanguageset]; //changes to the recreated language model
-    if (self.allowSpeak)
-    {[self.fliteController say:self.listParent withVoice:self.slt];}
+    [self passToFlite:self.listParent];
     
 }
 
@@ -983,7 +977,7 @@ else
 }
 
 
-// not used but shows how to have a second alertview
+// no longer used but this shows how to have and handle a second type of alertview
 - (void) handleAskResetCheckMarks
 {
     UIAlertView *alerttwo = [[UIAlertView alloc] initWithTitle:@"Do you want to reset " message:@" and review items already marked with checkmarks?" delegate:self cancelButtonTitle:@"No, SKIP them." otherButtonTitles:@"YES!",nil];
@@ -1014,7 +1008,7 @@ else
 }
 
 
-//this method should not get called - see handleTap gesture
+//this method should no longer get called - see handleTap gesture
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
@@ -1072,6 +1066,7 @@ else
 {
     [super viewDidLoad];
     
+    //readListButton is the button at the bottom of the main view
     self.readListButton.layer.borderWidth = 2;
     self.readListButton.layer.cornerRadius = 10.0;
     self.readListButton.layer.borderColor = [UIColor blueColor].CGColor;
@@ -1081,6 +1076,7 @@ else
     self.allowListen = YES;
     self.allowDragReorder = NO;
     self.insertMode = NO;
+    self.waitForFlite = NO;
     self.editMode = @"Navigate";
     self.editModeButton.title = @"-> Edit";
     self.backToParentButton.title = @"Read Me";
@@ -1113,7 +1109,6 @@ else
     NSString *currentPath;
     currentPath = [filemgr currentDirectoryPath]; // this should be root
     NSString *distributedDB;
-//    distributedDB = [[NSString alloc] initWithString: [currentPath stringByAppendingPathComponent: @"checklist.db"]];
     
     distributedDB = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"checklist.db"];
 
@@ -1144,22 +1139,6 @@ else
         { NSLog(@"%@", @"distributed file not found");}
         
         
-//        const char *dbpath = [_databasePath UTF8String];
-//        if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
-//        {
-//            char *errMsg;
-//            const char *sql_stmt =
-//            "CREATE TABLE IF NOT EXISTS CHECKLISTSBYKEY (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME, PRIORITY, PARENTKEY)";
-//            if (sqlite3_exec(_checklistDB, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK)
-//            {
-//                //_status.text = @"Failed to create table";
-//            }
-//            sqlite3_close(_checklistDB);
-//        }
-//        else
-//        {
-//            //    _status.text = @"Failed to open/create database";
-//        }
     }
 
     
@@ -1167,35 +1146,24 @@ else
     [self loadSpeechCommands];
     [self loadLanguageSet];
     [self startlanguageset];
-    [self cellreloader]; //[self.tableView reloadData];
+    [self cellreloader];
+
+//[self.tableView reloadData];
 //    [self changelanguageset];
     
-    //start openears stuff
+//start openears stuff
     
     
     [OpenEarsLogging startOpenEarsLogging];
     
     [self.openEarsEventsObserver setDelegate:self];
     
-    
-    if (self.allowSpeak)
-    {[self.fliteController say:@"WELCOME TO CHECK OUT LOUD" withVoice:self.slt];}
+    [self passToFlite:@"WELCOME TO CHECK OUT LOUD"];
 
-
-//    [self.fliteController say:@"Hey Boss.  Another day, another dollar." withVoice:self.kal];
     
 // remember to add <OpenEarsEventsObserverDelegate> to the interface definition line in the .h file
     
-
-    
-//    self.listenerStatus.text = @"Listening";
-    
 //end of openears stuff
-// Uncomment the following line to preserve selection between presentations.
-// self.clearsSelectionOnViewWillAppear = NO;
-
-// Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-// self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     self.leftSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipes:)];
     self.rightSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipes:)];
@@ -1338,11 +1306,6 @@ else
         }
         if ([self.editMode isEqual: @"AddAfter"])
         {
-//            long row = [self.checkListItems count] - 1;
-//            CheckListItem *lastItem  = self.checkListItems[row];
-//            long nextPriority = lastItem.itemPriority + 1;
-//            
-//            self.addItemPriority = nextPriority;
             
             long row = [indexPath row];
             CheckListItem *itemInsertBelow  = self.checkListItems[row];
@@ -1463,12 +1426,6 @@ else
     [self cellreloader];
 }
 
-//UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"updating priority of"
-//                                                message:  [NSString stringWithFormat: @"key %ld,to %ld", item.itemKey, item.itemPriority]
-//                                               delegate:self
-//                                      cancelButtonTitle:@"OK"
-//                                      otherButtonTitles:nil];
-//[alert show];
 
 - (void) updatePriorityofItem: (CheckListItem *) item
 {
@@ -1531,17 +1488,7 @@ else
         
         addViewController.listParent = self.listParent;
         addViewController.defaultPriority = self.addItemPriority;
-         
-//        if ([self.checkListItems count] > 0)
-//        {
-//            NSInteger lastElement = [self.checkListItems count] - 1;
-//            CheckListItem *item = self.checkListItems[lastElement];
-//            addViewController.defaultPriority = item.itemPriority + 1;
-//        }
-//        else
-//        {
-//            addViewController.defaultPriority = 1;
-//        }
+        
     }
     
     if ([[segue identifier] isEqualToString:@"UpdateMainList"])
@@ -1642,14 +1589,10 @@ else
             {
             }
             sqlite3_finalize(statement);
-//            sqlite3_close(_checklistDB);
-//to do the followin (get itemkey, need to do it before the close
+
         }
         
-        //need to get the added item's itemkey
 
-//        if (sqlite3_open(dbpath, &(_checklistDB)) == SQLITE_OK)
-//        {
             NSString *querySQL = [NSString stringWithFormat: @"SELECT last_insert_rowid()"];
             const char *query_stmt = [querySQL UTF8String];
             
@@ -1664,8 +1607,6 @@ else
                 sqlite3_finalize(statement);
             }
             sqlite3_close(_checklistDB);
-//        }
-        
 
         
         // now that we have its itemkey we can add the item to the checklists
@@ -1753,6 +1694,7 @@ else
     
 }
 
+//no alert for delete is shown since changed to using edit mode
 - (void) handleUpdateDelete: (CheckListItem *) anItem
 {
     self.updatingItem = anItem;
@@ -1760,10 +1702,10 @@ else
     alertone.tag = 1;
     [alertone show];
 
-    
 }
 
-
+//no alert for delete is shown since changed to using edit mode
+//no alert for reset checkmarks is shown
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     switch (alertView.tag)
@@ -1959,11 +1901,11 @@ else
         }
             
         [self loadCurrentParentList];
-        if (self.allowSpeak)
-        {[self.fliteController say:self.listParent withVoice:self.slt];}
+        [self passToFlite:self.listParent];
+       
         [self cellreloader]; //[self.tableView reloadData];
-        if (self.allowSpeak)
-        {[self.fliteController say:self.listParent withVoice:self.slt];}
+        
+        [self passToFlite:self.listParent];
         [self loadSpeechCommands];
         [self loadLanguageSet];
         [self changelanguageset]; //changes to the recreated language model
@@ -2031,11 +1973,11 @@ else
     
 - (IBAction)readListButton:(id)sender
 {
-if (self.currentcellcount > 0  && [self.editMode isEqual: @"Navigate"])
-{
-    [self slideShowForEntireList];
+    if (self.currentcellcount > 0  && [self.editMode isEqual: @"Navigate"])
+    {
+        [self slideShowForEntireList];
 
-}// end if currentcellcount > 0
+    }// end if currentcellcount > 0
 }
 
 -(void) showReadMe
@@ -2043,8 +1985,6 @@ if (self.currentcellcount > 0  && [self.editMode isEqual: @"Navigate"])
     
 CustomIOS7AlertView *alert = [[CustomIOS7AlertView alloc] init];
 
-
-    
 NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%CModify this checklist w Edit modes.\n%CItems may have descendants. Optionally, items may schedule a time-delayed checklist w repetitions of the item and its descendants. See examples on BEFORE TAKEOFF list.\n%CSwipe right to start checking an item and its descendants. A \"slide show\"  will be created to \"wrap\" through the descendants - try the built in example PREFLIGHT to illustrate the \"wrap\". \n%CIn the \"slide show\" you may tap anywhere to indicate an item is done. You may also respond by saying \"check\", \"affirmative\", \"consider it done\". One audible reminder will occur if you do not check item within 7 s. \n%CSay \"repeat\" or \"say again\" or swipe left to repeat an item. \n%CWhen ambient noise causes unwanted results, voice commands can be disabled: see \"Preferences\" (gear symbol) for app options.\n%CSpeech recognition uses the OpenEars(R) engine.\n%CNot intended to replace any other required checklist. \n%CUse wisely and at your own risk.", (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022  ];
     
 [alert setContainerView:[self createAlertView:message]];
@@ -2065,8 +2005,7 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%CM
     myTextView.text = msg;
     myTextView.font = [UIFont fontWithName:@"verdana" size:14];
     myTextView.editable = NO;
-    //some other setup like setting the font for the UITextView...
-//    [myTextView sizeToFit];
+
     [demoView addSubview:myTextView];
     
     return demoView;
@@ -2082,10 +2021,6 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%CM
     self.currentcellpaths = [self.tableView indexPathsForVisibleRows];
     self.currentcellcount = [self.currentcells count];
     [self cellchecker];
-    
-
-
-    
 }
 
 - (void) cellchecker
@@ -2135,83 +2070,46 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%CM
 
 - (void) handleTap:(UITapGestureRecognizer *)sender
 {
-   // edit current selected element
-    
-    CGPoint location = [sender locationInView:self.tableView];
-    NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
-    
-//UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"indexpath"
-//    message:[NSString stringWithFormat: @"%@", swipedIndexPath]
-//
-//                                                 delegate:nil
-//                                        cancelButtonTitle:@"OK"
-//                                        otherButtonTitles:nil];
-//[message show];
-    
-    if ([self.editMode isEqual: @"Navigate"] && swipedIndexPath)
+    if (self.waitForFlite)
     {
-    [self respondSelectRow:swipedIndexPath];
+        // do nothing
     }
-    
-    if ([self.editMode isEqual: @"Edit"] && swipedIndexPath)
+    else
     {
-        [self respondModifyRow:swipedIndexPath];
+        CGPoint location = [sender locationInView:self.tableView];
+        NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
+        
+        if ([self.editMode isEqual: @"Navigate"] && swipedIndexPath)
+        {
+        [self respondSelectRow:swipedIndexPath];
+        }
+        
+        if ([self.editMode isEqual: @"Edit"] && swipedIndexPath)
+        {
+            [self respondModifyRow:swipedIndexPath];
+        }
     }
 }
-
-//- (void) handleTap:(UITapGestureRecognizer *)sender
-//{
-//    //start a slide show to check the current selected element and its descendants
-//    
-//    CGPoint location = [sender locationInView:self.tableView];
-//    NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
-//    
-//    [self slideShowForSelectRow:swipedIndexPath];
-//
-//}
 
 
 - (void) handleSwipes:(UISwipeGestureRecognizer *)sender
 {
-//    if (sender.direction == UISwipeGestureRecognizerDirectionLeft)
-//    {
-//        //edit current selected element?
-//        CGPoint location = [sender locationInView:self.tableView];
-//        NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
-//        UITableViewCell *cell  = [self.tableView cellForRowAtIndexPath:swipedIndexPath];
-//        
-//        [self performSegueWithIdentifier: @"UpdateMainList" sender: cell];
-//    }
-    
-    
     if (sender.direction == UISwipeGestureRecognizerDirectionRight)
     {
-       //check the current selected element and its descendants
-        
-        CGPoint location = [sender locationInView:self.tableView];
-        NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
-
-        [self slideShowForSelectRow:swipedIndexPath];
+       //check slide show for the current selected element and its descendants
+    
+        if (self.waitForFlite)
+        {
+            // do nothing
+        }
+        else
+        {
+            CGPoint location = [sender locationInView:self.tableView];
+            NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
+            [self slideShowForSelectRow:swipedIndexPath];
+        }
 
     }
-    
-//    if (sender.direction == UISwipeGestureRecognizerDirectionRight)
-//    {
-//    // navigate
-//        CGPoint location = [sender locationInView:self.tableView];
-//        NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
-//        if ([self.editMode isEqual: @"Navigate"])
-//        {
-//            [self respondSelectRow:swipedIndexPath];
-//        }
-//        
-//    }
-    
-//    if (sender.direction == UISwipeGestureRecognizerDirectionLeft)
-//    {
-//        // navigate up one level
-//        [self backToParent:self];
-//    }
     
     if (sender.direction == UISwipeGestureRecognizerDirectionDown)
     {
@@ -2219,5 +2117,24 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%CM
     }
 }
 
+- (void) fliteDidFinishSpeaking {
+    self.waitForFlite = NO;
+
+}
+
+- (void) passToFlite: (NSString *) sayThis
+{
+    if (self.allowSpeak)
+    {
+        self.waitForFlite = YES;
+        [self.fliteController say:sayThis withVoice:self.slt];}
+}
 
 @end
+
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Flite Finished"
+//                                                    message:  [NSString stringWithFormat: @"Resume"]
+//                                                   delegate:self
+//                                          cancelButtonTitle:@"OK"
+//                                          otherButtonTitles:nil];
+//    [alert show];
