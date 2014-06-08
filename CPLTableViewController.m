@@ -294,7 +294,7 @@
     return tempArray;
 }
 
-
+//this completes self.descendentitems which is used vy slideShowForEntireList (and some other similar methods) to create slide shows; would be better to change this to return the array; it also completes self.unscheduledTDItems which stages TDI for scheduling if the slide show returns having gone past that item's priority; see slideShowForEntireList for example
 - (void) findAllDescendantItemsbyKey:(long) parentKey
 {
     self.checkedItemsHaveBeenSkipped = NO;
@@ -456,6 +456,8 @@
     }
 }
 
+
+// returns the suffix describing the time delay if an item is a time delay item; returns nil otherwise indicating it is not a TDI.
 - (NSString *) suffixForTimeDelayItem: (CheckListItem *) aCLItem
 {
     NSString *tdsig = @""; // initialize suffix to empty
@@ -491,6 +493,7 @@
     return tdsig;
 }
 
+//desciphers the suffix of a CLItem, if it is a TDI, to create a TDI object
 - (CPLTimeDelayItem *) returnTDItem: (CheckListItem *) aCLItem
 {
     NSString *tdsig = @""; // initialize suffix to empty
@@ -636,10 +639,11 @@
 
 }
 
+
 - (void) slideShowForEntireList
 {
     
-    //this new approach simplifies slideshow so that there will never be more than one list in lists of lists;  need to remove logic that handles that
+    //this new approach simplifies slideshow so that there will never be more than one list in lists of lists;  need to remove logic that handles possible multiple lists
     [self.listOfLists removeAllObjects];
     [self.listOfListNames removeAllObjects];
     
@@ -718,48 +722,9 @@
 }
 
 
-- (void) slideShowForTimeDelayItem: (CPLTimeDelayItem *) aTDItem
-{   // change this to create a queue of events that are due. Then in viewdidappear check that queue and do the slideshow then
-if (self.isViewLoaded && self.view.window)
-{
-    [self.listOfLists removeAllObjects];
-    [self.listOfListNames removeAllObjects];
-    //self.checkingItem = aCLItem;
-    long aKey =  aTDItem.itemKey;
-    [self findAllDescendantKeysbyKey:aKey];
-    [self resetSelectedCheckMarks:self.descendantKeys];
-    
-    aTDItem.itemPriority = 1;
-    [self findAllDescendantItemsbyKey:aKey];
-    if (self.checkedItemsHaveBeenSkipped)
-    {
-        [self passToFlite:@"Previously checked Items Will be Skipped"];
-    }
-    if ([self.descendantItems count] > 0)
-    {
-        [self.listOfLists addObject:self.descendantItems];
-        [self.listOfListNames addObject:aTDItem.itemName];
-        [self performSegueWithIdentifier: @"slideShow" sender: self];
-    }
-    else
-    {
-        [self.descendantItems addObject: aTDItem];
-        [self.listOfLists addObject:self.descendantItems];
-        [self.listOfListNames addObject:@"Time Delay Item"];
-        [self performSegueWithIdentifier: @"slideShow" sender: self];
-    }
-}
-else
-{
-    //note this flite call deliberately is not contingent upon preferences allowing speech.  This occurs when main view is not in view and user needs to be reminded to return to main view for this time delayed scheduled event
-    [self.fliteController say:@"Scheduled item delayed - please return to main window" withVoice:self.slt];
-    
-    [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:5]; // try again in 5 seconds
-}
-}
 
 -(void) checkForUnscheduledTDItems
-//these are saved in the process of creating a slideshow (findAllDescItems) and then scheduled when the slideshow returns
+//these are saved in the process of creating a slideshow (findAllDescItems) and then scheduled when the slideshow returns in viewdidappear
 {
     int aCounter = 0;
     while (aCounter < [self.tobescheduledTDItems count])
@@ -773,6 +738,7 @@ else
     [self.unscheduledTDItems removeAllObjects];
 }
 
+//used by above checkForUnscheduledTDItems
 - (void) scheduleTimeDelayItem: (CPLTimeDelayItem *) aTDItem
 {
     int aCounter = 0;
@@ -807,6 +773,47 @@ else
     
 }
 
+// used by above scheduleTimeDelayItem
+- (void) slideShowForTimeDelayItem: (CPLTimeDelayItem *) aTDItem
+{
+    if (self.isViewLoaded && self.view.window)
+    {
+        [self.listOfLists removeAllObjects];
+        [self.listOfListNames removeAllObjects];
+        //self.checkingItem = aCLItem;
+        long aKey =  aTDItem.itemKey;
+        [self findAllDescendantKeysbyKey:aKey];
+        [self resetSelectedCheckMarks:self.descendantKeys];
+        
+        aTDItem.itemPriority = 1;
+        [self findAllDescendantItemsbyKey:aKey];
+        if (self.checkedItemsHaveBeenSkipped)
+        {
+            [self passToFlite:@"Previously checked Items Will be Skipped"];
+        }
+        if ([self.descendantItems count] > 0)
+        {
+            [self.listOfLists addObject:self.descendantItems];
+            [self.listOfListNames addObject:aTDItem.itemName];
+            [self performSegueWithIdentifier: @"slideShow" sender: self];
+        }
+        else
+        {
+            [self.descendantItems addObject: aTDItem];
+            [self.listOfLists addObject:self.descendantItems];
+            [self.listOfListNames addObject:@"Time Delay Item"];
+            [self performSegueWithIdentifier: @"slideShow" sender: self];
+        }
+    }
+    else
+    {
+        //note this flite call deliberately is not contingent upon preferences allowing speech.  This occurs when main view is not in view and user needs to be reminded to return to main view for this time delayed scheduled event
+        [self.fliteController say:@"Scheduled item delayed - please return to main window" withVoice:self.slt];
+        
+        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItem afterDelay:5]; // try again in 5 seconds
+    }
+}
+
 - (CPLTimeDelayItem *) copyTDItem: (CPLTimeDelayItem *) aTDItem
 {
     CPLTimeDelayItem *aTDItemCopy = [[CPLTimeDelayItem alloc] init];
@@ -836,7 +843,7 @@ else
     [self.timeDelayItems removeAllObjects];
 }
 
-
+// used to find descendants when deleting an item (which also deletes its descendants
 - (void) findAllDescendantKeysbyKey:(long) parentKey {
     
     [self.descendantKeys removeAllObjects];
@@ -948,7 +955,7 @@ else
 
 }
 
-
+//used by handletap in Check Mode
 - (void) respondSelectRow: (NSIndexPath *) myIndexPath
 {
     //NSIndexPath *myIndexPath = [self.tableView indexPathForSelectedRow];
@@ -970,6 +977,7 @@ else
     
 }
 
+//used by handletap in Edit Mode
 - (void) respondModifyRow: (NSIndexPath *) myIndexPath
 {
     UITableViewCell *cell  = [self.tableView cellForRowAtIndexPath:myIndexPath];
@@ -1161,7 +1169,7 @@ else
     [self passToFlite:@"WELCOME TO CHECK OUT LOUD"];
 
     
-// remember to add <OpenEarsEventsObserverDelegate> to the interface definition line in the .h file
+//NOTE when speech enabling a object, remember to add <OpenEarsEventsObserverDelegate> to the interface definition line in the .h file
     
 //end of openears stuff
     
@@ -1197,6 +1205,13 @@ else
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Memory warning received"
+                                                    message:  [NSString stringWithFormat: @"Do Something!"]
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 #pragma mark - Table view data source
@@ -1705,7 +1720,7 @@ else
 }
 
 //no alert for delete is shown since changed to using edit mode
-//no alert for reset checkmarks is shown
+//no alert for reset checkmarks is shown; may use in future
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     switch (alertView.tag)
@@ -1835,6 +1850,7 @@ else
         {
             self.editMode = @"AddAfter";
             self.editModeButton.title = @"-> Check";
+            self.backToParentButton.title = @"Read Me";
              self.preferencesandModeName.titleLabel.text = @"Add v Mode";
             self.allowDragReorder = YES;
             self.insertMode = YES;
