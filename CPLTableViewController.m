@@ -37,7 +37,6 @@
 @property BOOL *updatingDelete;
 @property BOOL skipCheckedItems;
 @property NSString *editMode;
-//@property BOOL insertMode;
 
 
 // @property UITableView *tableView;   // for loadView which cases failure
@@ -1081,7 +1080,6 @@
     self.skipCheckedItems = YES;
     self.allowSpeak = YES;
     self.allowListen = YES;
-//    self.insertMode = NO;
     [self setEditing: NO];
     self.waitForFlite = NO;
     self.editMode = @"Navigate";
@@ -1260,14 +1258,7 @@
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)aTableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-//    if(self.insertMode)
-//    {
         return UITableViewCellEditingStyleInsert;
-//    }
-//    else
-//    {
-//        return UITableViewCellEditingStyleDelete;
-//    }
 }
 
 
@@ -1825,7 +1816,6 @@
         {
             self.editMode = @"Edit";
             self.backToParentButton.title = @"Read Me";
-//            self.insertMode = YES;
             [self setEditing: YES];
             self.editModeButton.title = @"-> Check";
             [self cellreloader];
@@ -1837,7 +1827,6 @@
             self.editModeButton.title = @"-> Check";
             self.backToParentButton.title = @"Read Me";
              self.preferencesandModeName.titleLabel.text = @"Edit Mode";
-//            self.insertMode = YES;
             [self setEditing: YES];
             self.addItemPriority = 1;
             [self performSegueWithIdentifier: @"AddToList" sender: self];
