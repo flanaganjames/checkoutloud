@@ -1298,30 +1298,30 @@
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert)
     {
-        if ([self.editMode isEqual: @"AddBefore"])
-        {
-            // use addview as a custom segue to creat instance, then unwindAdd
-            long row = [indexPath row];
-            CheckListItem *itemInsertAbove  = self.checkListItems[row];
-            long insertItemPriority =  itemInsertAbove.itemPriority;
-            long changedPriority = insertItemPriority + 1;
-            //change the priorities of this and all subsequent items to +1
-            int aCounter = row;
-            int theCount = [self.checkListItems count] ;
-            while (aCounter < theCount)
-            {
-                CheckListItem *nextItem = self.checkListItems[aCounter];
-                nextItem.itemPriority = changedPriority;
-                [self updatePriorityofItem:nextItem];
-                aCounter += 1;
-                changedPriority += 1;
-            }
-            self.addItemPriority = insertItemPriority; //this item now has updatePriority
-            [self performSegueWithIdentifier: @"AddToList" sender: self];
-        }
-        if ([self.editMode isEqual: @"AddAfter"])
-        {
-            
+//        if ([self.editMode isEqual: @"AddBefore"])
+//        {
+//            // use addview as a custom segue to creat instance, then unwindAdd
+//            long row = [indexPath row];
+//            CheckListItem *itemInsertAbove  = self.checkListItems[row];
+//            long insertItemPriority =  itemInsertAbove.itemPriority;
+//            long changedPriority = insertItemPriority + 1;
+//            //change the priorities of this and all subsequent items to +1
+//            int aCounter = row;
+//            int theCount = [self.checkListItems count] ;
+//            while (aCounter < theCount)
+//            {
+//                CheckListItem *nextItem = self.checkListItems[aCounter];
+//                nextItem.itemPriority = changedPriority;
+//                [self updatePriorityofItem:nextItem];
+//                aCounter += 1;
+//                changedPriority += 1;
+//            }
+//            self.addItemPriority = insertItemPriority; //this item now has updatePriority
+//            [self performSegueWithIdentifier: @"AddToList" sender: self];
+//        }
+//        if ([self.editMode isEqual: @"Edit"])
+//        {
+        
             long row = [indexPath row];
             CheckListItem *itemInsertBelow  = self.checkListItems[row];
             long insertItemPriority =  itemInsertBelow.itemPriority + 1;
@@ -1340,7 +1340,7 @@
             self.addItemPriority = insertItemPriority; //this item now has updatePriority
             
             [self performSegueWithIdentifier: @"AddToList" sender: self];
-        }
+//        }
     }
 }
 
@@ -1709,7 +1709,7 @@
     
 }
 
-//no alert for delete is shown since changed to using edit mode
+
 - (void) handleUpdateDelete: (CheckListItem *) anItem
 {
     self.updatingItem = anItem;
@@ -1841,17 +1841,18 @@
             self.editMode = @"Edit";
             self.backToParentButton.title = @"Read Me";
             self.allowDragReorder = YES;
-            self.insertMode = NO;
+            self.insertMode = YES;
             [self setEditing: YES];
-            self.editModeButton.title = @"-> Add ^";
+            self.editModeButton.title = @"-> Check";
+            [self cellreloader];
             self.preferencesandModeName.titleLabel.text = @"Edit Mode";
         }
         else
         {
-            self.editMode = @"AddAfter";
+            self.editMode = @"Edit";
             self.editModeButton.title = @"-> Check";
             self.backToParentButton.title = @"Read Me";
-             self.preferencesandModeName.titleLabel.text = @"Add v Mode";
+             self.preferencesandModeName.titleLabel.text = @"Edit Mode";
             self.allowDragReorder = YES;
             self.insertMode = YES;
             [self setEditing: YES];
@@ -1862,30 +1863,6 @@
         
     }
     else if ([self.editMode isEqual: @"Edit"])
-    {
-        self.editMode = @"AddBefore";
-         self.backToParentButton.title = @"Read Me";
-        self.preferencesandModeName.titleLabel.text = @"Add ^ Mode";
-        self.allowDragReorder = YES;
-        self.insertMode = YES;
-        [self setEditing: YES];
-        self.editModeButton.title = @"-> Add v";
-        [self cellreloader];
-        
-    }
-    else if ([self.editMode isEqual: @"AddBefore"])// edit mode is "Insert"
-    {
-        self.editMode = @"AddAfter";
-        self.editModeButton.title = @"-> Check";
-        self.preferencesandModeName.titleLabel.text = @"Add v Mode";
-         self.backToParentButton.title = @"Read Me";
-        self.allowDragReorder = YES;
-        self.insertMode = YES;
-        [self setEditing: YES];
-        [self cellreloader];
-        
-    }
-    else if ([self.editMode isEqual: @"AddAfter"])
     {
         self.editMode = @"Navigate";
         self.preferencesandModeName.titleLabel.text = @"Check Mode";
@@ -2001,7 +1978,7 @@
     
 CustomIOS7AlertView *alert = [[CustomIOS7AlertView alloc] init];
 
-NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%CModify this checklist w Edit modes.\n%CItems may have descendants. Optionally, items may schedule a time-delayed checklist w repetitions of the item and its descendants. See examples on BEFORE TAKEOFF list.\n%CSwipe right to start checking an item and its descendants. A \"slide show\"  will be created to \"wrap\" through the descendants - try the built in example PREFLIGHT to illustrate the \"wrap\". \n%CIn the \"slide show\" you may tap anywhere to indicate an item is done. You may also respond by saying \"check\", \"affirmative\", \"consider it done\". One audible reminder will occur if you do not check item within 7 s. \n%CSay \"repeat\" or \"say again\" or swipe left to repeat an item. \n%CWhen ambient noise causes unwanted results, voice commands can be disabled: see \"Preferences\" (gear symbol) for app options.\n%CSpeech recognition uses the OpenEars(R) engine.\n%CNot intended to replace any other required checklist. \n%CUse wisely and at your own risk.", (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022  ];
+NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%CSwipe right to start checking an item and its descendants. A \"slide show\"  will be created to \"wrap\" through the descendants - try the built in example PREFLIGHT to illustrate the \"wrap\". \n%CIn the \"slide show\" you may tap anywhere to indicate an item is done. You may also respond by saying \"check\", \"affirmative\", \"consider it done\". Say \"repeat\" or \"say again\" or swipe left to repeat an item. \n%CAny item or one of its descendants may schedule a time-delayed checklist w repetitions of itself and its descendants. See examples on BEFORE TAKEOFF list.\n%CModify this checklist w Edit mode. Swipe left in Edit mode to delete.\n%CWhen ambient noise causes unwanted results, voice commands can be disabled: see \"Preferences\" (gear symbol) for app options.\n%CSpeech recognition uses the OpenEars(R) engine.\n%CNot intended to replace any other required checklist. \n%CUse wisely and at your own risk.", (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022, (unichar) 0x2022  ];
     
 [alert setContainerView:[self createAlertView:message]];
 
@@ -2126,6 +2103,30 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%CM
         }
 
     }
+    
+    if (sender.direction == UISwipeGestureRecognizerDirectionLeft)
+    {
+        //check slide show for the current selected element and its descendants
+        
+        if (self.waitForFlite)
+        {
+            // do nothing
+        }
+        else
+        {
+            CGPoint location = [sender locationInView:self.tableView];
+            NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
+            long row = [swipedIndexPath row];
+            CheckListItem *itemdeleting  = self.checkListItems[row];
+            
+            [self handleUpdateDelete:itemdeleting];
+        }
+        
+    }
+    
+    
+    
+
     
     if (sender.direction == UISwipeGestureRecognizerDirectionDown)
     {
