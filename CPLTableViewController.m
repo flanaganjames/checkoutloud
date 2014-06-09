@@ -36,7 +36,7 @@
 @property long addItemPriority;
 @property BOOL *updatingDelete;
 @property BOOL skipCheckedItems;
-@property BOOL allowDragReorder;
+//@property BOOL allowDragReorder;
 @property NSString *editMode;
 @property BOOL insertMode;
 
@@ -1082,7 +1082,7 @@
     self.skipCheckedItems = YES;
     self.allowSpeak = YES;
     self.allowListen = YES;
-    self.allowDragReorder = NO;
+//    self.allowDragReorder = NO;
     self.insertMode = NO;
     [self setEditing: NO];
     self.waitForFlite = NO;
@@ -1820,7 +1820,7 @@
         {
             self.editMode = @"Edit";
             self.backToParentButton.title = @"Read Me";
-            self.allowDragReorder = YES;
+//            self.allowDragReorder = YES;
             self.insertMode = YES;
             [self setEditing: YES];
             self.editModeButton.title = @"-> Check";
@@ -1833,7 +1833,7 @@
             self.editModeButton.title = @"-> Check";
             self.backToParentButton.title = @"Read Me";
              self.preferencesandModeName.titleLabel.text = @"Edit Mode";
-            self.allowDragReorder = YES;
+//            self.allowDragReorder = YES;
             self.insertMode = YES;
             [self setEditing: YES];
             self.addItemPriority = 1;
@@ -1854,7 +1854,7 @@
         {
             self.backToParentButton.title = @"Return";
         }
-        self.allowDragReorder = NO;
+//        self.allowDragReorder = NO;
         [self setEditing: NO];
         self.editModeButton.title = @"-> Edit";
         [self cellreloader];
