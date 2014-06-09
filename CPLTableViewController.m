@@ -1084,6 +1084,7 @@
     self.allowListen = YES;
     self.allowDragReorder = NO;
     self.insertMode = NO;
+    [self setEditing: NO];
     self.waitForFlite = NO;
     self.editMode = @"Navigate";
     self.editModeButton.title = @"-> Edit";
@@ -1276,51 +1277,30 @@
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        
-        long row = [indexPath row];
-        CheckListItem *itemupdating  = self.checkListItems[row];
-        long aKey =  itemupdating.itemKey;
-        [self findAllDescendantKeysbyKey:aKey];
-        while ([self.descendantKeys count] > 0) {
-            long eachKey = [self.descendantKeys[0] longValue];
-            [self deleteOneByKey:eachKey];
-            [self.descendantKeys removeObject:self.descendantKeys[0]];
-        }
-        [self deleteOneByKey:aKey];
-        
-        [self.checkListItems removeObjectAtIndex:indexPath.row];
-
-        
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-
-    }
-    else if (editingStyle == UITableViewCellEditingStyleInsert)
-    {
-//        if ([self.editMode isEqual: @"AddBefore"])
-//        {
-//            // use addview as a custom segue to creat instance, then unwindAdd
-//            long row = [indexPath row];
-//            CheckListItem *itemInsertAbove  = self.checkListItems[row];
-//            long insertItemPriority =  itemInsertAbove.itemPriority;
-//            long changedPriority = insertItemPriority + 1;
-//            //change the priorities of this and all subsequent items to +1
-//            int aCounter = row;
-//            int theCount = [self.checkListItems count] ;
-//            while (aCounter < theCount)
-//            {
-//                CheckListItem *nextItem = self.checkListItems[aCounter];
-//                nextItem.itemPriority = changedPriority;
-//                [self updatePriorityofItem:nextItem];
-//                aCounter += 1;
-//                changedPriority += 1;
-//            }
-//            self.addItemPriority = insertItemPriority; //this item now has updatePriority
-//            [self performSegueWithIdentifier: @"AddToList" sender: self];
+// Delete is enabled only for left swipe
+//    if (editingStyle == UITableViewCellEditingStyleDelete) {
+//        // Delete the row from the data source
+//        
+//        long row = [indexPath row];
+//        CheckListItem *itemupdating  = self.checkListItems[row];
+//        long aKey =  itemupdating.itemKey;
+//        [self findAllDescendantKeysbyKey:aKey];
+//        while ([self.descendantKeys count] > 0) {
+//            long eachKey = [self.descendantKeys[0] longValue];
+//            [self deleteOneByKey:eachKey];
+//            [self.descendantKeys removeObject:self.descendantKeys[0]];
 //        }
-//        if ([self.editMode isEqual: @"Edit"])
-//        {
+//        [self deleteOneByKey:aKey];
+//        
+//        [self.checkListItems removeObjectAtIndex:indexPath.row];
+//
+//        
+//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//
+//    }
+//    else
+        if (editingStyle == UITableViewCellEditingStyleInsert)
+    {
         
             long row = [indexPath row];
             CheckListItem *itemInsertBelow  = self.checkListItems[row];
@@ -2095,11 +2075,34 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%CS
         {
             // do nothing
         }
-        else
+        else if ([self.editMode isEqualToString:@"Navigate"])
         {
             CGPoint location = [sender locationInView:self.tableView];
             NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
             [self slideShowForSelectRow:swipedIndexPath];
+        }
+        else if ([self.editMode isEqualToString:@"Edit"])
+        {
+            CGPoint location = [sender locationInView:self.tableView];
+            NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
+            long row = [swipedIndexPath row];
+            CheckListItem *itemInsertBelow  = self.checkListItems[row];
+            long insertItemPriority =  itemInsertBelow.itemPriority + 1;
+            long changedPriority = insertItemPriority + 2;
+            //change the priorities of this and all subsequent items to +1
+            int aCounter = row + 1;
+            int theCount = [self.checkListItems count] ;
+            while (aCounter < theCount)
+            {
+                CheckListItem *nextItem = self.checkListItems[aCounter];
+                nextItem.itemPriority = changedPriority;
+                [self updatePriorityofItem:nextItem];
+                aCounter += 1;
+                changedPriority += 1;
+            }
+            self.addItemPriority = insertItemPriority; //this item now has updatePriority
+            
+            [self performSegueWithIdentifier: @"AddToList" sender: self];
         }
 
     }
@@ -2112,7 +2115,7 @@ NSString *message = [NSString stringWithFormat:@"Instructions & Disclaimers\n%CS
         {
             // do nothing
         }
-        else
+        else if ([self.editMode isEqualToString:@"Edit"])
         {
             CGPoint location = [sender locationInView:self.tableView];
             NSIndexPath *swipedIndexPath = [self.tableView indexPathForRowAtPoint:location];
