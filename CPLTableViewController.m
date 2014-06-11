@@ -1322,12 +1322,6 @@
     long newrow = [toIndexPath row];
     CheckListItem *item  = self.checkListItems[priorrow];// this is the item that moved
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"priorrow newrow"
-                                                    message:  [NSString stringWithFormat: @"prior %ld, new %ld", priorrow, newrow]
-                                                   delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-    [alert show];
     
     if (newrow < priorrow) //item moved up
     {
