@@ -28,3 +28,4 @@ Current version to be released
 No major features planned
 Next version
 GPS to enable making a checklist contingent on altitude, speed, or position
+
