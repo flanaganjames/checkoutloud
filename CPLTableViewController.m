@@ -751,7 +751,9 @@
         localNotif.fireDate = newDate1;
         localNotif.alertBody = @"Alert! CheckoutLoud scheduled check list due";
         localNotif.alertAction = NSLocalizedString(@"View Details", nil);
-        localNotif.soundName = UILocalNotificationDefaultSoundName;
+        localNotif.soundName = @"CheckOutLoudAlert.wav"; //UILocalNotificationDefaultSoundName;
+        
+        
 //        localNotif.applicationIconBadgeNumber = 1;
         [[UIApplication sharedApplication] scheduleLocalNotification:localNotif];
         
