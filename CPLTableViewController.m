@@ -1205,6 +1205,7 @@
     [self.view addGestureRecognizer:self.downSwipeGestureRecognizer];
     [self.view addGestureRecognizer:self.tapGestureRecognizer];
     
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 }
 
