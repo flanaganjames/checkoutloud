@@ -861,6 +861,13 @@
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 }
 
+-(void)appWillTerminate:(NSNotification*)note
+{
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    
+}
+
 // used to find descendants when deleting an item (which also deletes its descendants
 - (void) findAllDescendantKeysbyKey:(long) parentKey {
     
@@ -1209,6 +1216,11 @@
     
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    
+    [[NSNotificationCenter defaultCenter]   addObserver:self
+                                               selector:@selector(appWillTerminate:)
+                                                   name:UIApplicationWillTerminateNotification
+                                                 object:[UIApplication sharedApplication]];
 }
 
 
