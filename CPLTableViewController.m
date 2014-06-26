@@ -51,6 +51,7 @@
 @property BOOL allowSpeak;
 @property BOOL allowListen;
 @property BOOL waitForFlite;
+
 @end
 
 @implementation CPLTableViewController
@@ -746,6 +747,14 @@
         long aTimeinSeconds = (aCounter+1)*aTDItem.totalDelaySeconds;
         NSDate *now = [NSDate date];
         NSDate *newDate1 = [now addTimeInterval:aTimeinSeconds];
+        UILocalNotification *localNotif = [[UILocalNotification alloc] init];
+        localNotif.fireDate = newDate1;
+        localNotif.alertBody = @"Alert! CheckoutLoud scheduled check list due";
+        localNotif.alertAction = NSLocalizedString(@"View Details", nil);
+        localNotif.soundName = UILocalNotificationDefaultSoundName;
+//        localNotif.applicationIconBadgeNumber = 1;
+        [[UIApplication sharedApplication] scheduleLocalNotification:localNotif];
+        
         aTDItemCopy.setDateTime = newDate1;
         [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItemCopy afterDelay:aTimeinSeconds];
         //add it to the list of things to be done by the operating system
@@ -760,6 +769,10 @@
         // schedule the removal from list right after it is done
         aCounter += 1;
     }
+    
+    NSInteger anInt = [self.timeDelayItems count];
+    [UIApplication sharedApplication].applicationIconBadgeNumber = anInt;
+    
         NSString *aTitle = [NSString stringWithFormat: @"%@ Item Scheduled", aTDItem.itemName];
         UIAlertView *message = [[UIAlertView alloc] initWithTitle:aTitle
             message:[NSString stringWithFormat: @"Repetitions: %d at intervals of %d hours, %d minutes and %d seconds",aTDItem.repeatNumber, aTDItem.delayHours, aTDItem.delayMinutes, aTDItem.delaySeconds ]
@@ -833,12 +846,17 @@
 - (void) removeScheduledItemFromList: (CPLTimeDelayItem *) aTDItem
 {
     [self.timeDelayItems removeObject: aTDItem];
+    NSInteger anInt = [self.timeDelayItems count];
+    [UIApplication sharedApplication].applicationIconBadgeNumber = anInt;
 }
 
 - (void) cancelScheduledReminders
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [self.timeDelayItems removeAllObjects];
+
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 }
 
 // used to find descendants when deleting an item (which also deletes its descendants
@@ -1186,6 +1204,8 @@
     [self.view addGestureRecognizer:self.upSwipeGestureRecognizer];
     [self.view addGestureRecognizer:self.downSwipeGestureRecognizer];
     [self.view addGestureRecognizer:self.tapGestureRecognizer];
+    
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 }
 
 

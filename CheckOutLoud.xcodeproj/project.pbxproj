@@ -44,6 +44,7 @@
 		178A982F190D885C00E2E357 /* CPLSlideShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 178A982E190D885C00E2E357 /* CPLSlideShowViewController.m */; };
 		17B782B518F75999009FC64C /* check-Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 17B782B418F75999009FC64C /* check-Icon-Small.png */; };
 		17BD14A119310A5200CC82F5 /* CPLScheduledItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BD14A019310A5200CC82F5 /* CPLScheduledItemCell.m */; };
+		17C8BE4A195C7DB20035C8EF /* CheckOutLoudAlert.wav in Resources */ = {isa = PBXBuildFile; fileRef = 17C8BE49195C7DB20035C8EF /* CheckOutLoudAlert.wav */; };
 		17D5714A18D5474300663FAE /* CPLMUDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D5714918D5474300663FAE /* CPLMUDViewController.m */; };
 		17DA602F18FA38E4005D2F85 /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 17DA602E18FA38E4005D2F85 /* Icon-Small.png */; };
 		17DA603118FA3902005D2F85 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17DA603018FA3902005D2F85 /* Icon-Small@2x.png */; };
@@ -115,6 +116,7 @@
 		17B782B418F75999009FC64C /* check-Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "check-Icon-Small.png"; path = "../../Icons/PNG Images/greencheckmark/check-Icon-Small.png"; sourceTree = "<group>"; };
 		17BD149F19310A5100CC82F5 /* CPLScheduledItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLScheduledItemCell.h; sourceTree = "<group>"; };
 		17BD14A019310A5200CC82F5 /* CPLScheduledItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLScheduledItemCell.m; sourceTree = "<group>"; };
+		17C8BE49195C7DB20035C8EF /* CheckOutLoudAlert.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = CheckOutLoudAlert.wav; sourceTree = SOURCE_ROOT; };
 		17D5714818D5474300663FAE /* CPLMUDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPLMUDViewController.h; sourceTree = "<group>"; };
 		17D5714918D5474300663FAE /* CPLMUDViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPLMUDViewController.m; sourceTree = "<group>"; };
 		17DA602E18FA38E4005D2F85 /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Small.png"; path = "../../Icons/PNG Images/CheckOutLoud/Icon-Small.png"; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 		17249CC918CC30E600A6C5EF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				17C8BE49195C7DB20035C8EF /* CheckOutLoudAlert.wav */,
 				17792A5B1928237B0005F9B0 /* Settings-Icon-40.png */,
 				17792A59192823640005F9B0 /* Settings - Icon-2x.png */,
 				17792A55192821B30005F9B0 /* Settings-Icon-Small.png */,
@@ -370,6 +373,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				17DA602F18FA38E4005D2F85 /* Icon-Small.png in Resources */,
+				17C8BE4A195C7DB20035C8EF /* CheckOutLoudAlert.wav in Resources */,
 				17249CDE18CC30E600A6C5EF /* Images.xcassets in Resources */,
 				17792A5A192823640005F9B0 /* Settings - Icon-2x.png in Resources */,
 				17792A5C1928237B0005F9B0 /* Settings-Icon-40.png in Resources */,
