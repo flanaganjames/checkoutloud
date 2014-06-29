@@ -772,7 +772,9 @@
         [[UIApplication sharedApplication] scheduleLocalNotification:localNotif];
         
         aTDItemCopy.setDateTime = newDate1;
-        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItemCopy afterDelay:aTimeinSeconds];
+        
+        //the following commented out to test the method checkforscheduleditemspastdue
+        //[self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItemCopy afterDelay:aTimeinSeconds];
         //add it to the list of things to be done by the operating system
         [self.timeDelayItems addObject:aTDItemCopy];
         //add it to the list showing the things that will be done
@@ -780,10 +782,6 @@
         // sort the timeDelayItems
         NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"setDateTime" ascending:YES];
         [self.timeDelayItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
- 
-        // the following commented out as part of experiment in removing the item at the end of the method slideShowForTimeDelayItem; tested and seems to work ok
-//        [self performSelector:@selector(removeScheduledItemFromList:) withObject:aTDItemCopy afterDelay:aTimeinSeconds];
-        // schedule the removal from list right after it is done
         aCounter += 1;
     }
     
@@ -1246,7 +1244,7 @@
     [self.openEarsEventsObserver setDelegate:self];
     [self cellreloader];
     [self checkForUnscheduledTDItems];// main use: when return from slideshow
-    
+    [self checkForScheduledItemsPastDue];
 }
 
 
