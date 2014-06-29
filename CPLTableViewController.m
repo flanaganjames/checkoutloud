@@ -766,8 +766,9 @@
         // sort the timeDelayItems
         NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:@"setDateTime" ascending:YES];
         [self.timeDelayItems sortUsingDescriptors:[NSArray arrayWithObject:sortOrder]];
-        
-        [self performSelector:@selector(removeScheduledItemFromList:) withObject:aTDItemCopy afterDelay:aTimeinSeconds];
+ 
+        // the following commented out as part of experiment in removing the item at the end of the method slideShowForTimeDelayItem; tested and seems to work ok
+//        [self performSelector:@selector(removeScheduledItemFromList:) withObject:aTDItemCopy afterDelay:aTimeinSeconds];
         // schedule the removal from list right after it is done
         aCounter += 1;
     }
@@ -817,6 +818,8 @@
             [self.listOfListNames addObject:@"Time Delay Item"];
             [self performSegueWithIdentifier: @"slideShow" sender: self];
         }
+        
+        [self removeScheduledItemFromList:aTDItem];
     }
     else
     {
@@ -1228,7 +1231,7 @@
 {
     [self.openEarsEventsObserver setDelegate:self];
     [self cellreloader];
-    [self checkForUnscheduledTDItems];
+    [self checkForUnscheduledTDItems];// main use: when return from slideshow
     
 }
 
