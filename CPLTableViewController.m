@@ -737,6 +737,20 @@
     [self.unscheduledTDItems removeAllObjects];
 }
 
+-(void) checkForScheduledItemsPastDue
+{
+    CPLTimeDelayItem *aTDItem = [[CPLTimeDelayItem alloc] init];
+    NSDate *now = [NSDate date];
+    
+    for (aTDItem in self.timeDelayItems)
+    {
+        if (aTDItem.setDateTime < now)
+        {
+          [self slideShowForTimeDelayItem: aTDItem];
+        }
+    }
+}
+
 //used by above checkForUnscheduledTDItems
 - (void) scheduleTimeDelayItem: (CPLTimeDelayItem *) aTDItem
 {
