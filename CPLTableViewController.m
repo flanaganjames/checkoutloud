@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 James Flanagan. All rights reserved.
 //
 
+//remind user to set CheckoutLoud notificaitons as alerts
+
 
 #import "CPLTableViewController.h"
 #import "CheckListItem.h"
