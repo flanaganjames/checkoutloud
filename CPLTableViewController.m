@@ -744,7 +744,7 @@
     
     for (aTDItem in self.timeDelayItems)
     {
-        if (aTDItem.setDateTime < now)
+        if ([aTDItem.setDateTime earlierDate:now])
         {
           [self slideShowForTimeDelayItem: aTDItem];
         }
@@ -773,8 +773,8 @@
         
         aTDItemCopy.setDateTime = newDate1;
         
-        //the following commented out to test the method checkforscheduleditemspastdue
-        //[self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItemCopy afterDelay:aTimeinSeconds];
+
+        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItemCopy afterDelay:aTimeinSeconds];
         //add it to the list of things to be done by the operating system
         [self.timeDelayItems addObject:aTDItemCopy];
         //add it to the list showing the things that will be done
@@ -1236,16 +1236,42 @@
                                                selector:@selector(appWillTerminate:)
                                                    name:UIApplicationWillTerminateNotification
                                                  object:[UIApplication sharedApplication]];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(appWillEnterForegroundNotification)
+                                                 name:UIApplicationWillEnterForegroundNotification
+                                               object:nil];
 }
 
 
 - (void)viewDidAppear:(BOOL)animated
 {
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Did appear"
+//                                                    message:  [NSString stringWithFormat: @"Do What needs to be done!"]
+//                                                   delegate:self
+//                                          cancelButtonTitle:@"OK"
+//                                          otherButtonTitles:nil];
+//    [alert show];
+    
     [self.openEarsEventsObserver setDelegate:self];
     [self cellreloader];
-    [self checkForUnscheduledTDItems];// main use: when return from slideshow
+    [self checkForUnscheduledTDItems];// used when return from slideshow
     [self checkForScheduledItemsPastDue];
 }
+
+- (void)appWillEnterForegroundNotification
+{
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Did enter foreground"
+//                                                    message:  [NSString stringWithFormat: @"Do What needs to be done!"]
+//                                                   delegate:self
+//                                          cancelButtonTitle:@"OK"
+//                                          otherButtonTitles:nil];
+//    [alert show];
+    
+    [self checkForScheduledItemsPastDue];
+}
+
+
 
 
 - (void)didReceiveMemoryWarning
