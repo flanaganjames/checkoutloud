@@ -7,7 +7,6 @@
 //
 
 #import "CPLAppDelegate.h"
-#import "CPLTableViewController.h"
 
 
 @implementation CPLAppDelegate
@@ -17,7 +16,7 @@
 {
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
                                                              bundle: nil];
-        self.myController = (CPLTableViewController *)[mainStoryboard
+    self.myController = (CPLTableViewController *)[mainStoryboard
                         instantiateViewControllerWithIdentifier:@"mainTableViewID"];
     // Override point for customization after application launch.
     return YES;
@@ -55,7 +54,7 @@
 
     if ([application applicationState] == UIApplicationStateActive)
     {
-        //        [self.myController checkForScheduledItemsPastDue];
+//        [self.myController checkForScheduledItemsPastDue];
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"local notification received"
                                                         message:  [NSString stringWithFormat: @"Do Something!"]
