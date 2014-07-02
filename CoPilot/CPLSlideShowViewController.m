@@ -364,7 +364,9 @@
     //[self nextSlideAfterWait];
     if (self.waitForFlite)
     {
-        // do nothing
+        // if after 5 seconds flite has not sent "finished speaking" message, then force it
+        
+        [self performSelector:@selector(fliteDidFinishSpeaking) withObject:nil afterDelay:5];
     }
     else
     {
@@ -458,7 +460,8 @@
 }
 
 
-- (void) fliteDidFinishSpeaking {
+- (void) fliteDidFinishSpeaking
+{
      self.waitForFlite = NO;
 //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Flite Finished"
 //                                                    message:  [NSString stringWithFormat: @"Resume"]
