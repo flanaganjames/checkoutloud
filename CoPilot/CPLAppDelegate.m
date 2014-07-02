@@ -7,8 +7,10 @@
 //
 
 #import "CPLAppDelegate.h"
+#import "CPLTableViewController.h"
 
 @implementation CPLAppDelegate
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -43,6 +45,28 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+-  (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
+                                    
+                                                             bundle: nil];
+    
+    CPLTableViewController *controller = (CPLTableViewController*)[mainStoryboard
+                                                            instantiateViewControllerWithIdentifier: @"mainTableView"];
+    if ([application applicationState] == UIApplicationStateActive)
+    {
+        //        [controller checkForScheduledItemsPastDue];
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"local notification received"
+                                                        message:  [NSString stringWithFormat: @"Do Something!"]
+                                                       delegate:self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        
+    }
+    
+}
 
 
 @end
