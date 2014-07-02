@@ -61,4 +61,5 @@ Kal *kal;
 @property (nonatomic, strong) UISwipeGestureRecognizer *upSwipeGestureRecognizer;
 @property (nonatomic, strong) UISwipeGestureRecognizer *downSwipeGestureRecognizer;
 @property (nonatomic, strong) UITapGestureRecognizer * tapGestureRecognizer;
+@property NSString *appdelegatetest;
 @end

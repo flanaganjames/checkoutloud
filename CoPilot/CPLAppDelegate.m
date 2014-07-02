@@ -14,10 +14,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
-                                                             bundle: nil];
-    self.myController = (CPLTableViewController *)[mainStoryboard
-                        instantiateViewControllerWithIdentifier:@"mainTableViewID"];
+//    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+//                                                             bundle: nil];
+//    self.myController = (CPLTableViewController *)[mainStoryboard
+//                        instantiateViewControllerWithIdentifier:@"mainTableViewID"];
+    
+    CPLTableViewController *tableViewController = [(UINavigationController *)self.window.rootViewController viewControllers][0];
+    self.myController = tableViewController;
+    
     // Override point for customization after application launch.
     return YES;
 }
@@ -54,14 +58,9 @@
 
     if ([application applicationState] == UIApplicationStateActive)
     {
-//        [self.myController checkForScheduledItemsPastDue];
+        //[self.myController checkForScheduledItemsPastDue];
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"local notification received"
-                                                        message:  [NSString stringWithFormat: @"Do Something!"]
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
+        [self.myController performSelector:@selector(checkForScheduledItemsPastDue)];
         
     }
     

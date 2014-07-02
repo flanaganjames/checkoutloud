@@ -1116,6 +1116,8 @@
 {
     [super viewDidLoad];
     
+    self.appdelegatetest = @"loadedString";
+    
     //readListButton is the button at the bottom of the main view
     self.readListButton.layer.borderWidth = 2;
     self.readListButton.layer.cornerRadius = 10.0;
