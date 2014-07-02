@@ -468,11 +468,17 @@
 //    [alert show];
 }
 
+- (void) fliteDidStartSpeaking
+{
+    self.waitForFlite = YES;
+}
+
+
 - (void) passToFlite: (NSString *) sayThis
 {
     if (self.allowSpeak)
     {
-        self.waitForFlite = YES;
-        [self.fliteController say:sayThis withVoice:self.slt];}
+        [self.fliteController say:sayThis withVoice:self.slt];
+    }
 }
 @end
