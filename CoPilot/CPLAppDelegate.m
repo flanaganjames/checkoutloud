@@ -54,6 +54,12 @@
 //    CPLTableViewController *controller = (CPLTableViewController*)[mainStoryboard
 //                                                            instantiateViewControllerWithIdentifier: @"mainTableView"];
     
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                             bundle: nil];
+    CPLTableViewController *yourController = (CPLTableViewController *)[mainStoryboard
+                                                                instantiateViewControllerWithIdentifier:@"mainTableViewID"];
+//    self.window.rootViewController = yourController;
+    
     if ([application applicationState] == UIApplicationStateActive)
     {
         //        [controller checkForScheduledItemsPastDue];
