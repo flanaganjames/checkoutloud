@@ -47,12 +47,13 @@
 
 -  (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
-                                    
-                                                             bundle: nil];
+//    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
+//                                    
+//                                                             bundle: nil];
     
-    CPLTableViewController *controller = (CPLTableViewController*)[mainStoryboard
-                                                            instantiateViewControllerWithIdentifier: @"mainTableView"];
+//    CPLTableViewController *controller = (CPLTableViewController*)[mainStoryboard
+//                                                            instantiateViewControllerWithIdentifier: @"mainTableView"];
+    
     if ([application applicationState] == UIApplicationStateActive)
     {
         //        [controller checkForScheduledItemsPastDue];
