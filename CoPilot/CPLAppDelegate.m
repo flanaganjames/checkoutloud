@@ -9,11 +9,16 @@
 #import "CPLAppDelegate.h"
 #import "CPLTableViewController.h"
 
+
 @implementation CPLAppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
+                                                             bundle: nil];
+        self.myController = (CPLTableViewController *)[mainStoryboard
+                        instantiateViewControllerWithIdentifier:@"mainTableViewID"];
     // Override point for customization after application launch.
     return YES;
 }
@@ -47,22 +52,10 @@
 
 -  (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-//    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard"
-//                                    
-//                                                             bundle: nil];
-    
-//    CPLTableViewController *controller = (CPLTableViewController*)[mainStoryboard
-//                                                            instantiateViewControllerWithIdentifier: @"mainTableView"];
-    
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main"
-                                                             bundle: nil];
-    CPLTableViewController *yourController = (CPLTableViewController *)[mainStoryboard
-                                                                instantiateViewControllerWithIdentifier:@"mainTableViewID"];
-//    self.window.rootViewController = yourController;
-    
+
     if ([application applicationState] == UIApplicationStateActive)
     {
-        //        [controller checkForScheduledItemsPastDue];
+        //        [self.myController checkForScheduledItemsPastDue];
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"local notification received"
                                                         message:  [NSString stringWithFormat: @"Do Something!"]

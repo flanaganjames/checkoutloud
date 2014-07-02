@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CPLTableViewController.h"
 
 @interface CPLAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-
+@property CPLTableViewController *myController;
 @end
