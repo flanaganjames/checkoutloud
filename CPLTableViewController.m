@@ -741,15 +741,37 @@
 
 -(void) checkForScheduledItemsPastDue
 {
-    CPLTimeDelayItem *aTDItem = [[CPLTimeDelayItem alloc] init];
     NSDate *now = [NSDate date];
-    
-    for (aTDItem in self.timeDelayItems)
+    int size = [self.timeDelayItems count];
+    if ([self.timeDelayItems count] > 0)
     {
-        if ([aTDItem.setDateTime earlierDate:now])
-        {
-          [self slideShowForTimeDelayItem: aTDItem];
-        }
+        
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"scheduled items"
+//                                                    message:  [NSString stringWithFormat: @"Size array %d", size ]
+//                                                   delegate:self
+//                                          cancelButtonTitle:@"OK"
+//                                          otherButtonTitles:nil];
+//    [alert show];
+        
+//        result = [today compare:newDate]; // comparing two dates
+//        
+//        if(result==NSOrderedAscending)
+//            NSLog(@"today is less");
+//        else if(result==NSOrderedDescending)
+//            NSLog(@"newDate is less");
+//        else
+//            NSLog(@"Both dates are same");
+        
+        CPLTimeDelayItem *aTDItem  = self.timeDelayItems[0];
+//        if ([aTDItem.setDateTime earlierDate:now])
+        
+        NSComparisonResult result;
+        result = [aTDItem.setDateTime compare:now];
+        if(result == NSOrderedAscending) // setdatetime is less than now
+            {
+                [self slideShowForTimeDelayItem: aTDItem];  //this will remove an item from self.timeDelayItems
+            }
+
     }
 }
 

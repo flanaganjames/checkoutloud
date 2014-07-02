@@ -58,8 +58,6 @@
 
     if ([application applicationState] == UIApplicationStateActive)
     {
-        //[self.myController checkForScheduledItemsPastDue];
-        
         [self.myController performSelector:@selector(checkForScheduledItemsPastDue)];
         
     }
