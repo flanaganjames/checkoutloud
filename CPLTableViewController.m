@@ -775,8 +775,8 @@
         
         aTDItemCopy.setDateTime = newDate1;
         
-
-        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItemCopy afterDelay:aTimeinSeconds];
+//experiment
+//        [self performSelector:@selector(slideShowForTimeDelayItem:) withObject:aTDItemCopy afterDelay:aTimeinSeconds];
         //add it to the list of things to be done by the operating system
         [self.timeDelayItems addObject:aTDItemCopy];
         //add it to the list showing the things that will be done
